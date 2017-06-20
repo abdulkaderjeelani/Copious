@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Copious.Infrastructure.Documents.Storage.Factory</AssemblyName>
+    <PackageId>Copious.Infrastructure.Documents.Storage.Factory</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute><GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
+    <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Copious.Foundation\Copious.Foundation.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Documents.Storage.Amazon\Copious.Infrastructure.Documents.Storage.Amazon.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Documents.Storage.Azure\Copious.Infrastructure.Documents.Storage.Azure.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Documents.Storage.Google\Copious.Infrastructure.Documents.Storage.Google.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Documents.Storage.Local\Copious.Infrastructure.Documents.Storage.Local.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Documents.Storage\Copious.Infrastructure.Documents.Storage.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Interface\Copious.Infrastructure.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

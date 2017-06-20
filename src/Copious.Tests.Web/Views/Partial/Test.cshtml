@@ -1,0 +1,8 @@
+﻿@*@DateTime.Now.ToString()
+    {{1+1+1}}*@
+
+<md-input-container style="width: 100%">
+    <input mdInput placeholder="Email address" type="email" [(ngModel)]="model.username" #username="ngModel" required name="username" email>
+</md-input-container>
+<div *ngIf="submitted && !username.valid" class="mat-text-warn validation-error">Email address is required</div>
+<div class="mat-text-warn validation-error" *ngIf="username.touched && username.errors?.email"> Email must be in format email@server.com</div>

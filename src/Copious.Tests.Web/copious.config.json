@@ -1,0 +1,21 @@
+﻿{
+  "IncludeAspNetIdentity": false,
+  "EnableCors": true,
+  "EnableAntiForgery": false,
+  "DIContainer": "Autofac", /* LightInject DryIoc Autofac*/
+  "LoggingProvider": "Log4Net", /* Log4Net, Serilog */
+  "EnableScheduler" :  true,
+  "Scheduler": "Hangfire",
+  "AppAssemblyPrefixes": "Copious",
+  "EnableDocument": true,
+  "DocumentDb": "Postgres",
+  "DocumentDbConnection": "PostgreSqlProvider",
+  "DefaultDocumentStorageProvider": "FileSystem",
+  "DefaultDocumentStorageProviderOptions": [
+    {
+      "Key": "BasePath",
+      "Value": "D: \\Buffer"
+    }
+  ]
+
+}

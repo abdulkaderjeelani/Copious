@@ -1,0 +1,88 @@
+﻿
+
+Execution Logic
+
+Client app request the api for an action - An action can be a commad or query
+
+A. Action - Command
+
+1.
+Api creates a command from the request params, and passes it to the command bus,
+Command bus checks the nature of command and forwards the command
+-To a command handler if its local command 
+-To a message bus if its external command (distributed) [Command executed out of process]
+ External Command received by MessageBus (Command), transformed to Internal Command (inside the ACL)
+ Sent to Internal CommandBus as a local command, (so that it can be processed by the commmand handler)
+ 
+2.
+Command Handler executes the command by acting on a aggregate / entity, @Times command handlers can be the agg. itself.
+*Note: Do not leak any domain logic to command handlers which are part of app. layer.
+ 
+3.
+A command may produce a event as a result,
+*Note: Command throws exceptions if there is a failure, The caller should be aware of it to catch the events,
+Exceptions are bubbled up from inside the domain to application layer then to api layer. 
+** Make sure a domain error is not visible to external world by suppressing it them at the app layer and producing a user friendly message
+** Its good to have a constant list of error codes for our domain exceptions
+
+*Domain event must be produced by domain objects,
+*Application events are produced by app. layer i.e. command handler
+E.g: A invoice created domain event, can be captured by the app layer and it can produce InvoiceReadyForTransfer app. event.
+
+4.
+Command Handler does the persistence using a Repository, Once it is successfull
+
+5.
+Produced events are then published using Event bus,
+Event bus finds the registered event handlers and executed them, and it may publish it to external based on the event or any other intellisense based on biz.requirements
+
+Request-API-CommandBus-CommandHandler-Repository(uses ef context)-Storage (db)
+
+B. Action - Query
+
+1. API creaes a query and calls the query handler (in Application) then, query handler (in Application) request repositories (1 or more) 
+for data (GetAllOrders)
+-Here the repository will contain the persistance to use . eg. EF / Dapper / NoSQL, means we can change from one to another by passing a different implementation.
+-Converts the entity to dto (mapping) and Returns the DTO
+
+
+
+2. QueryHandler (in Application) returns the DTO, not the entity themselves as the entity contains behaviors,
+
+Query Handlers in Application layer use the repository (an extra layer of abstraction)
+
+There are also Query Handlers added in the persistance layer for ease of access / not complicate much, 
+There is no extralayer of abstraction here, it directly users the EFContext / Dapper / NoSQl  to query and return the data.
+
+C. Ideas
+
+*Domain logic may be subclassed for simple implementations.
+i.e. Any logic of order (ef code first poco) can be put into a sub class of order.
+
+
+Use a facade query handler if needed, 1 facade that deals with all the queries,
+ 
+    https://vaughnvernon.co/?p=879
+
+
+
+	------------SAMPLES---------
+
+	 /*Sample on how to custom aggregate*/
+        //RegistrationHelper.RegisterCrudHandlers<Core.Attorney, Core.Domain.Attorney>(container);
+
+        /*Register specify the aggregate explicit*/
+        //RegistrationHelper.RegisterCrudHandlers<Core.Attorney, CrudOnlyAggregate<Core.Attorney>>(container);           
+
+        /*Register without aggregate uses CrudOnlyAggregate*/
+        //RegistrationHelper.RegisterCrudHandlers<Core.Attorney>(container);
+
+        /*Sample using repository query handler*/
+        //container.Register<AgencyEFRepository, IAgencyQueryRepository>();
+
+        /*Sample using explicitly specified, context query handler for a common qurey, */
+        //container.Register<AgencyQueryHandler, IQueryHandlerAsync<GetAllQuery<Agency>, List<Agency>>>();
+
+        //container.Register<AgencyQueryHandler, IQueryHandlerAsync<GetAgenciesOfUser, List<Agency>>>();
+
+        //RegisterCommonAsyncQuery<Agency>(container);

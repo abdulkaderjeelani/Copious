@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Copious.Document.Interface</AssemblyName>
+    <PackageId>Copious.Document.Interface</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute><GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+<ItemGroup>
+  <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Copious.Foundation\Copious.Foundation.csproj" />
+    <ProjectReference Include="..\Copious.Infrastructure.Interface\Copious.Infrastructure.Interface.csproj" />
+    <ProjectReference Include="..\Copious.Utilities\Copious.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
