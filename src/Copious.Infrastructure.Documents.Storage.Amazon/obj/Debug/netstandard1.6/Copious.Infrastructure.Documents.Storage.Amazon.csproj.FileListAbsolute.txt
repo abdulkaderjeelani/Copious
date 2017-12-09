@@ -1,0 +1,11 @@
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\bin\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.deps.json
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\bin\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\bin\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\bin\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\bin\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\obj\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.csprojResolveAssemblyReference.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\obj\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.csproj.CoreCompileInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\obj\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.AssemblyInfoInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\obj\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.AssemblyInfo.cs
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\obj\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Amazon\obj\Debug\netstandard1.6\Copious.Infrastructure.Documents.Storage.Amazon.pdb

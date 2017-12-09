@@ -1,0 +1,11 @@
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.deps.json
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.csprojResolveAssemblyReference.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.csproj.CoreCompileInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.AssemblyInfoInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.AssemblyInfo.cs
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.pdb

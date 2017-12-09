@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Copious.Utilities;
 
 namespace Copious.Infrastructure.Interface
 {
@@ -83,7 +81,6 @@ namespace Copious.Infrastructure.Interface
                 DocumentDbConnection = configuration.GetValue<string>(nameof(DocumentDbConnection)),
                 DefaultDocumentStorageProvider = configuration.GetValue<StorageProvider>(nameof(DefaultDocumentStorageProvider)),
                 DefaultDocumentStorageProviderOptions = new Dictionary<string, string>()
-
             };
             FillDictionaryFromConfig(configuration, nameof(DefaultDocumentStorageProviderOptions), _config.DefaultDocumentStorageProviderOptions);
 

@@ -1,6 +1,8 @@
 ﻿using Copious.Infrastructure.AspNet.Middlewares;
 using Copious.Infrastructure.Interface;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +19,7 @@ using System.Threading.Tasks;
 namespace Copious.Infrastructure.AspNet
 {
     public static class Features
-    {   
+    {
         public static void ConfigureServices(IServiceCollection services)
         {
             // https://stackoverflow.com/questions/31243068/access-httpcontext-current
@@ -46,6 +48,37 @@ namespace Copious.Infrastructure.AspNet
 
             // https://stackoverflow.com/questions/40275195/how-to-setup-automapper-in-asp-net-core
             // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+
+             .AddJwtBearer(j =>
+             {
+                 j.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     // The signing key must match!
+                     ValidateIssuerSigningKey = true,
+                     IssuerSigningKey = GetSigningKey(),
+
+                     // Validate the JWT Issuer (iss) claim
+                     ValidateIssuer = true,
+                     ValidIssuer = Issuer,
+
+                     // Validate the JWT Audience (aud) claim
+                     ValidateAudience = true,
+                     ValidAudience = Audience,
+                     AudienceValidator = (aud, tkn, prm) =>
+                     {
+                         return aud.First() == Audience;
+                     },
+
+                     // Validate the token expiry
+                     ValidateLifetime = true,
+
+                     // If you want to allow a certain amount of clock drift, set that here:
+                     ClockSkew = TimeSpan.Zero
+                 };
+
+             });
         }
 
         public static void Configure(IApplicationBuilder app, IAntiforgery antiforgery, Func<string, string, Task<ClaimsIdentity>> identityResolver)
@@ -61,12 +94,7 @@ namespace Copious.Infrastructure.AspNet
         {
             if (identityResolver == null) return;
 
-            // If need, move the secret key into env. variable or any other safe source,
-            const string SecretKey = "SECRET_KEY_1!2@3#4$";
-            const string Audience = "ClientApps";
-            const string Issuer = "TokenProvider";
-
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+            var signingKey = GetSigningKey();
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             app.UseTokenProvider(new TokenProviderOptions
@@ -79,43 +107,27 @@ namespace Copious.Infrastructure.AspNet
                 Expiration = TimeSpan.FromHours(4)
             });
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                // The signing key must match!
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
+            app.UseAuthentication();
 
-                // Validate the JWT Issuer (iss) claim
-                ValidateIssuer = true,
-                ValidIssuer = Issuer,
 
-                // Validate the JWT Audience (aud) claim
-                ValidateAudience = true,
-                ValidAudience = Audience,
-                AudienceValidator = (aud, tkn, prm) =>
-                {
-                    return aud.First() == Audience;
-                },
+        }
 
-                // Validate the token expiry
-                ValidateLifetime = true,
+        // If need, move the secret key into env. variable or any other safe source,
+        const string SecretKey = "SECRET_KEY_1!2@3#4$";
+        const string Audience = "ClientApps";
+        const string Issuer = "TokenProvider";
 
-                // If you want to allow a certain amount of clock drift, set that here:
-                ClockSkew = TimeSpan.Zero
-            };
+        private static SymmetricSecurityKey GetSigningKey()
+        {
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                TokenValidationParameters = tokenValidationParameters
-            });
+            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
         }
 
         private static void UseAspNetIdentity(IApplicationBuilder app)
         {
             if (CopiousConfiguration.Config.IncludeAspNetIdentity)
-                app.UseIdentity();
+                AuthAppBuilderExtensions.UseAuthentication(app); // app.UseIdentity() instead of
+
         }
 
         private static void UseCors(IApplicationBuilder app)

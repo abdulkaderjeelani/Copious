@@ -1,0 +1,17 @@
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Workflow.deps.json
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Workflow.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Workflow.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Foundation.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Infrastructure.Interface.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Utilities.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Foundation.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Infrastructure.Interface.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Copious.Utilities.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.xml
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\obj\Debug\netstandard2.0\Copious.Workflow.csprojResolveAssemblyReference.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\obj\Debug\netstandard2.0\Copious.Workflow.csproj.CoreCompileInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\obj\Debug\netstandard2.0\Copious.Workflow.AssemblyInfoInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\obj\Debug\netstandard2.0\Copious.Workflow.AssemblyInfo.cs
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\obj\Debug\netstandard2.0\Copious.Workflow.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Workflow\obj\Debug\netstandard2.0\Copious.Workflow.pdb

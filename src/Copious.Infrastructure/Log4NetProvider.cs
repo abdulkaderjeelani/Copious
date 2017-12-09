@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging.Internal;
+using System;
 using System.Collections.Generic;
 using log4net;
 using Microsoft.Extensions.Logging;
@@ -9,20 +10,20 @@ namespace Copious.Infrastructure
     {
         private IDictionary<string, ILogger> _loggers = new Dictionary<string, ILogger>();
 
-        public ILogger CreateLogger(string name)
+        public ILogger CreateLogger(string categoryName)
         {
-            if (!_loggers.ContainsKey(name))
+            if (!_loggers.ContainsKey(categoryName))
             {
                 lock (_loggers)
                 {
                     // Have to check again since another thread may have gotten the lock first
-                    if (!_loggers.ContainsKey(name))
+                    if (!_loggers.ContainsKey(categoryName))
                     {
-                        _loggers[name] = new Log4NetAdapter(name);
+                        _loggers[categoryName] = new Log4NetAdapter(categoryName);
                     }
                 }
             }
-            return _loggers[name];
+            return _loggers[categoryName];
         }
 
         public void Dispose()
@@ -76,7 +77,7 @@ namespace Copious.Infrastructure
             }
             string message;
 
-            message = null != formatter ? formatter(state, exception) : Microsoft.Framework.Logging.LogFormatter.Formatter(state, exception);
+            message = null != formatter ? formatter(state, exception) : state?.ToString() ?? string.Empty;
 
             message = $"Event: {eventId.Id} | {eventId.Name} " + message ?? string.Empty;
 

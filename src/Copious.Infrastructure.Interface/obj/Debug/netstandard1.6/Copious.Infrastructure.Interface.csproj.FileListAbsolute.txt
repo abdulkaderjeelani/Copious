@@ -1,0 +1,13 @@
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Infrastructure.Interface.deps.json
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Infrastructure.Interface.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Infrastructure.Interface.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Foundation.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Utilities.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Foundation.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\bin\Debug\netstandard1.6\Copious.Utilities.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\obj\Debug\netstandard1.6\Copious.Infrastructure.Interface.csprojResolveAssemblyReference.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\obj\Debug\netstandard1.6\Copious.Infrastructure.Interface.csproj.CoreCompileInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\obj\Debug\netstandard1.6\Copious.Infrastructure.Interface.AssemblyInfoInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\obj\Debug\netstandard1.6\Copious.Infrastructure.Interface.AssemblyInfo.cs
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\obj\Debug\netstandard1.6\Copious.Infrastructure.Interface.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Interface\obj\Debug\netstandard1.6\Copious.Infrastructure.Interface.pdb

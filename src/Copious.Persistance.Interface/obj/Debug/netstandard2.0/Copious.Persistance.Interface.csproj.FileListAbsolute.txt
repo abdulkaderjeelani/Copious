@@ -1,0 +1,11 @@
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\bin\Debug\netstandard2.0\Copious.Persistance.Interface.deps.json
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\bin\Debug\netstandard2.0\Copious.Persistance.Interface.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\bin\Debug\netstandard2.0\Copious.Persistance.Interface.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\bin\Debug\netstandard2.0\Copious.Foundation.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\bin\Debug\netstandard2.0\Copious.Foundation.pdb
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\obj\Debug\netstandard2.0\Copious.Persistance.Interface.csprojResolveAssemblyReference.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\obj\Debug\netstandard2.0\Copious.Persistance.Interface.csproj.CoreCompileInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\obj\Debug\netstandard2.0\Copious.Persistance.Interface.AssemblyInfoInputs.cache
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\obj\Debug\netstandard2.0\Copious.Persistance.Interface.AssemblyInfo.cs
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\obj\Debug\netstandard2.0\Copious.Persistance.Interface.dll
+D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Persistance.Interface\obj\Debug\netstandard2.0\Copious.Persistance.Interface.pdb

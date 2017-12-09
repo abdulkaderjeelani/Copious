@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Copious.Infrastructure.Documents.Storage.Google</id>
+    <version>1.0.0</version>
+    <authors>Copious.Infrastructure.Documents.Storage.Google</authors>
+    <owners>Copious.Infrastructure.Documents.Storage.Google</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Copious.Infrastructure.Interface.Documents" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Google.Apis.Storage.v1" version="1.25.0.854" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="10.0.2" exclude="Build,Analyzers" />
+        <dependency id="Portable.BouncyCastle" version="1.8.1.2" exclude="Build,Analyzers" />
+        <dependency id="System.Security.Cryptography.Csp" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage.Google\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.dll" target="lib\netstandard2.0\Copious.Infrastructure.Documents.Storage.Google.dll" />
+  </files>
+</package>

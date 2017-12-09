@@ -34,7 +34,7 @@ namespace Copious.Persistance
             var connectionString = configuration.GetConnectionString(dbOptions.ConnectionStringKey); // "PostgreSqlProvider"
 
             //Add entity framework
-            services.AddEntityFramework().AddEntityFrameworkNpgsql();
+            services.AddEntityFrameworkNpgsql();
 
             if (dbOptions.DbToUse == Db.Postgres)
             {
