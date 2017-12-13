@@ -4,7 +4,7 @@
     <AssemblyName>Copious.Infrastructure.Documents.Storage.Amazon</AssemblyName>
     <PackageId>Copious.Infrastructure.Documents.Storage.Amazon</PackageId>
     
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute><GeneratePackageOnBuild>True</GeneratePackageOnBuild>

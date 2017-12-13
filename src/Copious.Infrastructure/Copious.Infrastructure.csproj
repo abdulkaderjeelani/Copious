@@ -4,8 +4,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Copious.Infrastructure</AssemblyName>
     <PackageId>Copious.Infrastructure</PackageId>
-    
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute><GeneratePackageOnBuild>True</GeneratePackageOnBuild>

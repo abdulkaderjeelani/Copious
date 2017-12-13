@@ -1,9 +1,0 @@
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\bin\Debug\netstandard1.6\Copious.Foundation.deps.json
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\bin\Debug\netstandard1.6\Copious.Foundation.dll
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\bin\Debug\netstandard1.6\Copious.Foundation.pdb
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\obj\Debug\netstandard1.6\Copious.Foundation.csprojResolveAssemblyReference.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\obj\Debug\netstandard1.6\Copious.Foundation.csproj.CoreCompileInputs.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\obj\Debug\netstandard1.6\Copious.Foundation.AssemblyInfoInputs.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\obj\Debug\netstandard1.6\Copious.Foundation.AssemblyInfo.cs
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\obj\Debug\netstandard1.6\Copious.Foundation.dll
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Foundation\obj\Debug\netstandard1.6\Copious.Foundation.pdb

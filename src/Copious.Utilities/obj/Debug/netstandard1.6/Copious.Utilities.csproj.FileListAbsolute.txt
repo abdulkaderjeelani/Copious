@@ -1,9 +1,0 @@
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\bin\Debug\netstandard1.6\Copious.Utilities.deps.json
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\bin\Debug\netstandard1.6\Copious.Utilities.dll
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\bin\Debug\netstandard1.6\Copious.Utilities.pdb
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\obj\Debug\netstandard1.6\Copious.Utilities.csprojResolveAssemblyReference.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\obj\Debug\netstandard1.6\Copious.Utilities.csproj.CoreCompileInputs.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\obj\Debug\netstandard1.6\Copious.Utilities.AssemblyInfoInputs.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\obj\Debug\netstandard1.6\Copious.Utilities.AssemblyInfo.cs
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\obj\Debug\netstandard1.6\Copious.Utilities.dll
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Utilities\obj\Debug\netstandard1.6\Copious.Utilities.pdb

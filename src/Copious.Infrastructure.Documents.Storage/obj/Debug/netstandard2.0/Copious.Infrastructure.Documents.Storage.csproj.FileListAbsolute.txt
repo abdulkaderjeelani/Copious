@@ -1,9 +1,0 @@
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.deps.json
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.dll
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\bin\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.pdb
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.csprojResolveAssemblyReference.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.csproj.CoreCompileInputs.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.AssemblyInfoInputs.cache
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.AssemblyInfo.cs
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.dll
-D:\Abdul\DevOps\PRODUCTS\Copious\Copious\src\Copious.Infrastructure.Documents.Storage\obj\Debug\netstandard2.0\Copious.Infrastructure.Documents.Storage.pdb

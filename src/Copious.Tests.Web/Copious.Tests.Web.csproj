@@ -10,8 +10,6 @@
     <OutputType>Exe</OutputType>
     <PackageId>Copious.Tests.Web</PackageId>
     <RuntimeFrameworkVersion>2.0.3</RuntimeFrameworkVersion>
-    
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <Authors>Copious.Tests.Web</Authors>
     <Company>Copious.Tests.Web</Company>
     <Product>Copious.Tests.Web</Product>
