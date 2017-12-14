@@ -98,13 +98,13 @@ Circuit breaker using polly
 Multitenancy support
 
 Security flow:
-User tries to access application -
-  Server issues a XSRF token -
-    User gets Redericted to login -
-      User login with credentials - 
-        Server authenticates with the provided credentials and issues a JWT token if valid -
-          The token contains the user identity - This token is then used along with the XSRF token in subsequent request to the application -
-            Application first checks the XSRF token to pervent forgery (ANTI FORGERY) -
-              After that application check for identity token (AUTHENTICATION) - 
-                Then based upon the requested action the server check the user rights (AUTHORIZATION) - 
-                  Application can now perform the action.
+-User tries to access application ->
+  -Server issues a XSRF token ->
+    -User gets Redericted to login ->
+      -User login with credentials ->
+       - Server authenticates with the provided credentials and issues a JWT token if valid ->
+          -The token contains the user identity - This token is then used along with the XSRF token in subsequent request to the  application ->
+           - Application first checks the XSRF token to pervent forgery (ANTI FORGERY) ->
+             - After that application check for identity token (AUTHENTICATION) - >
+               - Then based upon the requested action the server check the user rights (AUTHORIZATION) -> 
+                 - Application can now perform the action.
