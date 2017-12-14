@@ -71,12 +71,17 @@ Controller creates a command ->
   
    command handler validate the command - domain logic is executed - gives the control back to command handler ->
    
-     command handler calls repository in peristance layer to save the data - emits events if needed 
+     command handler calls repository in peristance layer to save the data ->
+     
+       emits events if needed 
      
 # Query pipeline
 Controller creates a query ->
+
  sends the query to a query processor ->
+ 
   query processor identify the relevant handler for the query and delegates ->
+  
     query gets executed in the persistance layer - data is returned.
 
 # System
@@ -113,14 +118,24 @@ Multitenancy support
 
 # Security flow:
 -User tries to access application ->
+
   -Server issues a XSRF token ->
+  
     -User gets Redericted to login ->
+    
       -User login with credentials ->
+      
        - Server authenticates with the provided credentials and issues a JWT token if valid ->
-          -The token contains the user identity - This token is then used along with the XSRF token in subsequent request to the  application ->
+       
+          -The token contains the user identity - This token is then used along with the XSRF toke
+          n in subsequent request to the  application ->
+          
            - Application first checks the XSRF token to pervent forgery (ANTI FORGERY) ->
+           
              - After that application check for identity token (AUTHENTICATION) - >
+             
                - Then based upon the requested action the server check the user rights (AUTHORIZATION) -> 
+               
                  - Application can now perform the action.
 
 
