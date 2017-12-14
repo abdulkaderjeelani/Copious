@@ -62,7 +62,8 @@ E.g. Get all agencies of users
 Events are usually result of Commands used to perform soem side effects.
 Each element has its own pipeline.
 
-# Command pipeline,
+# Command pipeline
+
 Controller creates a command ->
 
  puts it on command bus ->
@@ -82,7 +83,9 @@ Controller creates a query ->
  
   query processor identify the relevant handler for the query and delegates ->
   
-    query gets executed in the persistance layer - data is returned.
+    query gets executed in the persistance layer ->
+    
+      data is returned.
 
 # System
 System is divided into 2 major parts
@@ -117,6 +120,7 @@ Circuit breaker using polly
 Multitenancy support
 
 # Security flow:
+
 -User tries to access application ->
 
   -Server issues a XSRF token ->
