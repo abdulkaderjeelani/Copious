@@ -4,7 +4,7 @@ Based on domain driven design and micro service based (distributed) development 
 Copious uses CQRS effectively.
 Common CRUD operations are implemented in EF and exposed via handlers.
 
-# System Architecture.
+# System Architecture
 System design is based on principles of DDD Domain Driven Design.
 Domain is the problem area we are addressing.
 Application is built on principles of Hexagonal Architecture.
