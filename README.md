@@ -64,11 +64,15 @@ Each element has its own pipeline.
 
 # Command pipeline,
 Controller creates a command ->
- puts it on command bus ->
-  command bus identify the relevant handler for the command and delegates ->
-   command handler validate the command - domain logic is executed - gives the control back to command handler ->
-     command handler calls repository in peristance layer to save the data - emits events if needed 
 
+ puts it on command bus ->
+ 
+  command bus identify the relevant handler for the command and delegates ->
+  
+   command handler validate the command - domain logic is executed - gives the control back to command handler ->
+   
+     command handler calls repository in peristance layer to save the data - emits events if needed 
+     
 # Query pipeline
 Controller creates a query ->
  sends the query to a query processor ->
