@@ -32,7 +32,7 @@ namespace Copious.Infrastructure
 
         public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface
         => _LightInjectContainer.Register<TInterface, TClass>()
-                .RegisterConstructorDependency<TExcplicitParameterType>(
+                .RegisterConstructorDependency(
                     (fac, paraminfo) =>
                     {
                         if (paraminfo.Name == explicitParameterName) /* If there are multiple parameter names for the same type then control here*/
@@ -40,6 +40,9 @@ namespace Copious.Infrastructure
 
                         return default(TExcplicitParameterType);
                     });
+
+        public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface
+            => this.Register<TClass, TInterface, TExcplicitParameterType>(explicitParameterName, explicitparameterValueRetriever.Invoke());
 
         public void RegisterAssemblyTypes(Assembly assembly, Func<Type, bool> typeFilter = null)
             => _LightInjectContainer.RegisterAssembly(assembly, (serviceType, implementingType) => typeFilter?.Invoke(implementingType) ?? true);

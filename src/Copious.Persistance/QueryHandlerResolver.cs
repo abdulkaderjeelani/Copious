@@ -1,37 +1,29 @@
-﻿using System;
+﻿using Copious.Foundation;
+using Copious.Infrastructure.Interface;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Copious.Infrastructure.Interface;
-using Copious.Persistance.Interface;
+
 
 namespace Copious.Persistance
 {
     public static class QueryHandlerResolver
     {
-        private static readonly Type[] CommonQueryTypes = { typeof(GetAllQuery<>), typeof(FindByIdQuery<>), typeof(SearchQuery<>) };
+        private static readonly ConcurrentDictionary<string, List<Type>> QueryHandlersCache = new ConcurrentDictionary<string, List<Type>>();        
 
-        private static readonly ConcurrentDictionary<string, List<Type>> QueryHandlersCache = new ConcurrentDictionary<string, List<Type>>();
-
-        public static List<Type> GetQueryHandlerType(Type handlerType, Type moduleQueryHandlerType, Type qryType, Type qryResType)
+        public static List<Type> GetQueryHandlerType<TQuery,TQueryResult>(Type handlerType)
         {
-            var stateType = qryType.GetGenericArguments().FirstOrDefault();
+            var queryType = typeof(TQuery);
+            var queryResultType = typeof(TQueryResult);
+            // list <x> resove to x, only y means y
+            var queryResultStateType = queryResultType.IsGenericType ? queryResultType.GetGenericArguments().FirstOrDefault() : queryResultType;
 
-            var key = $"{handlerType.Name}-{moduleQueryHandlerType.Name}-{qryType.Name}-{stateType?.Name}-{qryResType.Name}";
+            var key = $"{handlerType.Name}-{queryType.Name}- {queryResultType.Name}-{queryResultStateType?.Name}";
 
-            if (!QueryHandlersCache.TryGetValue(key, out var handlers))
-            {
-                handlers = TypeLocator.GetGenericImplementor(handlerType, qryType, qryResType);
+            if (!QueryHandlersCache.TryGetValue(key, out List<Type> handlers))
+                handlers = QueryHandlersCache.AddOrUpdate(key, TypeLocator.GetGenericImplementor<TQuery,TQueryResult>(handlerType), (t, m) => m);
 
-                if (handlers.Count == 0 && TypeLocator.CheckGenericParameterOfType(qryType, CommonQueryTypes))
-                {
-                    var qryHandlerType = moduleQueryHandlerType.MakeGenericType(stateType);
-                    handlers.Add(qryHandlerType);
-                }
-
-                handlers = QueryHandlersCache.AddOrUpdate(key, handlers, (t, m) => m);
-            }
             return handlers;
         }
     }

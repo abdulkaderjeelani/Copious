@@ -24,6 +24,8 @@ namespace Copious.Infrastructure.Interface
         /// <param name="explicitparameterValue"></param>
         void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface;
 
+        void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface;
+
         void Register<TClass>();
 
         void RegisterGeneric(Type implementationType, Type definitionType);

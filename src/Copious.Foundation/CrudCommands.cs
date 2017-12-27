@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace Copious.Foundation
 {
-    public class EntityCommand<TState> : Command<TState>
+    public class CrudCommand<TState> : Command<TState>
         where TState : class, IEntity, new()
     {
-        public EntityCommand(TState state, int version) : base(state, state.Id, version)
+        public CrudCommand(TState state, int version) : base(state, state.Id, version)
         {
         }
 
-        public EntityCommand(Guid stateId, int version) : base(new TState(), stateId, version)
+        public CrudCommand(Guid stateId, int version) : base(new TState(), stateId, version)
         {
             State.Id = stateId;
         }
     }
 
-    public class Create<TState> : EntityCommand<TState>
+    public class Create<TState> : CrudCommand<TState>
         where TState : class, IEntity, new()
     {
         public Create(TState state, int version) : base(state, version)
@@ -24,7 +24,7 @@ namespace Copious.Foundation
         }
     }
 
-    public class Update<TState> : EntityCommand<TState>
+    public class Update<TState> : CrudCommand<TState>
        where TState : class, IEntity, new()
     {
         public Update(TState state, int version) : base(state, version)
@@ -46,7 +46,7 @@ namespace Copious.Foundation
         public string UpdateProcessName { get; set; } = "Default";
     }
 
-    public class Delete<TState> : EntityCommand<TState>
+    public class Delete<TState> : CrudCommand<TState>
       where TState : class, IEntity, new()
     {
         public Delete(TState state, int version) : base(state, version)

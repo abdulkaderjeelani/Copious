@@ -40,6 +40,9 @@ namespace Copious.Infrastructure
         public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface
             => _builder.RegisterType<TClass>().As<TInterface>().WithParameter(explicitParameterName, explicitparameterValue);
 
+        public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface
+            => this.Register<TClass, TInterface, TExcplicitParameterType>(explicitParameterName, explicitparameterValueRetriever.Invoke());
+
         public void Register<TClass>() => _builder.RegisterType<TClass>();
 
         public void RegisterAssemblyTypes(Assembly assembly, Func<Type, bool> typeFilter = null)

@@ -7,12 +7,15 @@ namespace Copious.Persistance.Interface
     /// </summary>
     public interface IQueryHandler
     {
+        
     }
 
-    public interface IQueryHandler<TQuery, out TQueryResult> : IQueryHandler
-        where TQuery : Query<TQueryResult>
+    public interface IQueryHandler<in TQuery, out TQueryResult> : IQueryHandler
+        where TQuery : Query
 
     {
         TQueryResult Fetch(TQuery query);
     }
+
+
 }

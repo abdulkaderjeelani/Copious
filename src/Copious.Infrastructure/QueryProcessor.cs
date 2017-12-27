@@ -23,10 +23,15 @@ namespace Copious.Infrastructure
 
         private static readonly ConcurrentDictionary<Type, MethodInfo> SyncMethodsCache = new ConcurrentDictionary<Type, MethodInfo>();
 
-        [DebuggerStepThrough]
-        public TQueryResult Process<TQueryResult>(Query<TQueryResult> query)
+        public TQueryResult Process<TQuery, TQueryResult>(TQuery query) where TQuery : Query
+        => Process<TQuery, TQueryResult>(query, default(string));
+
+        private static readonly Func<object, string, bool> handlerIdentityPredicate = (h, handlerIdentity) => !string.IsNullOrEmpty(handlerIdentity) && (h is Identifiable<string> i) && i.Match(handlerIdentity);
+
+         [DebuggerStepThrough]
+        public TQueryResult Process<TQuery, TQueryResult>(TQuery query, string handlerIdentity) where TQuery : Query
         {
-            var qryType = query.GetType();
+            var qryType = typeof(TQuery);
             var qryResType = typeof(TQueryResult);
 
             var syncHandlerType = typeof(IQueryHandler<,>).MakeGenericType(qryType, qryResType);
@@ -34,7 +39,11 @@ namespace Copious.Infrastructure
             var syncHandler = (IQueryHandler)_serviceProvider.GetService(syncHandlerType);
 
             if (syncHandler == null)
-                syncHandler = GetHandlerFromFactory(qryType, qryResType, false);
+                syncHandler = _serviceProvider.GetServices<IQueryHandlerFactory>()
+                    ?.Select(hfac => hfac.GetHandlers<TQuery, TQueryResult>())
+                    .FirstOrDefault(handlers => handlers?.Any() ?? false)
+                    ?.Where(h=> handlerIdentityPredicate(h,handlerIdentity))
+                    ?.FirstOrDefault();
 
             if (syncHandler == null)
                 throw new KeyNotFoundException("Handler not found, If async query is used call process async method");
@@ -49,22 +58,15 @@ namespace Copious.Infrastructure
             return (TQueryResult)fetch.Invoke(syncHandler, new object[] { query });
         }
 
-        [DebuggerStepThrough]
-        public TQueryResult Process<TQuery, TQueryResult>(TQuery query) where TQuery : Query<TQueryResult>
-        {
-            var syncHandler = _serviceProvider.GetService<IQueryHandler<TQuery, TQueryResult>>();
-            if (syncHandler == null)
-                throw new KeyNotFoundException("Handler not found");
-
-            return syncHandler.Fetch(query);
-        }
-
         private static readonly ConcurrentDictionary<Type, MethodInfo> AsyncMethodsCache = new ConcurrentDictionary<Type, MethodInfo>();
 
-        [DebuggerStepThrough]
-        public async Task<TQueryResult> ProcessAsync<TQueryResult>(Query<TQueryResult> query)
+        public async Task<TQueryResult> ProcessAsync<TQuery, TQueryResult>(TQuery query) where TQuery : Query
+            => await ProcessAsync<TQuery, TQueryResult>(query, default(string));
+
+      [DebuggerStepThrough]
+        public async Task<TQueryResult> ProcessAsync<TQuery, TQueryResult>(TQuery query, string handlerIdentity) where TQuery : Query
         {
-            var qryType = query.GetType();
+            var qryType = typeof(TQuery);
             var qryResType = typeof(TQueryResult);
 
             var asyncHandlerType = typeof(IQueryHandlerAsync<,>).MakeGenericType(qryType, qryResType);
@@ -72,7 +74,11 @@ namespace Copious.Infrastructure
             var asyncHandler = (IQueryHandler)_serviceProvider.GetService(asyncHandlerType);
 
             if (asyncHandler == null)
-                asyncHandler = GetHandlerFromFactory(qryType, qryResType, true);
+                asyncHandler = _serviceProvider.GetServices<IQueryHandlerFactory>()
+                    ?.Select(hfac => hfac.GetAsyncHandlers<TQuery, TQueryResult>())
+                    .FirstOrDefault(handlers => handlers?.Any() ?? false)
+                    ?.Where(h => handlerIdentityPredicate(h, handlerIdentity))
+                    ?.FirstOrDefault();
 
             if (asyncHandler == null)
                 throw new KeyNotFoundException("Handler not found");
@@ -86,38 +92,6 @@ namespace Copious.Infrastructure
 
             return await (Task<TQueryResult>)fetchAsync.Invoke(asyncHandler, new object[] { query });
         }
-
-        [DebuggerStepThrough]
-        public async Task<TQueryResult> ProcessAsync<TQuery, TQueryResult>(TQuery query) where TQuery : Query<TQueryResult>
-        {
-            var asyncHandler = _serviceProvider.GetService<IQueryHandlerAsync<TQuery, TQueryResult>>();
-            if (asyncHandler == null)
-                throw new KeyNotFoundException("Handler not found");
-
-            return await asyncHandler.FetchAsync(query);
-        }
-
-        /// <summary>
-        /// From all factories try to resolve handler
-        /// </summary>
-        /// <param name="qryType"></param>
-        /// <param name="qryResType"></param>
-        /// <param name="isAsync"></param>
-        /// <returns></returns>
-        private IQueryHandler GetHandlerFromFactory(Type qryType, Type qryResType, bool isAsync)
-        {
-            // As there will me multiple module and 1 context per module.
-            var moduleHandlerFactories = _serviceProvider.GetServices<IQueryHandlerFactory>();
-
-            foreach (var handlerFactory in moduleHandlerFactories)
-            {
-                var handler = (isAsync ? handlerFactory.GetAsyncHandlers(qryType, qryResType) :
-                                                 handlerFactory.GetHandlers(qryType, qryResType)).FirstOrDefault();
-                if (handler != null)
-                    return handler;
-            }
-
-            return null;
-        }
+        
     }
 }

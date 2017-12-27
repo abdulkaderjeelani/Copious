@@ -10,14 +10,12 @@ namespace Copious.Infrastructure.Interface
     public static class TypeLocator
     {
         public static List<Type> GetGenericImplementor<T>(Type interfaceType)
-            => GetAssemblies().SelectMany(ass => ass.GetExportedTypes()
-                                .Where(x => !x.GetTypeInfo().IsAbstract && x.GetInterfaces()
-                                    .Any(a => a.GetTypeInfo().IsGenericType && a.GetGenericTypeDefinition() == interfaceType))
-                                .Where(h => h.GetInterfaces()
-                                    .Any(ii => ii.GetGenericArguments()
-                                        .Any(aa => aa == typeof(T))))).ToList();
+            => GetGenericImplementor(interfaceType, typeof(T));
 
-        public static List<Type> GetGenericImplementor(Type interfaceType, Type t1Type, Type t2Type)
+        public static List<Type> GetGenericImplementor<T1,T2>(Type interfaceType)
+            => GetGenericImplementor(interfaceType, typeof(T1), typeof(T2));
+
+        private static List<Type> GetGenericImplementor(Type interfaceType, params Type[] intrfaceTypeArguments)
             => GetAssemblies().SelectMany(ass => ass.GetExportedTypes()
                                 .Where(x => !x.GetTypeInfo().IsAbstract && x.GetInterfaces()
                                     .Any(a => a.GetTypeInfo().IsGenericType && a.GetGenericTypeDefinition() == interfaceType))
@@ -25,7 +23,8 @@ namespace Copious.Infrastructure.Interface
                                     .Any(ii =>
                                     {
                                         var args = ii.GetGenericArguments();
-                                        return args.Length >= 2 && args[0] == t1Type && args[1] == t2Type;
+                                        return intrfaceTypeArguments.All(ita => args.Contains(ita));
+                                        
                                     }))).ToList();
 
         public static bool CheckGenericParameterOfType(Type tType, Type[] checkTypes)

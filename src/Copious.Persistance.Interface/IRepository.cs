@@ -1,33 +1,33 @@
 ﻿using Copious.Foundation;
+using Copious.Foundation.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Copious.Persistance.Interface
 {
-    public interface IRepository
-    {
-    }
+    public interface IRepository{ }
 
     /// <summary>
-    ///
+    /// Query handlers will only inject this interface to its constructor, so it cannot get access to methods that changes state
     /// </summary>
-    /// <typeparam name="T">DTO for query, DataModel for commands</typeparam>
-    public interface IQueryRepository<T> : IRepository where T : class, IEntity, new()
+    /// <typeparam name="TState">DTO for query, DataModel for commands</typeparam>
+    public interface IReadonlyRepository<TState> : IRepository where TState : class, IUnique, new()
     {
-        List<T> GetAll();
+        List<TState> GetAll();
 
-        Task<List<T>> GetAllAsync();
+        Task<List<TState>> GetAllAsync();
 
-        IAsyncEnumerable<T> GetAllAsAsync();
+        IAsyncEnumerable<TState> GetAllAsAsync();
+
+        TState Get(Guid id);
     }
 
-    public interface IRepository<TState> : IRepository where TState : class, IEntity, new()
-    {
-        TState Get(Guid id);
+    public interface IRepository<TEntity> : IReadonlyRepository<TEntity> where TEntity : class, IEntity, new()
+    {        
 
-        void Save(Guid aggId, int expectedVersion, TState t, IEnumerable<Event> events);
+        void Save(Guid aggId, int expectedVersion, TEntity t, IEnumerable<Event> events);
 
-        Task SaveAsync(Guid aggId, int expectedVersion, TState t, IEnumerable<Event> events);
+        Task SaveAsync(Guid aggId, int expectedVersion, TEntity t, IEnumerable<Event> events);
     }
 }

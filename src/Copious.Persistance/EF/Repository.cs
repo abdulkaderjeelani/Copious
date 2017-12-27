@@ -1,4 +1,5 @@
 ﻿using Copious.Foundation;
+using Copious.Foundation.ComponentModel;
 using Copious.Persistance.Interface;
 using Copious.SharedKernel;
 using Copious.SharedKernel.Exceptions;
@@ -9,49 +10,24 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
-namespace Copious.Persistance
+namespace Copious.Persistance.EF
 {
+
     /// <summary>
     /// Generic Repository for entity framework implements both read and write
     /// </summary>
-    /// <typeparam name="TState"></typeparam>
-    public class RepositoryEF<TState> :
-        IRepository<TState>, // implmented because this class provides repo fns for write operations
-        IQueryRepository<TState> // implmented because this class provides repo fns for read operations
-        where TState : CopiousEntity, new()
+    /// <typeparam name="TEntity"></typeparam>
+    public class Repository<TEntity> :
+        ReadonlyRepository<TEntity>,
+        IRepository<TEntity> // implmented because this class provides repo fns for write operations
+
+        where TEntity : CopiousEntity, new()
     {
-        protected readonly DbContext _context;
-
-        public RepositoryEF(DbContext context)
+        public Repository(DbContext context) : base(context)
         {
-            _context = context;
+
         }
-
-        private DbSet<TState> _dbSet;
-
-        public DbSet<TState> DbSet
-        {
-            get
-            {
-                if (_dbSet == null)
-                    _dbSet = _context.Set<TState>();
-
-                return _dbSet;
-            }
-        }
-
-        public virtual List<TState> GetAll()
-             => DbSet.ToList();
-
-        public virtual async Task<List<TState>> GetAllAsync()
-            => await DbSet.ToListAsync();
-
-        public virtual IAsyncEnumerable<TState> GetAllAsAsync()
-            => DbSet.ToAsyncEnumerable();
-
-        public TState Get(Guid id)
-            => DbSet.SingleOrDefault(i => i.Id == id);
-
+                
         public int GetVersion(Guid id)
            => DbSet.Where(i => i.Id == id).Select(v => v.Version).SingleOrDefault();
 
@@ -65,9 +41,9 @@ namespace Copious.Persistance
         /// <param name="expectedVersion"></param>
         /// <param name="t">The actual state that will be persisted</param>
         /// <param name="events">Used to find out the data operation to do like insert / update / delete</param>
-        public virtual void Save(Guid aggId, int expectedVersion, TState t, IEnumerable<Event> events)
+        public virtual void Save(Guid aggId, int expectedVersion, TEntity t, IEnumerable<Event> events)
         {
-            Action<TState, int> dbOpr = null;
+            Action<TEntity, int> dbOpr = null;
             //Check for crud events
             if (events.Any()) dbOpr = GetOperation(events.Single());
             // Determine the operation based on record existance
@@ -75,9 +51,9 @@ namespace Copious.Persistance
             dbOpr?.Invoke(t, expectedVersion);
         }
 
-        public virtual async Task SaveAsync(Guid aggId, int expectedVersion, TState t, IEnumerable<Event> events)
+        public virtual async Task SaveAsync(Guid aggId, int expectedVersion, TEntity t, IEnumerable<Event> events)
         {
-            Func<TState, int, Task> dbOpr = null;
+            Func<TEntity, int, Task> dbOpr = null;
             //Check for crud events
             if (events.Any()) dbOpr = GetAsyncOperation(events.Single());
             // Determine the operation based on record existance
@@ -85,59 +61,59 @@ namespace Copious.Persistance
             await dbOpr?.Invoke(t, expectedVersion);
         }
 
-        private void Insert(TState t, int expectedVersion)
+        private void Insert(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Add(t);
             _context.SaveChanges();
         }
 
-        private async Task InsertAsync(TState t, int expectedVersion)
+        private async Task InsertAsync(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Add(t);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void Update(TState t, int expectedVersion)
+        private void Update(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Update(t);
             _context.SaveChanges();
         }
 
-        private async Task UpdateAsync(TState t, int expectedVersion)
+        private async Task UpdateAsync(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Update(t);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void Delete(TState t, int expectedVersion)
+        private void Delete(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Remove(t);
             _context.SaveChanges();
         }
 
-        private async Task DeleteAsync(TState t, int expectedVersion)
+        private async Task DeleteAsync(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Remove(t);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private Func<TState, int, Task> GetAsyncOperation(Event evt)
+        private Func<TEntity, int, Task> GetAsyncOperation(Event evt)
         {
             switch (evt)
             {
-                case Created<TState> _:
+                case Created<TEntity> _:
                     return InsertAsync;
 
-                case Deleted<TState> _:
+                case Deleted<TEntity> _:
                     return DeleteAsync;
 
-                case Updated<TState> _:
+                case Updated<TEntity> _:
                     return UpdateAsync;
 
                 default:
@@ -145,17 +121,17 @@ namespace Copious.Persistance
             }
         }
 
-        private Action<TState, int> GetOperation(Event evt)
+        private Action<TEntity, int> GetOperation(Event evt)
         {
             switch (evt)
             {
-                case Created<TState> _:
+                case Created<TEntity> _:
                     return Insert;
 
-                case Deleted<TState> _:
+                case Deleted<TEntity> _:
                     return Delete;
 
-                case Updated<TState> _:
+                case Updated<TEntity> _:
                     return Update;
 
                 default:
@@ -163,7 +139,7 @@ namespace Copious.Persistance
             }
         }
 
-        private int CheckVersion(TState t, int expectedVersion)
+        private int CheckVersion(TEntity t, int expectedVersion)
         {
             var currentStateVersion = GetVersion(t.Id);
 

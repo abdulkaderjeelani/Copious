@@ -2,9 +2,12 @@ namespace Copious.Foundation.ComponentModel
 {
     using System;
 
-    public interface IComponent
-    {
-        Guid Id { get; set; }
+    public interface IUnique : Identifiable<Guid>
+    {        
+    }
+
+    public interface IComponent  :  IUnique
+    {        
         int Version { get; set; }
         string CompName { get; }
     }

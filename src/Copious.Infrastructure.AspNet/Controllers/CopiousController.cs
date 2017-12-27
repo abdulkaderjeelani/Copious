@@ -38,11 +38,15 @@ namespace Copious.Infrastructure.AspNet.Controllers
 
         public CopiousController(IContextProvider contextProvider, IExceptionHandler exceptionHandler, IQueryProcessor queryProcessor, ILoggerFactory loggerFactory)
             : this(contextProvider, exceptionHandler, loggerFactory)
-        => _queryProcessor = queryProcessor;
+        {
+            _queryProcessor = queryProcessor;
+        }
 
         public CopiousController(IContextProvider contextProvider, IExceptionHandler exceptionHandler, ICommandBus commandBus, ILoggerFactory loggerFactory)
             : this(contextProvider, exceptionHandler, loggerFactory)
-        => _commandBus = commandBus;
+        {
+            _commandBus = commandBus;
+        }
 
         protected async Task ExecuteCommandAsync<T>(T command, ErrorCode errorCode, params Func<Task>[] failureHandlers)
             where T : Command

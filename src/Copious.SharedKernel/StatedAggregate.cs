@@ -21,7 +21,7 @@ namespace Copious.SharedKernel
         /// <returns></returns>
         protected virtual IEnumerable<ISpecification<TAggregate, TState>> GetInvariants<TEvent>(TEvent @event)
             where TEvent : Event<TState>
-            => null;
+            => default(IEnumerable<ISpecification<TAggregate, TState>>);
 
         protected StatedAggregate()
         {

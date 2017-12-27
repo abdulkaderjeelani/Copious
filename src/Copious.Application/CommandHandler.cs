@@ -12,17 +12,16 @@ using System.Threading.Tasks;
 
 namespace Copious.Application
 {
-    public class CommandHandler<TCommand, TAggregate, TState> : ICommandHandler<TCommand>, ICommandHandlerAsync<TCommand>
-        where TCommand : Command
-        where TAggregate : StatedAggregate<TAggregate, TState>, new()
-        where TState : class, IEntity, new()
+    public class CommandHandler<TCommand, TAggregate, TState> : ICommandHandler<TCommand>, ICommandHandlerAsync<TCommand> where TCommand : Command where TAggregate : StatedAggregate<TAggregate, TState>, new() where TState : class, IEntity, new()
     {
         protected readonly IEventBus _eventBus;
         protected readonly IExceptionHandler _exceptionHandler;
+        protected readonly ICommandGuard _guard;
         protected readonly IMapper _mapper;
         protected readonly IRepository<TState> _repository;
-        protected readonly ICommandGuard _guard;
         private readonly ILogger _logger;
+
+        private readonly Func<int, TimeSpan> exponentialWaiter = (attempt) => TimeSpan.FromSeconds(Math.Pow(2, attempt));
 
         protected CommandHandler(ILoggerFactory loggerFactory, IExceptionHandler exceptionHandler, IRepository<TState> repository, ICommandGuard guard, IEventBus eventBus)
         {
@@ -74,14 +73,11 @@ namespace Copious.Application
             return agg;
         }
 
-        //todo: take policy region it to utils
-
-        #region Policy
-
-        private void onRetry(Exception exception, TimeSpan calculatedWaitDuration)
-        => _exceptionHandler.HandleException(exception);
-
-        private readonly Func<int, TimeSpan> exponentialWaiter = (attempt) => TimeSpan.FromSeconds(Math.Pow(2, attempt));
+        private Policy GetDefaultAsyncPolicy(int retryCount) =>
+         Policy.Handle<Exception>().WaitAndRetryAsync(
+            retryCount: retryCount,
+            sleepDurationProvider: exponentialWaiter,
+            onRetry: onRetry);
 
         private Policy GetDefaultSyncPolicy(int retryCount) =>
              Policy.Handle<Exception>(ex => !(ex is VersionConflictException)).WaitAndRetry(
@@ -89,11 +85,12 @@ namespace Copious.Application
                 sleepDurationProvider: exponentialWaiter,
                 onRetry: onRetry);
 
-        private Policy GetDefaultAsyncPolicy(int retryCount) =>
-         Policy.Handle<Exception>().WaitAndRetryAsync(
-            retryCount: retryCount,
-            sleepDurationProvider: exponentialWaiter,
-            onRetry: onRetry);
+        //todo: take policy region it to utils
+
+        #region Policy
+
+        private void onRetry(Exception exception, TimeSpan calculatedWaitDuration)
+        => _exceptionHandler.HandleException(exception);
 
         #endregion Policy
     }

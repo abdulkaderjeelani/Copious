@@ -40,6 +40,9 @@ namespace Copious.Infrastructure.DependencyInjection
         public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface
             => _DryIocContainer.Register<TInterface, TClass>(made: Parameters.Of.Name(explicitParameterName, req => explicitparameterValue));
 
+        public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface
+            => this.Register<TClass, TInterface, TExcplicitParameterType>(explicitParameterName, explicitparameterValueRetriever.Invoke());
+
         public void RegisterAssemblyTypes(Assembly assembly, Func<Type, bool> typeFilter = null)
             => _DryIocContainer.RegisterMany(new Assembly[] { assembly }, typeFilter);
 

@@ -6,6 +6,8 @@ namespace Copious.Foundation
 {
     public class Query : Operation
     {
+        public Query(Context context) { Context = context; }
+
         public Guid SystemId { get; set; } = new Guid("1B421466-EE83-4C36-81B1-1338DBAD6D8F");
 
         public string UserId { get; set; }
@@ -20,15 +22,7 @@ namespace Copious.Foundation
         /// </summary>
         public virtual int TotalItems { get; set; }
     }
-
-    public class Query<TQueryResult> : Query, IFilterable
-    {
-        public Query()
-        {
-        }
-
-        public Query(Context context) => Context = context;
-    }
+    
 
     public enum SortDirection
     {

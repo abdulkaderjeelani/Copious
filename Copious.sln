@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Copious.Application", "src\Copious.Application\Copious.Application.csproj", "{DB808417-7712-4D36-9938-6AA1345B08C0}"
 EndProject
@@ -41,20 +41,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Copious.Workflow", "src\Cop
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document Storage Providers", "Document Storage Providers", "{77E8A3DB-265B-4948-8DFB-1BB8D4CE0011}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E851900-5B9A-4CD2-B449-08C012788360}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{7E851900-5B9A-4CD2-B449-08C012788360}"
 	ProjectSection(SolutionItems) = preProject
 		Copious.txt = Copious.txt
 		CopyPackages.bat = CopyPackages.bat
 		doc.txt = doc.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Copious.Tests.Web", "src\Copious.Tests.Web\Copious.Tests.Web.csproj", "{32E692C9-4E2B-43D1-AF28-A26CBAEBE3E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Copious.Tests.Web", "src\Copious.Tests.Web\Copious.Tests.Web.csproj", "{32E692C9-4E2B-43D1-AF28-A26CBAEBE3E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{676307C4-6E28-404F-A300-EF90CC1C25F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Copious.Main", "src\Copious.Main\Copious.Main.csproj", "{E546F583-4D57-47F7-960C-7D0D6704E781}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Copious.Main", "src\Copious.Main\Copious.Main.csproj", "{E546F583-4D57-47F7-960C-7D0D6704E781}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Copious.Infrastructure.Documents.Storage.Factory", "src\Copious.Infrastructure.Documents.Storage.Factory\Copious.Infrastructure.Documents.Storage.Factory.csproj", "{F50FA1D6-8B2C-4886-8EE1-2B44228226CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Copious.Infrastructure.Documents.Storage.Factory", "src\Copious.Infrastructure.Documents.Storage.Factory\Copious.Infrastructure.Documents.Storage.Factory.csproj", "{F50FA1D6-8B2C-4886-8EE1-2B44228226CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,5 +158,8 @@ Global
 		{399839D1-F460-46C4-A952-91A5B9F51DF9} = {77E8A3DB-265B-4948-8DFB-1BB8D4CE0011}
 		{32E692C9-4E2B-43D1-AF28-A26CBAEBE3E1} = {676307C4-6E28-404F-A300-EF90CC1C25F5}
 		{F50FA1D6-8B2C-4886-8EE1-2B44228226CF} = {77E8A3DB-265B-4948-8DFB-1BB8D4CE0011}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B827348C-06AA-4DB8-A464-629490222395}
 	EndGlobalSection
 EndGlobal
