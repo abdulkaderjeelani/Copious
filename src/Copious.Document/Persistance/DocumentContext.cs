@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
+
 using Copious.Document.Interface.State;
-using System.Linq;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Copious.Document.Persistance.Configurations;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Copious.Document.Persistance
 {
@@ -16,7 +13,6 @@ namespace Copious.Document.Persistance
         public DocumentContext(DbContextOptions<DocumentContext> options) : base(options)
         {
         }
-
 
         public virtual DbSet<Index> Index { get; set; }
         public virtual DbSet<VersionedDocument> VersionedDocuments { get; set; }
@@ -35,7 +31,7 @@ namespace Copious.Document.Persistance
             modelBuilder.AddConfiguration(new VersionedDocumentMap());
             modelBuilder.AddConfiguration(new DraftMap());
             modelBuilder.AddConfiguration(new LogMap());
-            
+
             base.OnModelCreating(modelBuilder);
         }
     }

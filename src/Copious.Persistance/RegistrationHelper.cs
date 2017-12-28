@@ -12,7 +12,7 @@ namespace Copious.Persistance
     {
         private const string paramContext = "dbContext";
 
-        public static void RegisterCrudHandlers<TState, TContext>(IContainer container, TContext efContext)
+        public static void RegisterGeneralQueryHandlers<TState, TContext>(IContainer container, TContext efContext)
             where TState : class, IUnique, new()
             where TContext : DbContext
         {
@@ -25,7 +25,7 @@ namespace Copious.Persistance
             container.Register<GeneralQueryHandler<TState>, IQueryHandlerAsync<SearchQuery<TState>, List<TState>>, TContext>(paramContext, efContext);
         }
 
-        public static void RegisterCrudHandlers<TState, TContext>(IContainer container, Func<TContext> efContextGetter)
+        public static void RegisterGeneralQueryHandlers<TState, TContext>(IContainer container, Func<TContext> efContextGetter)
             where TState : class, IUnique, new()
             where TContext : DbContext
         {

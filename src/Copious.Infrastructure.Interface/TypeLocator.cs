@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Copious.Utilities;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.DependencyModel;
 
@@ -20,12 +21,8 @@ namespace Copious.Infrastructure.Interface
                                 .Where(x => !x.GetTypeInfo().IsAbstract && x.GetInterfaces()
                                     .Any(a => a.GetTypeInfo().IsGenericType && a.GetGenericTypeDefinition() == interfaceType))
                                 .Where(h => h.GetInterfaces()
-                                    .Any(ii =>
-                                    {
-                                        var args = ii.GetGenericArguments();
-                                        return intrfaceTypeArguments.All(ita => args.Contains(ita));
-                                        
-                                    }))).ToList();
+                                    .Any(ii => intrfaceTypeArguments.AllMatch(ii.GetGenericArguments()))
+                                )).ToList();
 
         public static bool CheckGenericParameterOfType(Type tType, Type[] checkTypes)
             => tType.GetTypeInfo().IsGenericType && checkTypes.Any(t => t == tType.GetGenericTypeDefinition());

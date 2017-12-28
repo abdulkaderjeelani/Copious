@@ -47,7 +47,7 @@ namespace Copious.Main
 
                 registrators.ForEach(registrator => registrator.RegisterDependancies(_configuration, services));
                 ApplicationContainer = ContainerProvider.Create(services);
-                registrators.ForEach(registrator => registrator.RegisterDependancies(_configuration, ApplicationContainer));
+                registrators.ForEach(registrator => registrator.RegisterDependancies(_configuration, ApplicationContainer, services.BuildServiceProvider()));
                 return ApplicationContainer.GetServiceProvider();
 
             }

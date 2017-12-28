@@ -27,27 +27,27 @@ namespace Copious.SharedKernel
         public virtual void Handle(Delete<TState> command)
             => Produce(new Deleted<TState>(command.State, false));
 
-        public virtual void Apply(Created<TState> e) => State = e.State;
+        public virtual void Apply(Created<TState> @event) => State = @event.State;
 
-        public virtual void Apply(Updated<TState> e) => ChangeState(State, e);
+        public virtual void Apply(Updated<TState> @event) => ChangeState(State, @event);
 
         /// <summary>
         /// Dont change state for delete,
-        /// </summary>
-        /// <param name="e"></param>
-        public virtual void Apply(Deleted<TState> e) { }
+        /// </summary>        
+        /// <param name="event">event parameter on Apply</param>
+        public virtual void Apply(Deleted<TState> @event) { }
 
-        private void ChangeState(TState actual, Updated<TState> e)
+        private void ChangeState(TState actual, Updated<TState> @event)
         {
             //source state is set in command handler, modified state is payload of the command
-            var modified = e.State;
-            if (e.PropertiesToBeUpdated != null && e.PropertiesToBeUpdated.Any())
+            var modified = @event.State;
+            if (@event.PropertiesToBeUpdated != null && @event.PropertiesToBeUpdated.Any())
             {
                 var specificConfig = new MapperConfiguration(config =>
                 {
                     var map = config.CreateMap<TState, TState>();
                     foreach (var prop in modified.GetProperties())
-                        if (!e.PropertiesToBeUpdated.Contains(prop))
+                        if (!@event.PropertiesToBeUpdated.Contains(prop))
                             map.ForMember(prop, opt => opt.Ignore());
                 });
                 specificConfig.CreateMapper().Map(modified, actual);

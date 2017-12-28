@@ -47,6 +47,8 @@ namespace Copious.Infrastructure.Interface
 
         public bool EnableScheduler { get; private set; }
 
+        public AuthenticationType AuthenticationType { get; private set; }
+
         /// <summary>
         /// Tells the scheduler to use
         /// </summary>
@@ -80,6 +82,7 @@ namespace Copious.Infrastructure.Interface
                 DocumentDb = configuration.GetValue<Db>(nameof(DocumentDb)),
                 DocumentDbConnection = configuration.GetValue<string>(nameof(DocumentDbConnection)),
                 DefaultDocumentStorageProvider = configuration.GetValue<StorageProvider>(nameof(DefaultDocumentStorageProvider)),
+                AuthenticationType = configuration.GetValue<AuthenticationType>(nameof(AuthenticationType)),
                 DefaultDocumentStorageProviderOptions = new Dictionary<string, string>()
             };
             FillDictionaryFromConfig(configuration, nameof(DefaultDocumentStorageProviderOptions), _config.DefaultDocumentStorageProviderOptions);
@@ -103,5 +106,6 @@ namespace Copious.Infrastructure.Interface
                 else break;
             }
         }
+
     }
 }

@@ -15,7 +15,7 @@ namespace Copious.Tests.Web
             // intentionally left empty add, deps if needed
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
             // intentionally left empty add, deps if needed
         }

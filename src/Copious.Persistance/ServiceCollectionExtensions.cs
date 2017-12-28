@@ -39,11 +39,17 @@ namespace Copious.Persistance
             if (dbOptions.DbToUse == Db.Postgres)
             {
                 //Add the datacontext into service collection, so that we can resolve it
-                services.AddDbContext<TContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly(dbOptions.MigrationsAssembly))); // "Codify.Core.Persistance"
+                services.AddDbContext<TContext>(options =>
+                {
+                    options.UseNpgsql(connectionString, b => b.MigrationsAssembly(dbOptions.MigrationsAssembly)); // e.g. "[ProjectName].Core.Persistance"
+                    options.EnableSensitiveDataLogging();
+                });
+
             }
 
             if (CopiousConfiguration.Config.IncludeAspNetIdentity && dbOptions.IsIdentityDb)
             {
+                // https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?tabs=visual-studio%2Caspnetcore2x
                 //Add asp net identity and use the existing datacontext
                 services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<TContext>()

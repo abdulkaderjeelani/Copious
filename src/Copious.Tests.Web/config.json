@@ -1,8 +1,0 @@
-﻿{
-  "ConnectionStrings": {
-    "MsSqlServerProvider": "",
-    "PostgreSqlProvider": "User ID=dev;Password=dev123$;Host=localhost;Port=5432;Database=Codify;Pooling=true;",
-    "SchedulerPostgreSqlDb": "User ID=dev;Password=dev123$;Host=localhost;Port=5432;Database=Codify;Pooling=true;"
-  }
-  
-}

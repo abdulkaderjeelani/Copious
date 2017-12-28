@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Copious.Persistance;
 using Copious.Document.Persistance;
 using System.Reflection;
+using Copious.Document.Interface.State;
+using System;
 
 namespace Copious.Document
 {
@@ -15,17 +17,24 @@ namespace Copious.Document
             services.ConfigureDb(configuration, new DbOptions<DocumentContext>
             {
                 DbToUse = CopiousConfiguration.Config.DocumentDb,
-                ConnectionStringKey = CopiousConfiguration.Config.DocumentDbConnection,                
+                ConnectionStringKey = CopiousConfiguration.Config.DocumentDbConnection,
                 MigrationsAssembly = typeof(DocumentContext).GetTypeInfo().Assembly.GetName().Name
             });
 
             services.AddScoped<IDocumentGuard, DocumentGuard>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
+
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
-            // intentionally left empty
+            Func<DocumentContext> contextProvider = () => serviceProvider.GetService<DocumentContext>();
+
+            RegistrationHelper.RegisterGeneralQueryHandlers<Index, DocumentContext>(container, contextProvider);
+            RegistrationHelper.RegisterGeneralQueryHandlers<VersionedDocument, DocumentContext>(container, contextProvider);
+            RegistrationHelper.RegisterGeneralQueryHandlers<Draft, DocumentContext>(container, contextProvider);
+            RegistrationHelper.RegisterGeneralQueryHandlers<DocumentAccess, DocumentContext>(container, contextProvider);
+
         }
     }
 }

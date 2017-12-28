@@ -26,7 +26,7 @@ namespace Copious.Persistance.EF
         protected readonly IQueryGuard _guard;
         protected readonly IReadonlyRepository<TState> _readonlyRepository;
 
-        protected GeneralQueryHandler(DbContext dbContext, IQueryGuard guard) : base(dbContext)
+        public GeneralQueryHandler(DbContext dbContext, IQueryGuard guard) : base(dbContext)
         {
             _guard = guard;
             _readonlyRepository = new ReadonlyRepository<TState>(dbContext);

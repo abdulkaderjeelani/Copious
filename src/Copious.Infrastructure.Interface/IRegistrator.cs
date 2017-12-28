@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Copious.Infrastructure.Interface
@@ -17,6 +18,7 @@ namespace Copious.Infrastructure.Interface
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="container"></param>
-        void RegisterDependancies(IConfigurationRoot configuration, IContainer container);
+        /// <param name="serviceProvider">Provider built with seviceCollections</param>
+        void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider);
     }
 }

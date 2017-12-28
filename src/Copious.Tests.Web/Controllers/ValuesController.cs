@@ -1,6 +1,7 @@
 ﻿using Copious.Infrastructure.AspNet.Controllers;
 using Copious.Infrastructure.Interface;
 using Copious.Infrastructure.Interface.Services;
+using Copious.Persistance.Interface;
 using Copious.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,10 @@ namespace Copious.Tests.Web.Controllers
     {
         public ValuesController(IRuleAssessor ruleAssessor, IContextProvider contextProvider, ISecurityProvider securityProvider,
             IScheduler sch, IQueryProcessor queryProcessor, ICommandBus commandBus,
-            IExceptionHandler exceptionHandler, ILoggerFactory loggerFactory) : base(contextProvider, exceptionHandler, loggerFactory)
+            IExceptionHandler exceptionHandler, ILoggerFactory loggerFactory,
+            IQueryHandler<GetAllQuery, List<Copious.Document.Interface.State.Index>> indexQuery) : base(contextProvider, exceptionHandler, loggerFactory)
         {
+            var x = indexQuery.Fetch(new GetAllQuery(contextProvider.Context));
             // sch.ScheduleAsyncJob<IEmailSender>(email => email.SendEmailAsync("test@test.com", "test", "test"));
         }
 

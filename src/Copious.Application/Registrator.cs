@@ -15,7 +15,7 @@ namespace Copious.Application
             services.AddScoped<ICommandGuard, CommandGuard>();
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
             // intentionally left empty
         }

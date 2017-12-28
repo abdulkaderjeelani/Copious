@@ -23,7 +23,7 @@ namespace Copious.Infrastructure
             
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
             // intentionally left empty
         }

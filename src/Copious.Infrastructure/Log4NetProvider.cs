@@ -25,11 +25,20 @@ namespace Copious.Infrastructure
             }
             return _loggers[categoryName];
         }
-
+        
         public void Dispose()
         {
-            _loggers.Clear();
-            _loggers = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && _loggers != null)
+            {
+                _loggers.Clear();
+                _loggers = null;
+            }
         }
     }
 

@@ -15,7 +15,7 @@ namespace Copious.Infrastructure.AspNet
             services.AddScoped<Interface.AspNet.IAntiForgeryValidator, AntiForgeryValidator>();
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
             // intentionally left empty
         }

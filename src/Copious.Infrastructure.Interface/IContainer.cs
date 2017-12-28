@@ -24,6 +24,15 @@ namespace Copious.Infrastructure.Interface
         /// <param name="explicitparameterValue"></param>
         void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface;
 
+        /// <summary>
+        /// The explicit parameter must be first parameter for the implementing class,
+        /// The provided delegate is lazily invoked by the implementing DI provider (currently supported: Autofac, LightInject, DryIOC)
+        /// </summary>
+        /// <typeparam name="TClass"></typeparam>
+        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TExcplicitParameterType"></typeparam>
+        /// <param name="explicitParameterName"></param>
+        /// <param name="explicitparameterValueRetriever"></param>
         void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface;
 
         void Register<TClass>();

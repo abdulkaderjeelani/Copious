@@ -28,7 +28,7 @@ namespace Copious.Infrastructure
 
         private static readonly Func<object, string, bool> handlerIdentityPredicate = (h, handlerIdentity) => !string.IsNullOrEmpty(handlerIdentity) && (h is Identifiable<string> i) && i.Match(handlerIdentity);
 
-         [DebuggerStepThrough]
+        [DebuggerStepThrough]
         public TQueryResult Process<TQuery, TQueryResult>(TQuery query, string handlerIdentity) where TQuery : Query
         {
             var qryType = typeof(TQuery);
@@ -36,13 +36,12 @@ namespace Copious.Infrastructure
 
             var syncHandlerType = typeof(IQueryHandler<,>).MakeGenericType(qryType, qryResType);
 
-            var syncHandler = (IQueryHandler)_serviceProvider.GetService(syncHandlerType);
+            var syncHandler = (IQueryHandler<TQuery, TQueryResult>)_serviceProvider.GetService(syncHandlerType);
 
             if (syncHandler == null)
-                syncHandler = _serviceProvider.GetServices<IQueryHandlerFactory>()
-                    ?.Select(hfac => hfac.GetHandlers<TQuery, TQueryResult>())
-                    .FirstOrDefault(handlers => handlers?.Any() ?? false)
-                    ?.Where(h=> handlerIdentityPredicate(h,handlerIdentity))
+                syncHandler = _serviceProvider.GetService<IQueryHandlerFactory>()
+                    .GetHandlers<TQuery, TQueryResult>()
+                    ?.Where(h => handlerIdentityPredicate(h, handlerIdentity))
                     ?.FirstOrDefault();
 
             if (syncHandler == null)
@@ -63,7 +62,7 @@ namespace Copious.Infrastructure
         public async Task<TQueryResult> ProcessAsync<TQuery, TQueryResult>(TQuery query) where TQuery : Query
             => await ProcessAsync<TQuery, TQueryResult>(query, default(string));
 
-      [DebuggerStepThrough]
+        [DebuggerStepThrough]
         public async Task<TQueryResult> ProcessAsync<TQuery, TQueryResult>(TQuery query, string handlerIdentity) where TQuery : Query
         {
             var qryType = typeof(TQuery);
@@ -71,12 +70,11 @@ namespace Copious.Infrastructure
 
             var asyncHandlerType = typeof(IQueryHandlerAsync<,>).MakeGenericType(qryType, qryResType);
 
-            var asyncHandler = (IQueryHandler)_serviceProvider.GetService(asyncHandlerType);
+            var asyncHandler = (IQueryHandlerAsync<TQuery, TQueryResult>)_serviceProvider.GetService(asyncHandlerType);
 
             if (asyncHandler == null)
-                asyncHandler = _serviceProvider.GetServices<IQueryHandlerFactory>()
-                    ?.Select(hfac => hfac.GetAsyncHandlers<TQuery, TQueryResult>())
-                    .FirstOrDefault(handlers => handlers?.Any() ?? false)
+                asyncHandler = _serviceProvider.GetService<IQueryHandlerFactory>()
+                    .GetAsyncHandlers<TQuery, TQueryResult>()
                     ?.Where(h => handlerIdentityPredicate(h, handlerIdentity))
                     ?.FirstOrDefault();
 
@@ -92,6 +90,6 @@ namespace Copious.Infrastructure
 
             return await (Task<TQueryResult>)fetchAsync.Invoke(asyncHandler, new object[] { query });
         }
-        
+
     }
 }

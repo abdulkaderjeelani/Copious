@@ -12,7 +12,7 @@ namespace Copious.SharedKernel
             services.AddSingleton<IRuleAssessor, RuleAssessor>();
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
             // Method intentionally left empty. Remove this comment when adding registrations.
         }

@@ -5,6 +5,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Copious.Infrastructure.DependencyInjection;
+using Copious.Utilities;
 
 namespace Copious.Infrastructure
 {
@@ -41,7 +42,10 @@ namespace Copious.Infrastructure
             => _builder.RegisterType<TClass>().As<TInterface>().WithParameter(explicitParameterName, explicitparameterValue);
 
         public void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface
-            => this.Register<TClass, TInterface, TExcplicitParameterType>(explicitParameterName, explicitparameterValueRetriever.Invoke());
+        => _builder.RegisterType<TClass>().As<TInterface>().WithParameter(
+            (pi, ctx) => pi.Name.EqualsInsensitive(explicitParameterName), 
+            (pi, ctx) => pi.Name.EqualsInsensitive(explicitParameterName) ? explicitparameterValueRetriever.Invoke() : default(object));
+
 
         public void Register<TClass>() => _builder.RegisterType<TClass>();
 

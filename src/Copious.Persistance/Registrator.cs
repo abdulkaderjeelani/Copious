@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Copious.Persistance
 {
-    public class Registrator : IRegistrator
+    public sealed class Registrator : IRegistrator
     {
         public void RegisterDependancies(IConfigurationRoot configuration, IServiceCollection services)
         {
@@ -14,7 +14,7 @@ namespace Copious.Persistance
             services.AddScoped<IQueryGuard, QueryGuard>();
         }
 
-        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container)
+        public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
             // Method intentionally left empty. Remove this comment when adding registrations.
         }

@@ -4,12 +4,13 @@
   "EnableAntiForgery": false,
   "DIContainer": "Autofac", /* LightInject DryIoc Autofac*/
   "LoggingProvider": "Log4Net", /* Log4Net, Serilog */
-  "EnableScheduler" :  true,
+  "EnableScheduler": true,
   "Scheduler": "Hangfire",
   "AppAssemblyPrefixes": "Copious",
   "EnableDocument": true,
+  "AuthenticationType": "None", /* None, Jwt */
   "DocumentDb": "Postgres",
-  "DocumentDbConnection": "PostgreSqlProvider",
+  "DocumentDbConnection": "PostgreSqlProvider", /* provide the connection string key here */
   "DefaultDocumentStorageProvider": "FileSystem",
   "DefaultDocumentStorageProviderOptions": [
     {
