@@ -1,25 +1,33 @@
-﻿using Copious.Infrastructure.AspNet.Middlewares;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+
+using Copious.Infrastructure.AspNet.Middlewares;
 using Copious.Infrastructure.Interface;
+
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+
 using Newtonsoft.Json;
+
 using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Copious.Infrastructure.AspNet
 {
+    /// <summary>
+    /// Provides helper methods to add aspnet specific features
+    /// </summary>
     public static class Features
     {
-
         private const string Audience = "ClientApps";
         private const string Issuer = "TokenProvider";
 
@@ -30,36 +38,59 @@ namespace Copious.Infrastructure.AspNet
         {
             UseCors(app);
             UseAntiforgery(app, antiforgery);
-            UseJWTBearerAuthentication(app, identityResolver);
-            UseBasics(app);
+            UseAuthentication(app, identityResolver);
         }
 
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services, Action<MvcOptions> setupAction)
         {
-            // https://stackoverflow.com/questions/31243068/access-httpcontext-current
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            Init(services);
 
-            // https://angular.io/docs/ts/latest/guide/security.html#!#xsrf
-            // https://github.com/aspnet/Antiforgery
-            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-           
+            AddCors(services);
+
+            if (setupAction == null) setupAction = mvcOptions => { };
+
             // Register all controllers as services
-            services.AddMvc().AddControllersAsServices().AddJsonOptions(options =>
+            services.AddMvc(setupAction).AddControllersAsServices().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-            // https://stackoverflow.com/questions/40275195/how-to-setup-automapper-in-asp-net-core
-            // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
+            // https://angular.io/docs/ts/latest/guide/security.html#!#xsrf
+            // https://github.com/aspnet/Antiforgery
+            AddAntiforgery(services);
 
-            AddCors(services);
-            AddJwtAuthentication(services);
+            AddAuthentication(services);
+
             AddAspnetIdentity(services);
         }
 
-        private static void UseBasics(IApplicationBuilder app)
+        public static void Init(IServiceCollection services)
         {
-            if (CopiousConfiguration.Config.AuthenticationType != AuthenticationType.None) app.UseAuthentication();
+            // https://stackoverflow.com/questions/31243068/access-httpcontext-current
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        }
+
+        public static void AddAntiforgery(IServiceCollection services)
+        {
+            if (CopiousConfiguration.Config.EnableAntiforgery)
+                services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+        }
+
+        public static void AddAuthentication(IServiceCollection services)
+        {
+            switch (CopiousConfiguration.Config.AuthenticationType)
+            {
+                case AuthenticationType.JWT:
+                    AddJwtAuthentication(services);
+                    break;
+
+                case AuthenticationType.None:
+                    break;
+            }
+        }
+
+        public static void UseBasics(IApplicationBuilder app)
+        {
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc(routes =>
@@ -70,7 +101,7 @@ namespace Copious.Infrastructure.AspNet
             });
         }
 
-        private static void AddAspnetIdentity(IServiceCollection services)
+        public static void AddAspnetIdentity(IServiceCollection services)
         {
             if (CopiousConfiguration.Config.IncludeAspNetIdentity)
                 services.Configure<IdentityOptions>(options =>
@@ -104,60 +135,66 @@ namespace Copious.Infrastructure.AspNet
             });
         }
 
-        private static void AddCors(IServiceCollection services)
+        public static void AddCors(IServiceCollection services)
         {
             // https://docs.microsoft.com/en-us/aspnet/core/security/cors
-            if (CopiousConfiguration.Config.EnableCors)
-                services.AddCors(options =>
-                {
-                    options.AddPolicy("SiteCorsPolicy", new CorsPolicyBuilder()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin() // For anyone access.
-                        .AllowCredentials()
-                        .Build());
-                });
+
+            if (!CopiousConfiguration.Config.EnableCors) return;
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("SiteCorsPolicy", new CorsPolicyBuilder()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin() // For anyone access.
+                    .AllowCredentials()
+                    .Build());
+            });
+        }
+
+        public static void AddSession(IServiceCollection services)
+        {
+            services.AddSession();
         }
 
         private static void AddJwtAuthentication(IServiceCollection services)
         {
-            if (CopiousConfiguration.Config.AuthenticationType == AuthenticationType.JWT)
-                services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddJwtBearer(j =>
+            services
+            .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddJwtBearer(j =>
+            {
+                j.TokenValidationParameters = new TokenValidationParameters
                 {
-                    j.TokenValidationParameters = new TokenValidationParameters
+                    // The signing key must match!
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = GetSigningKey(),
+
+                    // Validate the JWT Issuer (iss) claim
+                    ValidateIssuer = true,
+                    ValidIssuer = Issuer,
+
+                    // Validate the JWT Audience (aud) claim
+                    ValidateAudience = true,
+                    ValidAudience = Audience,
+                    AudienceValidator = (aud, tkn, prm) =>
                     {
-                        // The signing key must match!
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = GetSigningKey(),
+                        return aud.First() == Audience;
+                    },
 
-                        // Validate the JWT Issuer (iss) claim
-                        ValidateIssuer = true,
-                        ValidIssuer = Issuer,
+                    // Validate the token expiry
+                    ValidateLifetime = true,
 
-                        // Validate the JWT Audience (aud) claim
-                        ValidateAudience = true,
-                        ValidAudience = Audience,
-                        AudienceValidator = (aud, tkn, prm) =>
-                        {
-                            return aud.First() == Audience;
-                        },
-
-                        // Validate the token expiry
-                        ValidateLifetime = true,
-
-                        // If you want to allow a certain amount of clock drift, set that here:
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
+                    // If you want to allow a certain amount of clock drift, set that here:
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         private static SymmetricSecurityKey GetSigningKey() => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
-        private static void UseAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
+        public static void UseAntiforgery(IApplicationBuilder app, IAntiforgery antiforgery)
         {
-            if (antiforgery == null) return;
+            if (!CopiousConfiguration.Config.EnableAntiforgery || antiforgery == null) return;
 
             // Middleware to provide antiforgery tokens to client.
             app.Use(next => context =>
@@ -174,16 +211,29 @@ namespace Copious.Infrastructure.AspNet
             });
         }
 
-        private static void UseCors(IApplicationBuilder app)
+        public static void UseCors(IApplicationBuilder app)
         {
             if (CopiousConfiguration.Config.EnableCors)
                 app.UseCors("SiteCorsPolicy");
         }
 
-        private static void UseJWTBearerAuthentication(IApplicationBuilder app, Func<string, string, Task<ClaimsIdentity>> identityResolver)
+        private static void UseAuthentication(IApplicationBuilder app, Func<string, string, Task<ClaimsIdentity>> identityResolver)
         {
-            if (CopiousConfiguration.Config.AuthenticationType != AuthenticationType.JWT || identityResolver == null) return;
+            if (identityResolver == null) return;
 
+            switch (CopiousConfiguration.Config.AuthenticationType)
+            {
+                case AuthenticationType.JWT:
+                    UseJwtBearerAuthentication(app, identityResolver);
+                    break;
+            }
+
+            if (CopiousConfiguration.Config.AuthenticationType != AuthenticationType.None)
+                app.UseAuthentication();
+        }
+
+        private static void UseJwtBearerAuthentication(IApplicationBuilder app, Func<string, string, Task<ClaimsIdentity>> identityResolver)
+        {
             var signingKey = GetSigningKey();
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 

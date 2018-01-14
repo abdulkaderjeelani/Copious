@@ -22,12 +22,12 @@ namespace Copious.Infrastructure.Documents.Storage.Google
 {
     public sealed class GoogleStorageProvider : IStorageProvider
     {
-        private const string BlobNameRegex = @"(?<Container>[^/]+)/(?<Blob>.+)";
-        private const string DefaultContentType = "application/octet-stream";
-        private readonly StorageService _storageService;
-        private readonly string _bucket;
-        private readonly string _serviceEmail;
-        private readonly X509Certificate2 _certificate;
+        const string BlobNameRegex = @"(?<Container>[^/]+)/(?<Blob>.+)";
+        const string DefaultContentType = "application/octet-stream";
+        readonly StorageService _storageService;
+        readonly string _bucket;
+        readonly string _serviceEmail;
+        readonly X509Certificate2 _certificate;
 
         public GoogleStorageProvider(GoogleProviderOptions options)
         {
@@ -204,7 +204,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
 
         #region Helpers
 
-        private ObjectsResource.InsertMediaUpload SaveRequest(string containerName, string blobName, Stream source, BlobProperties properties)
+        ObjectsResource.InsertMediaUpload SaveRequest(string containerName, string blobName, Stream source, BlobProperties properties)
         {
             var blob = CreateBlob(containerName, blobName, properties);
 
@@ -216,7 +216,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             return req;
         }
 
-        private ObjectsResource.UpdateRequest UpdateRequest(string containerName, string blobName, BlobProperties properties)
+        ObjectsResource.UpdateRequest UpdateRequest(string containerName, string blobName, BlobProperties properties)
         {
             var blob = CreateBlob(containerName, blobName, properties);
             var req = _storageService.Objects.Update(blob, _bucket, $"{containerName}/{blobName}");
@@ -226,7 +226,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             return req;
         }
 
-        private static Blob CreateBlob(string containerName, string blobName, BlobProperties properties = null)
+        static Blob CreateBlob(string containerName, string blobName, BlobProperties properties = null)
         {
             return new Blob
             {
@@ -235,7 +235,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             };
         }
 
-        private Task<Blob> GetBlobAsync(string containerName, string blobName)
+        Task<Blob> GetBlobAsync(string containerName, string blobName)
         {
             var req = _storageService.Objects.Get(_bucket, $"{containerName}/{blobName}");
             req.Projection = ObjectsResource.GetRequest.ProjectionEnum.Full;
@@ -255,7 +255,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             }
         }
 
-        private Blob GetBlob(string containerName, string blobName)
+        Blob GetBlob(string containerName, string blobName)
         {
             var req = _storageService.Objects.Get(_bucket, $"{containerName}/{blobName}");
             req.Projection = ObjectsResource.GetRequest.ProjectionEnum.Full;
@@ -270,7 +270,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             }
         }
 
-        private static BlobDescriptor GetBlobDescriptor(Blob blob)
+        static BlobDescriptor GetBlobDescriptor(Blob blob)
         {
             var match = Regex.Match(blob.Name, BlobNameRegex);
             if (!match.Success)
@@ -295,14 +295,14 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             return blobDescriptor;
         }
 
-        private ObjectsResource.ListRequest GetListBlobsRequest(string containerName)
+        ObjectsResource.ListRequest GetListBlobsRequest(string containerName)
         {
             var req = _storageService.Objects.List(_bucket);
             req.Prefix = containerName;
             return req;
         }
 
-        private static StorageException Error(GoogleApiException gae, int code = 1001, string message = null)
+        static StorageException Error(GoogleApiException gae, int code = 1001, string message = null)
         {
             return new StorageException(new StorageError
             {
@@ -313,7 +313,7 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             }, gae);
         }
 
-        private string SignString(string stringToSign)
+        string SignString(string stringToSign)
         {
             if (_certificate == null)
                 throw new ArgumentNullException(nameof(_certificate), "Certificate not initialized");

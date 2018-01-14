@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
+
+using Copious.Infrastructure.Interface;
 using Copious.SharedKernel;
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Copious.Infrastructure.Interface;
-using Copious.Persistance.Interface;
 
 namespace Copious.Persistance
 {
@@ -25,6 +24,18 @@ namespace Copious.Persistance
         /// <remarks>
         /// Call this method from your boot strapper class before any service registrations
         /// </remarks>
+        /// <example>
+        ///
+        ///  {
+        ///    DbToUse = Copious.Infrastructure.Interface.Db.Postgres,
+        ///    ConnectionStringKey = "PostgreSqlProvider",
+        ///    MigrationsAssembly = "Module.Core.Persistance",
+        ///    OnSeeding = Module.Core.Persistance.ModuleContextExtensions.EnsureSeedData,
+        ///    IsIdentityDb = true,
+        ///    UserRoles = new string[] { }
+        ///
+        ///  }
+        /// </example>
         public static void ConfigureDb<TContext>(this IServiceCollection services, IConfigurationRoot configuration, DbOptions<TContext> dbOptions)
             where TContext : DbContext
         {
@@ -33,18 +44,17 @@ namespace Copious.Persistance
 
             var connectionString = configuration.GetConnectionString(dbOptions.ConnectionStringKey); // "PostgreSqlProvider"
 
-            //Add entity framework
-            services.AddEntityFrameworkNpgsql();
-
             if (dbOptions.DbToUse == Db.Postgres)
             {
+                //Add entity framework
+                services.AddEntityFrameworkNpgsql();
+
                 //Add the datacontext into service collection, so that we can resolve it
                 services.AddDbContext<TContext>(options =>
                 {
                     options.UseNpgsql(connectionString, b => b.MigrationsAssembly(dbOptions.MigrationsAssembly)); // e.g. "[ProjectName].Core.Persistance"
                     options.EnableSensitiveDataLogging();
                 });
-
             }
 
             if (CopiousConfiguration.Config.IncludeAspNetIdentity && dbOptions.IsIdentityDb)
@@ -65,12 +75,10 @@ namespace Copious.Persistance
                 dbOptions.OnSeeding?.Invoke(context, true);
 
                 //create the default roles provided if any
-                if (CopiousConfiguration.Config.IncludeAspNetIdentity && dbOptions.IsIdentityDb && dbOptions.UserRoles != null && dbOptions.UserRoles.Any())
-                {
-                    var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
-                    foreach (var role in dbOptions.UserRoles)
-                        roleManager.CreateAsync(new IdentityRole(role.ToString())).Wait();
-                }
+                if (!CopiousConfiguration.Config.IncludeAspNetIdentity || !dbOptions.IsIdentityDb || dbOptions.UserRoles == null || !dbOptions.UserRoles.Any()) return;
+
+                var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+                var results = dbOptions.UserRoles.Select(role => roleManager.CreateAsync(new IdentityRole(role.ToString()))).Select(async t => await t);
             }
         }
     }

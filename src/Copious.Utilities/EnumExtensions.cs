@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace Copious.Utilities
@@ -29,5 +31,11 @@ namespace Copious.Utilities
             var attributes = (DescriptionAttribute[])val.GetType().GetTypeInfo().GetField(val.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
+
+        /// <summary>
+        /// Get the collection of values of Enum
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<T> GetValues<T>() => Enum.GetValues(typeof(T)).Cast<T>();
     }
 }

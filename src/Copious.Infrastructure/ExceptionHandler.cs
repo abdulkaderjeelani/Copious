@@ -7,7 +7,7 @@ namespace Copious.Infrastructure
 {
     public class ExceptionHandler : IExceptionHandler
     {
-        private readonly ILogger _logger;
+        readonly ILogger _logger;
 
         public ExceptionHandler(ILoggerFactory loggerFactory)
         {

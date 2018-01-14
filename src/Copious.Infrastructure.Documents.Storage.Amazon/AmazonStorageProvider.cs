@@ -17,10 +17,10 @@ namespace Copious.Infrastructure.Documents.Storage.Amazon
 
     public sealed class AmazonStorageProvider : IStorageProvider
     {
-        private const string DefaultServiceUrl = "https://s3.amazonaws.com";
-        private readonly IAmazonS3 _s3Client;
-        private readonly string _bucket;
-        private readonly string _serviceUrl;
+        const string DefaultServiceUrl = "https://s3.amazonaws.com";
+        readonly IAmazonS3 _s3Client;
+        readonly string _bucket;
+        readonly string _serviceUrl;
 
         public AmazonStorageProvider(AmazonProviderOptions options)
         {
@@ -372,12 +372,12 @@ namespace Copious.Infrastructure.Documents.Storage.Amazon
             }
         }
 
-        private static S3CannedACL GetCannedACL(BlobProperties properties)
+        static S3CannedACL GetCannedACL(BlobProperties properties)
             => properties?.Security == BlobSecurity.Public ? S3CannedACL.PublicRead : S3CannedACL.Private;
 
-        private static string GenerateKeyName(string containerName, string blobName) => $"{containerName}/{blobName}";
+        static string GenerateKeyName(string containerName, string blobName) => $"{containerName}/{blobName}";
 
-        private CopyObjectRequest CreateUpdateRequest(string containerName, string blobName, BlobProperties properties)
+        CopyObjectRequest CreateUpdateRequest(string containerName, string blobName, BlobProperties properties)
         {
             var updateRequest = new CopyObjectRequest
             {
@@ -395,7 +395,7 @@ namespace Copious.Infrastructure.Documents.Storage.Amazon
             return updateRequest;
         }
 
-        private TransferUtilityUploadRequest CreateChunkedUpload(string containerName, string blobName, Stream source, BlobProperties properties, bool closeStream)
+        TransferUtilityUploadRequest CreateChunkedUpload(string containerName, string blobName, Stream source, BlobProperties properties, bool closeStream)
         {
             var fileTransferUtilityRequest = new TransferUtilityUploadRequest
             {
@@ -413,7 +413,7 @@ namespace Copious.Infrastructure.Documents.Storage.Amazon
             return fileTransferUtilityRequest;
         }
 
-        private PutObjectRequest CreateUpload(string containerName, string blobName, Stream source, BlobProperties properties, bool closeStream)
+        PutObjectRequest CreateUpload(string containerName, string blobName, Stream source, BlobProperties properties, bool closeStream)
         {
             var putRequest = new PutObjectRequest
             {

@@ -11,7 +11,7 @@ namespace Copious.Document.Interface.State
     /// Typically this shall be stored in a separate no sql database, and index shall be stored in a rdbms,
     /// as we store now in a ef backed db,  we use backing properties
     /// </remarks>
-    public class VersionedDocument : Entity
+    public class VersionedDocument :  Entity<Guid>
     {
         public Guid DocumentId { get; set; }
         public int VersionNo { get; set; }
@@ -28,7 +28,7 @@ namespace Copious.Document.Interface.State
         /*Json backing properties*/
 
         [NotMapped]
-        private DocumentMetadata _metadata;
+        DocumentMetadata _metadata;
 
         [NotMapped]
         public DocumentMetadata Metadata {
@@ -46,9 +46,9 @@ namespace Copious.Document.Interface.State
                 _Metadata = JsonUtils.From(_metadata);
             }
         }
-                
+
         [NotMapped]
-        private List<Guid> _relatedDocumentIds;
+        List<Guid> _relatedDocumentIds;
 
         [NotMapped]
         public List<Guid> RelatedDocumentIds
@@ -69,7 +69,7 @@ namespace Copious.Document.Interface.State
         }
 
         [NotMapped]
-        private DocumentDetail _detail;
+        DocumentDetail _detail;
 
         [NotMapped]
         public DocumentDetail Detail
@@ -98,7 +98,7 @@ namespace Copious.Document.Interface.State
         }
 
         [NotMapped]
-        private File _file;
+        File _file;
 
         [NotMapped]
         public File File
@@ -118,7 +118,7 @@ namespace Copious.Document.Interface.State
         }
 
         [NotMapped]
-        private DocumentAccess _access;
+        DocumentAccess _access;
 
         [NotMapped]
         public DocumentAccess Access {
@@ -138,7 +138,7 @@ namespace Copious.Document.Interface.State
         }
 
         [NotMapped]
-        private DocumentSecurity _security;
+        DocumentSecurity _security;
 
         [NotMapped]
         public DocumentSecurity Security { 

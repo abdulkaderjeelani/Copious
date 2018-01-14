@@ -14,11 +14,11 @@ namespace Copious.Infrastructure.AspNet
         }
 
         //todo: Create context from aspnet request
-        public Context Context =>
-            new Context
+        public RequestContext Context =>
+            new RequestContext
             {
                 Items = _httpContext.Items,
-                Abort = () =>
+                AbortRequest = () =>
                 {
                     _httpContext.Response.StatusCode = 400;
                     _httpContext.Response.WriteAsync("Request aborted.");

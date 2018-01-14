@@ -14,8 +14,8 @@ namespace Copious.Document
 {
     public sealed class DocumentRepository : IDocumentRepository
     {
-        private readonly IDocumentGuard _guard;
-        private readonly DocumentContext _persistance;
+        readonly IDocumentGuard _guard;
+        readonly DocumentContext _persistance;
 
         public DocumentRepository(IDocumentGuard guard, DocumentContext persistance)
         {
@@ -23,19 +23,19 @@ namespace Copious.Document
             _persistance = persistance;
         }
 
-        public void Destroy(Context context, Guid documentId)
+        public void Destroy(RequestContext context, Guid documentId)
         {
             _guard.Protect(context, documentId);
         }
 
-        public Index GetIndex(Context context, Guid documentId)
+        public Index GetIndex(RequestContext context, Guid documentId)
         {
             _guard.Protect(context, documentId);
 
             return _persistance.Index.SingleOrDefault(i => i.Id == documentId);
         }
 
-        public VersionedDocument GetDocument(Context context, Guid documentId, int version)
+        public VersionedDocument GetDocument(RequestContext context, Guid documentId, int version)
         {
             _guard.Protect(context, documentId);
 
@@ -43,7 +43,7 @@ namespace Copious.Document
                    .SingleOrDefault(v => v.DocumentId == documentId && v.VersionNo == version);
         }
 
-        public List<VersionedDocument> GetDocuments(Context context, Guid documentId)
+        public List<VersionedDocument> GetDocuments(RequestContext context, Guid documentId)
         {
             _guard.Protect(context, documentId);
 
@@ -51,7 +51,7 @@ namespace Copious.Document
                    .Where(v => v.DocumentId == documentId).ToList();
         }
 
-        public Stream Get(Context context, Guid documentId, out VersionedDocument document)
+        public Stream Get(RequestContext context, Guid documentId, out VersionedDocument document)
         {
             _guard.Protect(context, documentId);
 
@@ -59,7 +59,7 @@ namespace Copious.Document
             return null;
         }
 
-        public Stream GetDraft(Context context, string draftName)
+        public Stream GetDraft(RequestContext context, string draftName)
         {
             //retrieve the doc id from persistance based on draft name and user
             Guid documentId;
@@ -68,19 +68,19 @@ namespace Copious.Document
             return null;
         }
 
-        public Stream GetDraft(Context context, Guid documentId, string draftName)
+        public Stream GetDraft(RequestContext context, Guid documentId, string draftName)
         {
             _guard.Protect(context, documentId);
             return null;
         }
 
-        public void Remove(Context context, Guid documentId)
+        public void Remove(RequestContext context, Guid documentId)
         {
             _guard.Protect(context, documentId);
 
         }
 
-        public Index Save(Context context, VersionedDocument document, Stream source)
+        public Index Save(RequestContext context, VersionedDocument document, Stream source)
         {
             if (document.DocumentKind == DocumentKind.Content)
                 throw new DocumentException(context, DocumentExceptionTypes.InvalidDocumentKind, "Invalid document kind specified during Save. If you intend to save content then Use \"SaveContent\" Method");
@@ -95,7 +95,7 @@ namespace Copious.Document
             return null;
         }
 
-        public void SaveDraft(Context context, Guid documentId, string draftName, Stream file)
+        public void SaveDraft(RequestContext context, Guid documentId, string draftName, Stream file)
         {
             var index = GetIndex(context, documentId);
             var document = GetDocument(context, index.Id, index.VersionNo);
@@ -105,7 +105,7 @@ namespace Copious.Document
             throw new NotImplementedException();
         }
 
-        public List<Guid> Search(Context context, Index index)
+        public List<Guid> Search(RequestContext context, Index index)
         {
             throw new NotImplementedException();
         }
@@ -115,7 +115,7 @@ namespace Copious.Document
         /// </summary>
         /// <param name="context"></param>
         /// <param name="document"></param>
-        private static IStorageProvider PrepareForStorage(Context context, VersionedDocument document)
+        static IStorageProvider PrepareForStorage(RequestContext context, VersionedDocument document)
         {
             // fill the file object here
 
@@ -136,7 +136,7 @@ namespace Copious.Document
         /// <param name="context"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        private static IStorageProvider GetStorageProvider(Context context, Interface.State.File file)
+        static IStorageProvider GetStorageProvider(RequestContext context, Interface.State.File file)
         {
             IStorageProvider storageProvider = null;
 

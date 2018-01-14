@@ -1,19 +1,22 @@
-﻿using Copious.Infrastructure.AspNet.Filters;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Threading.Tasks;
+
+using Copious.Infrastructure.AspNet.Filters;
 using Copious.Infrastructure.AspNet.Model;
 using Copious.Infrastructure.AspNet.Results;
 using Copious.Infrastructure.Interface;
 using Copious.Infrastructure.Interface.Services;
 using Copious.SharedKernel;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
 using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace Copious.Infrastructure.AspNet.Controllers
 {
@@ -23,7 +26,6 @@ namespace Copious.Infrastructure.AspNet.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
         private readonly IEmailSender _emailSender;
 
         protected AuthenticationController(IContextProvider contextProvider, ILoggerFactory loggerFactory, IExceptionHandler exceptionHandler,

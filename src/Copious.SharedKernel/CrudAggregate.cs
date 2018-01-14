@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Copious.Foundation;
 using System.Linq;
 
@@ -8,10 +9,10 @@ namespace Copious.SharedKernel
         IHandleCommand<Create<TState>>,
         IHandleCommand<Update<TState>>,
         IHandleCommand<Delete<TState>>,
-        IApplyEvent<Created<TState>>,
-        IApplyEvent<Updated<TState>>,
-        IApplyEvent<Deleted<TState>>
-        where TState : class, IEntity, new()
+        IApplyDomainEvent<Created<TState>>,
+        IApplyDomainEvent<Updated<TState>>,
+        IApplyDomainEvent<Deleted<TState>>
+        where TState : class, IEntity<Guid>, new()
     {
         /// <summary>
         /// Override to perform any validations during handle and call the base on valid branch;
@@ -37,7 +38,7 @@ namespace Copious.SharedKernel
         /// <param name="event">event parameter on Apply</param>
         public virtual void Apply(Deleted<TState> @event) { }
 
-        private void ChangeState(TState actual, Updated<TState> @event)
+        void ChangeState(TState actual, Updated<TState> @event)
         {
             //source state is set in command handler, modified state is payload of the command
             var modified = @event.State;
@@ -54,7 +55,7 @@ namespace Copious.SharedKernel
                 return;
             }
 
-            Mapper.Map(modified, actual);
+            Mapper.Map<TState,TState>(modified, actual);
         }
     }
 }

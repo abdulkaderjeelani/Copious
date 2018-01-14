@@ -4,8 +4,9 @@ using Copious.Foundation.ComponentModel;
 
 namespace Copious.Foundation
 {
-    public interface IEntity : IComponent
+    public interface IEntity<TKey> : IComponent<TKey>
     {
         IEnumerable<string> GetProperties();
     }
+    
 }

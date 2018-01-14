@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Copious.Persistance.EF
 {
 
-    public abstract class EFBase<TState> where TState : class, IUnique, new()
+    public abstract class EFBase<TState> where TState : class, Identifiable<Guid>, new()
     {
         protected readonly DbContext _context;
 
@@ -22,7 +22,7 @@ namespace Copious.Persistance.EF
             _context = context;
         }
 
-        private DbSet<TState> _dbSet;
+        DbSet<TState> _dbSet;
 
         public DbSet<TState> DbSet
         {

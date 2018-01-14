@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Copious.Foundation
 {
     public class CrudCommand<TState> : Command<TState>
-        where TState : class, IEntity, new()
+        where TState : class, IEntity<Guid>, new()
     {
         public CrudCommand(TState state, int version) : base(state, state.Id, version)
         {
@@ -17,7 +17,7 @@ namespace Copious.Foundation
     }
 
     public class Create<TState> : CrudCommand<TState>
-        where TState : class, IEntity, new()
+        where TState : class, IEntity<Guid>, new()
     {
         public Create(TState state, int version) : base(state, version)
         {
@@ -25,7 +25,7 @@ namespace Copious.Foundation
     }
 
     public class Update<TState> : CrudCommand<TState>
-       where TState : class, IEntity, new()
+       where TState : class, IEntity<Guid>, new()
     {
         public Update(TState state, int version) : base(state, version)
         {
@@ -47,7 +47,7 @@ namespace Copious.Foundation
     }
 
     public class Delete<TState> : CrudCommand<TState>
-      where TState : class, IEntity, new()
+      where TState : class, IEntity<Guid>, new()
     {
         public Delete(TState state, int version) : base(state, version)
         {

@@ -9,7 +9,7 @@ namespace Copious.Infrastructure
 {
     public class LightInjectContainer : DependancyContainer, Interface.IContainer
     {
-        private readonly IServiceCollection _services;
+        readonly IServiceCollection _services;
 
         public LightInjectContainer(IServiceCollection services)
         {
@@ -19,7 +19,7 @@ namespace Copious.Infrastructure
 
         public bool HasAssemblyScanningSupport => true;
 
-        private ServiceContainer _LightInjectContainer { get; set; }
+        ServiceContainer _LightInjectContainer { get; set; }
 
         public IServiceProvider GetServiceProvider()
             => _LightInjectContainer.CreateServiceProvider(_services);

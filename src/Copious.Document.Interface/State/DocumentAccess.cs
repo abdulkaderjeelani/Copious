@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Copious.Document.Interface.State
 {
-    public class DocumentAccess : Entity
+    public class DocumentAccess : Entity<Guid>
     {
         public Guid DocumentId { get; set; }        
         public ActorKind ActorKind { get; set; }

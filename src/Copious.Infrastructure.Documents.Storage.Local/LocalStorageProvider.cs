@@ -7,7 +7,7 @@ namespace Copious.Infrastructure.Documents.Storage.Local
 {
     public class LocalStorageProvider : IStorageProvider
     {
-        private readonly string _basePath;
+        readonly string _basePath;
 
         public LocalStorageProvider(LocalOptions options)
         {

@@ -5,15 +5,16 @@ using Copious.Persistance.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using Copious.Foundation;
 
 namespace Copious.Persistance
 {
     public static class RegistrationHelper
     {
-        private const string paramContext = "dbContext";
+        const string paramContext = "dbContext";
 
         public static void RegisterGeneralQueryHandlers<TState, TContext>(IContainer container, TContext efContext)
-            where TState : class, IUnique, new()
+            where TState : class, Identifiable<Guid>, new()
             where TContext : DbContext
         {
             container.Register<GeneralQueryHandler<TState>, IQueryHandler<GetAllQuery, List<TState>>, TContext>(paramContext, efContext);
@@ -26,7 +27,7 @@ namespace Copious.Persistance
         }
 
         public static void RegisterGeneralQueryHandlers<TState, TContext>(IContainer container, Func<TContext> efContextGetter)
-            where TState : class, IUnique, new()
+            where TState : class, Identifiable<Guid>, new()
             where TContext : DbContext
         {
             container.Register<GeneralQueryHandler<TState>, IQueryHandler<GetAllQuery, List<TState>>, TContext>(paramContext, efContextGetter);

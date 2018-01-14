@@ -8,7 +8,7 @@ namespace Copious.Infrastructure.Documents.Storage.Local
 {
     public static class MimeInfo
     {
-        private static IDictionary<string, string> _mimeMappings = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase)
+        static IDictionary<string, string> _mimeMappings = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase)
         {
             {".323", "text/h323"},
             {".3g2", "video/3gpp2"},

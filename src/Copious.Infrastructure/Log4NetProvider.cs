@@ -8,7 +8,7 @@ namespace Copious.Infrastructure
 {
     public class Log4NetProvider : ILoggerProvider
     {
-        private IDictionary<string, ILogger> _loggers = new Dictionary<string, ILogger>();
+        IDictionary<string, ILogger> _loggers = new Dictionary<string, ILogger>();
 
         public ILogger CreateLogger(string categoryName)
         {
@@ -44,7 +44,7 @@ namespace Copious.Infrastructure
 
     public class Log4NetAdapter : ILogger
     {
-        private readonly ILog _logger;
+        readonly ILog _logger;
 
         public Log4NetAdapter(string loggerName)
         {

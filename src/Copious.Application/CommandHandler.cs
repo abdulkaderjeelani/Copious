@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Copious.Application
 {
-    public class CommandHandler<TCommand, TAggregate, TState> : ICommandHandler<TCommand>, ICommandHandlerAsync<TCommand> where TCommand : Command where TAggregate : StatedAggregate<TAggregate, TState>, new() where TState : class, IEntity, new()
+    public class CommandHandler<TCommand, TAggregate, TState> : ICommandHandler<TCommand>, ICommandHandlerAsync<TCommand> where TCommand : Command where TAggregate : StatedAggregate<TAggregate, TState>, new() where TState : class,  IEntity<Guid>, new()
     {
         protected readonly IEventBus _eventBus;
         protected readonly IExceptionHandler _exceptionHandler;
@@ -20,7 +20,6 @@ namespace Copious.Application
         protected readonly IMapper _mapper;
         protected readonly IRepository<TState> _repository;
         private readonly ILogger _logger;
-
         private readonly Func<int, TimeSpan> exponentialWaiter = (attempt) => TimeSpan.FromSeconds(Math.Pow(2, attempt));
 
         protected CommandHandler(ILoggerFactory loggerFactory, IExceptionHandler exceptionHandler, IRepository<TState> repository, ICommandGuard guard, IEventBus eventBus)

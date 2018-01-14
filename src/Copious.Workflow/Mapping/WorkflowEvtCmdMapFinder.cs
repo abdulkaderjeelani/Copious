@@ -5,7 +5,7 @@ namespace Copious.Workflow.Mapping
 
     public class WorkflowEvtCmdMapFinder
     {
-        private static ConcurrentDictionary<string, IEventToCommandMapper> MappingComponentCache = new ConcurrentDictionary<string, IEventToCommandMapper>();
+        static ConcurrentDictionary<string, IEventToCommandMapper> MappingComponentCache = new ConcurrentDictionary<string, IEventToCommandMapper>();
 
         /// <summary>
         /// Find the relevant component filtering based on source, target event types from the mapping assembly

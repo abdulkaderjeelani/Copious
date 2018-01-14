@@ -11,7 +11,7 @@ namespace Copious.Tests.Web
 {
     public class Startup
     {
-        private readonly Bootstrapper _bootstrapper;
+        readonly Bootstrapper _bootstrapper;
 
 
         public Startup(IHostingEnvironment env)
@@ -25,10 +25,10 @@ namespace Copious.Tests.Web
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services) =>
-            _bootstrapper.ConfigureServices(services);
+            _bootstrapper.BootstrapServices(services);
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IAntiforgery antiforgery, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime, IServiceProvider serviceProvider) => 
-            _bootstrapper.Configure(app, appLifetime, antiforgery, env, loggerFactory, serviceProvider, app.ApplicationServices.GetService<Controllers.AuthenticationController>().GetIdentity);
+            _bootstrapper.Bootstrap(app, appLifetime, antiforgery, env, loggerFactory, serviceProvider, app.ApplicationServices.GetService<Controllers.AuthenticationController>().GetIdentity);
     }
 }

@@ -13,13 +13,13 @@ namespace Copious.Document.Interface
         /// </summary>
         /// <param name="context"></param>
         /// <param name="documentId"></param>
-        void Protect(Context context, Guid documentId);
+        void Protect(RequestContext context, Guid documentId);
 
         /// <summary>
         /// Verify security during new document / draft
         /// </summary>
         /// <param name="context"></param>
         /// <param name="document"></param>
-        void Verify(Context context, VersionedDocument document);
+        void Verify(RequestContext context, VersionedDocument document);
     }
 }

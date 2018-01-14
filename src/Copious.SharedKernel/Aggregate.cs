@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Copious.Foundation;
 using Copious.Foundation.ComponentModel;
 using System.Collections.Concurrent;
@@ -9,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Copious.SharedKernel
 {
-    public abstract class Aggregate<TAggregate> : Entity, IInteractiveBusinessComponent
+    public abstract class Aggregate<TAggregate> : Entity<Guid>, IInteractiveBusinessComponent
     {
-        private readonly List<Event> _changes;
+        readonly List<Event> _changes;
 
         /// <summary>
         /// Load with specifcation instances
         /// If a specification requires Reposiotry / External Access Abstract the spec
-        /// e.g IUniqueSpecification and supply via DI, then set the needed by calling SetState in interface
+        /// e.g Identifiable<Guid>Specification and supply via DI, then set the needed by calling SetState in interface
         /// </summary>
         /// <param name="event"></param>
         /// <returns></returns>
@@ -64,7 +65,7 @@ namespace Copious.SharedKernel
         /// Self.Handle(Converter.ChangeTo(@event, @event.GetType())); has problem with generic, so used reflection.
         /// https://stackoverflow.com/questions/22672775/stackoverflowexception-when-accessing-member-of-generic-type-via-dynamic-net-c
         /// </remarks>
-        private void Produce(Event @event, bool raiseNew)
+        void Produce(Event @event, bool raiseNew)
         {
             @event.IsNewEvent = raiseNew;
 

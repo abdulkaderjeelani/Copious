@@ -8,7 +8,7 @@ namespace Copious.Infrastructure.Scheduler
 {
     public class ServiceProviderActivator : JobActivator
     {
-        private readonly IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public ServiceProviderActivator(IServiceProvider serviceProvider)
         {

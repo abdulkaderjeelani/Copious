@@ -1,12 +1,21 @@
-﻿using Copious.Foundation.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+
+using Copious.Foundation.ComponentModel;
 
 namespace Copious.Foundation
 {
     public class Operation : Component
     {
-        public Context Context { get; set; }
+
+        RequestContext _context;
+        Func<RequestContext> _contextProvider;
+
+        public RequestContext Context => _contextProvider?.Invoke() ?? _context;
+
+        public void SetContext(RequestContext context) => _context = context;
+
+        public void SetContext(Func<RequestContext> contextProvider) => _contextProvider = contextProvider;
+
+
     }
 }

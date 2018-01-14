@@ -7,7 +7,7 @@ namespace Copious.SharedKernel
 {
     public class RuleAssessor : IRuleAssessor
     {
-        private readonly LambdaParser _parser;
+        readonly LambdaParser _parser;
 
         public RuleAssessor()
         {

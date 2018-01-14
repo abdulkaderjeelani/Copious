@@ -11,8 +11,8 @@ namespace Copious.Infrastructure
 {
     public class CommandBus : ICommandBus
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ICommandHandlerFactory _handlerFactory;
+        readonly IServiceProvider _serviceProvider;
+        readonly ICommandHandlerFactory _handlerFactory;
 
         public CommandBus(IServiceProvider serviceProvider, ICommandHandlerFactory handlerFactory)
         {

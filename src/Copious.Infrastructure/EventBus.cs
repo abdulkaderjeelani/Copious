@@ -12,8 +12,8 @@ namespace Copious.Infrastructure
 {
     public class EventBus : IEventBus
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IEventHandlerFactory _handlerFactory;
+        readonly IServiceProvider _serviceProvider;
+        readonly IEventHandlerFactory _handlerFactory;
 
         public EventBus(IServiceProvider serviceProvider, IEventHandlerFactory handlerFactory)
         {

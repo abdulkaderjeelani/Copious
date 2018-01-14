@@ -27,23 +27,21 @@ namespace Copious.Infrastructure.AspNet
 
         public Task ValidateRequestAsync(HttpContext httpContext)
         {
-            if (_config.GetValue<bool>("EnableAntiForgery"))
+            if (!_config.GetValue<bool>("EnableAntiForgery")) return Task.FromResult(0);
+            try
             {
-                try
-                {
-                    _antiforgery.ValidateRequestAsync(httpContext);
-                }
-                catch (Exception ex)
-                {
-                    //https://github.com/aspnet/Security/blob/7634c5420a85a28217b0384f34324273aed042c5/src/Microsoft.AspNetCore.Authentication.JwtBearer/JwtBearerHandler.cs
-                    //https://github.com/aspnet/Antiforgery/blob/dev/src/Microsoft.AspNetCore.Antiforgery/Resources.resx
-
-                    if (!IgnoredMessages.Any(i => ex.Message.StartsWith(i, StringComparison.OrdinalIgnoreCase)))
-                        throw;
-                }
+               return _antiforgery.ValidateRequestAsync(httpContext);
             }
+            catch (Exception ex)
+            {
+                // https://github.com/aspnet/Security/blob/7634c5420a85a28217b0384f34324273aed042c5/src/Microsoft.AspNetCore.Authentication.JwtBearer/JwtBearerHandler.cs
+                // https://github.com/aspnet/Antiforgery/blob/dev/src/Microsoft.AspNetCore.Antiforgery/Resources.resx
 
-            return Task.FromResult(0);
+                if (!IgnoredMessages.Any(i => ex.Message.StartsWith(i, StringComparison.OrdinalIgnoreCase)))
+                    throw;
+
+                return Task.FromResult(0);
+            }            
         }
     }
 }

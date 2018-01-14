@@ -21,7 +21,7 @@ namespace Copious.Main
     public abstract class Bootstrapper
     {
         private readonly IConfigurationRoot _configuration;
-        private IContainer ApplicationContainer;
+        private IContainer _applicationContainer;
 
 
         protected Bootstrapper(IConfigurationBuilder builder, params (string path, bool optional, bool reloadOnChange)[] configFiles)
@@ -29,37 +29,36 @@ namespace Copious.Main
             _configuration = CopiousConfiguration.Initialize(builder, configFiles);
         }
         
-     
-        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
+        public virtual IServiceProvider BootstrapServices(IServiceCollection services)
         {
             //add IConfigurationRoot to the di container
             services.Add(new ServiceDescriptor(typeof(IConfigurationRoot), provider => _configuration, ServiceLifetime.Singleton));
 
-            CrossConcerns.ConfigureServices(services);
-            Features.ConfigureServices(services);
+            Infrastructure.Features.ConfigureServices(services);
+            Infrastructure.AspNet.Features.ConfigureServices(services, default);
 
             return RegisterServices();
 
             IServiceProvider RegisterServices()
             {
-                var registrators = GetFrameworkRegistrators(_configuration);
+                var registrators = BootstrapperHelper.GetFrameworkRegistrators();
                 registrators.AddRange(GetAppRegistrators(_configuration));
 
                 registrators.ForEach(registrator => registrator.RegisterDependancies(_configuration, services));
-                ApplicationContainer = ContainerProvider.Create(services);
-                registrators.ForEach(registrator => registrator.RegisterDependancies(_configuration, ApplicationContainer, services.BuildServiceProvider()));
-                return ApplicationContainer.GetServiceProvider();
+                _applicationContainer = ContainerProvider.Create(services);
+                registrators.ForEach(registrator => registrator.RegisterDependancies(_configuration, _applicationContainer, services.BuildServiceProvider()));
+                return _applicationContainer.GetServiceProvider();
 
             }
         }
 
-        public virtual void Configure(IApplicationBuilder app, IApplicationLifetime appLifetime, IAntiforgery antiforgery, IHostingEnvironment env, ILoggerFactory loggerFactory,
+        public virtual void Bootstrap(IApplicationBuilder app, IApplicationLifetime appLifetime, IAntiforgery antiforgery, IHostingEnvironment env, ILoggerFactory loggerFactory,
                                     IServiceProvider serviceProvider, Func<string, string, Task<ClaimsIdentity>> identityResolver)
         {
-            CrossConcerns.Configure(_configuration, app, serviceProvider, loggerFactory, env.EnvironmentName == EnvironmentName.Development);
-            Features.Configure(app, antiforgery, identityResolver);
+            Infrastructure.Features.Configure(_configuration, app, serviceProvider, loggerFactory, env.EnvironmentName == EnvironmentName.Development);
+            Infrastructure.AspNet.Features.Configure(app, antiforgery, identityResolver);
             // dispose resources that have been resolved in the application container, by registering for the "ApplicationStopped" event.
-            appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+            appLifetime.ApplicationStopped.Register(() => _applicationContainer.Dispose());
         }
 
         /// <summary>
@@ -86,20 +85,6 @@ namespace Copious.Main
         }
 
         protected abstract IEnumerable<IRegistrator> GetAppRegistrators(IConfigurationRoot configuration);
-
-        protected virtual List<IRegistrator> GetFrameworkRegistrators(IConfigurationRoot configuration)
-        {
-            var frameworkRegisrators = new List<IRegistrator>{
-                new Infrastructure.Registrator(),
-                new Infrastructure.AspNet.Registrator(),
-                new Persistance.Registrator(),
-                new Application.Registrator(),
-                new SharedKernel.Registrator()};
-
-            if (CopiousConfiguration.Config.EnableDocument)
-                frameworkRegisrators.Add(new Document.Registrator());
-
-            return frameworkRegisrators;
-        }
+        
     }
 }

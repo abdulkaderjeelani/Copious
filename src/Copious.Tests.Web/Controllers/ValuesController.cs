@@ -1,4 +1,5 @@
-﻿using Copious.Infrastructure.AspNet.Controllers;
+﻿using System.Runtime.CompilerServices;
+using Copious.Infrastructure.AspNet.Controllers;
 using Copious.Infrastructure.Interface;
 using Copious.Infrastructure.Interface.Services;
 using Copious.Persistance.Interface;
@@ -18,7 +19,11 @@ namespace Copious.Tests.Web.Controllers
             IExceptionHandler exceptionHandler, ILoggerFactory loggerFactory,
             IQueryHandler<GetAllQuery, List<Copious.Document.Interface.State.Index>> indexQuery) : base(contextProvider, exceptionHandler, loggerFactory)
         {
-            var x = indexQuery.Fetch(new GetAllQuery(contextProvider.Context));
+            
+            var x = indexQuery.Fetch(new GetAllQuery(contextProvider.Fn()));
+
+
+            queryProcessor.Process<GetAllQuery, List<Copious.Document.Interface.State.DocumentAccess>>(new GetAllQuery(contextProvider.Fn()));
             // sch.ScheduleAsyncJob<IEmailSender>(email => email.SendEmailAsync("test@test.com", "test", "test"));
         }
 

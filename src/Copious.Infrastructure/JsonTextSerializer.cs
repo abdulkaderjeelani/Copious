@@ -8,7 +8,7 @@ namespace Copious.Infrastructure
 {
     public class JsonTextSerializer : ITextSerializer
     {
-        private readonly JsonSerializer _serializer;
+        readonly JsonSerializer _serializer;
 
         public JsonTextSerializer()
         {

@@ -3,7 +3,7 @@
 namespace Copious.Application.Interface
 {
     /// <summary>
-    /// Marker interface for command handlers
+    ///     Marker interface for command handlers
     /// </summary>
     public interface ICommandHandler
     {

@@ -6,7 +6,9 @@ namespace Copious.Foundation
 {
     public class Query : Operation
     {
-        public Query(Context context) { Context = context; }
+        public Query(RequestContext context) { SetContext(context); }
+
+        public Query(Func<RequestContext> contextProvider) { SetContext(contextProvider); }
 
         public Guid SystemId { get; set; } = new Guid("1B421466-EE83-4C36-81B1-1338DBAD6D8F");
 

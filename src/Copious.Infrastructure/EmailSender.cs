@@ -6,7 +6,7 @@ namespace Copious.Infrastructure
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public EmailSender(IServiceProvider serviceProvider)
         {

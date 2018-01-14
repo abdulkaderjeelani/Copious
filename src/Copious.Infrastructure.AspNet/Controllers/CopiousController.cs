@@ -1,4 +1,5 @@
-﻿using Copious.Application.Interface.Exceptions;
+﻿using System.Linq;
+using Copious.Application.Interface.Exceptions;
 using Copious.Foundation;
 using Copious.Infrastructure.AspNet.Results;
 using Copious.Infrastructure.Interface;
@@ -81,23 +82,9 @@ namespace Copious.Infrastructure.AspNet.Controllers
             // https://msdn.microsoft.com/en-us/magazine/jj991977.aspx
             if (failureHandlers != null)
                 if (executeInParallel)
-                    Parallel.ForEach<Func<Task>>(failureHandlers, (failureHandler)
-                        => InvokeFailureHandlerAsync(failureHandler).Wait());
+                    Parallel.ForEach(failureHandlers, failureHandler => _exceptionHandler.AttachAndRun(failureHandler).Wait());
                 else
-                    foreach (var failureHandler in failureHandlers)
-                        await InvokeFailureHandlerAsync(failureHandler);
-
-            async Task InvokeFailureHandlerAsync(Func<Task> failureHandler)
-            {
-                try
-                {
-                    await failureHandler?.Invoke();
-                }
-                catch (Exception ex)
-                {
-                    _exceptionHandler.HandleException(ex);
-                }
-            }
+                    await Task.WhenAll(failureHandlers.Select(failureHandler => _exceptionHandler.AttachAndRun(failureHandler)).ToArray());
         }
 
         protected IActionResult HandleException(Exception ex)
@@ -113,12 +100,9 @@ namespace Copious.Infrastructure.AspNet.Controllers
             return new NotOkResult(new ServiceResult(CopiousErrorCodes.Exception.AddInfo(ex.Message))); //if sensitive messages is paseed to client make sure you hide it / format.
         }
 
-        public Context Context => _contextProvider.Context;
+        public RequestContext Context => _contextProvider.Context;
 
-        public void AddContext(Operation operation)
-        {
-            if (operation.Context == null)
-                operation.Context = Context;
-        }
+        public void AddContext(Operation operation) => operation.SetContext(_contextProvider.Fn());
+
     }
 }

@@ -8,19 +8,19 @@ namespace Copious.Document
 {
     public class DocumentGuard : IDocumentGuard
     {
-        private readonly ISecurityProvider _securityProvider;
+        readonly ISecurityProvider _securityProvider;
 
         public DocumentGuard(ISecurityProvider securityProvider)
         {
             _securityProvider = securityProvider;
         }
 
-        public void Protect(Context context, Guid documentId)
+        public void Protect(RequestContext context, Guid documentId)
         {
             throw new NotImplementedException();
         }
 
-        public void Verify(Context context, VersionedDocument document)
+        public void Verify(RequestContext context, VersionedDocument document)
         {
             throw new NotImplementedException();
         }

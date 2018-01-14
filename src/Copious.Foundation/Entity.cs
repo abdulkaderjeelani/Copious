@@ -5,21 +5,23 @@ using System.Linq;
 using System.Reflection;
 using Copious.Foundation;
 using Copious.Foundation.ComponentModel;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace Copious.Foundation
 {
+
     [Serializable]
-    public abstract class Entity : Component, IEntity, IEquatable<Entity>
+    public abstract class Entity<TKey> : Component<TKey>, IEntity<TKey>, IEquatable<Entity<TKey>>
     {
-        private static readonly ConcurrentDictionary<string, string[]> EntityProperties = new ConcurrentDictionary<string, string[]>();
+        static readonly ConcurrentDictionary<string, string[]> EntityProperties = new ConcurrentDictionary<string, string[]>();
 
         protected Entity()
         {
         }
 
-        protected Entity(Guid id)
+        protected Entity(TKey id)
         {
-            if (Equals(id, default(Guid)))
+            if (Equals(id, default(TKey)))
                 throw new ArgumentException("The ID cannot be the type's default value.", nameof(id));
 
             SetId(id);
@@ -27,13 +29,12 @@ namespace Copious.Foundation
 
         protected dynamic Self => this;
 
-        public override bool Equals(object obj)
-        {
-            var entity = obj as Entity;
-            return entity != null ? Equals(entity) : ReferenceEquals(this, obj);
-        }
+        public override bool Equals(object obj) => obj is Entity<TKey> entity ? Equals(entity) : ReferenceEquals(this, obj);    
 
-        public bool Equals(Entity other) => other != null && Id.Equals(other.Id);
+     
+
+        public bool Equals(Entity<TKey> other) => other != null && Id.Equals(other.Id);
+       
 
         public override int GetHashCode() => Id.GetHashCode();
 
@@ -50,6 +51,6 @@ namespace Copious.Foundation
             return array.Cast<string>();
         }
 
-        private void SetId(Guid id) => Id = id;
+        void SetId(TKey id) => Id = id;
     }
 }

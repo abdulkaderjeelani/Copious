@@ -1,10 +1,10 @@
 ﻿{
   "IncludeAspNetIdentity": false,
   "EnableCors": true,
-  "EnableAntiForgery": false,
   "DIContainer": "Autofac", /* LightInject DryIoc Autofac*/
   "LoggingProvider": "Log4Net", /* Log4Net, Serilog */
   "EnableScheduler": true,
+  "EnableAntiforgery": true,
   "Scheduler": "Hangfire",
   "AppAssemblyPrefixes": "Copious",
   "EnableDocument": true,
@@ -18,5 +18,4 @@
       "Value": "D: \\Buffer"
     }
   ]
-
 }

@@ -6,17 +6,14 @@ using Copious.Foundation;
 namespace Copious.Persistance.Interface
 {
     public class GetAllQuery : Query        
-    {        
-        public GetAllQuery(Context context) : base(context)
-            => Context = context;
+    {
+        public GetAllQuery(Func<RequestContext> contextProvider) : base(contextProvider)
+        { }
     }    
 
     public class FindByIdQuery : Query       
     {
-        public FindByIdQuery(Context context) : base(context)
-            => Context = context;
-
-        public FindByIdQuery(Context context, Guid id) : this(context)
+        public FindByIdQuery(Func<RequestContext> contextProvider, Guid id) : base(contextProvider)
         {
             EntityId = id;
         }
@@ -27,16 +24,14 @@ namespace Copious.Persistance.Interface
     public class SearchQuery<TState> : Query
         where TState : class, new()
     {
-        public SearchQuery(Context context) : base(context)
-            => Context = context;
 
-        public SearchQuery(Context context, Expression<Func<TState, bool>> predicate) : this(context)
+        public SearchQuery(Func<RequestContext> contextProvider, Expression<Func<TState, bool>> predicate) : base(contextProvider)
         {
             Predicate = predicate;
             SearchMode = SearchMode.Search;
         }
 
-        public SearchQuery(Context context, string filterId, TState filterValue) : this(context)
+        public SearchQuery(Func<RequestContext> contextProvider, string filterId, TState filterValue) : base(contextProvider)
         {
             FilterId = filterId;
             FilterValue = filterValue;

@@ -16,7 +16,7 @@ namespace Copious.Infrastructure.Interface
         public static List<Type> GetGenericImplementor<T1,T2>(Type interfaceType)
             => GetGenericImplementor(interfaceType, typeof(T1), typeof(T2));
 
-        private static List<Type> GetGenericImplementor(Type interfaceType, params Type[] intrfaceTypeArguments)
+        static List<Type> GetGenericImplementor(Type interfaceType, params Type[] intrfaceTypeArguments)
             => GetAssemblies().SelectMany(ass => ass.GetExportedTypes()
                                 .Where(x => !x.GetTypeInfo().IsAbstract && x.GetInterfaces()
                                     .Any(a => a.GetTypeInfo().IsGenericType && a.GetGenericTypeDefinition() == interfaceType))
@@ -27,9 +27,9 @@ namespace Copious.Infrastructure.Interface
         public static bool CheckGenericParameterOfType(Type tType, Type[] checkTypes)
             => tType.GetTypeInfo().IsGenericType && checkTypes.Any(t => t == tType.GetGenericTypeDefinition());
 
-        private static List<Assembly> _assemblies;
+        static List<Assembly> _assemblies;
 
-        private static IEnumerable<Assembly> GetAssemblies()
+        static IEnumerable<Assembly> GetAssemblies()
         {
             if (_assemblies == null)
             {

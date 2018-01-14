@@ -7,7 +7,7 @@ namespace Copious.Document.Interface
 {
     public class DocumentException : Exception
     {
-        public DocumentException(Context context, DocumentExceptionTypes exType, string usefulMessage) : base(usefulMessage)
+        public DocumentException(RequestContext context, DocumentExceptionTypes exType, string usefulMessage) : base(usefulMessage)
         {
             DocumentExceptionInfo = new DocumentExceptionInfo
             {
@@ -16,7 +16,7 @@ namespace Copious.Document.Interface
             ExceptionType = exType;
         }
 
-        public DocumentException(Context context, DocumentExceptionTypes exType, string usefulMessage, Exception innerException) : base(usefulMessage, innerException)
+        public DocumentException(RequestContext context, DocumentExceptionTypes exType, string usefulMessage, Exception innerException) : base(usefulMessage, innerException)
         {
             DocumentExceptionInfo = new DocumentExceptionInfo
             {
@@ -37,7 +37,7 @@ namespace Copious.Document.Interface
 
         public int VersionNo { get; set; }
 
-        public Context ContextOfException { get; set; }
+        public RequestContext ContextOfException { get; set; }
     }
 
     /// <summary>

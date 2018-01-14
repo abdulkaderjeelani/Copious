@@ -3,7 +3,7 @@
 namespace Copious.Application.Interface.Exceptions
 {
     /// <summary>
-    /// Exception to be thrown, if a command invoker is to be notified with useful data.
+    ///     Exception to be thrown, if a command invoker is to be notified with useful data.
     /// </summary>
     public class CommandException : Exception
     {
@@ -19,6 +19,9 @@ namespace Copious.Application.Interface.Exceptions
         {
         }
 
-        public override string ToString() => $"{Message} {base.ToString()}";
+        public override string ToString()
+        {
+            return $"{Message} {base.ToString()}";
+        }
     }
 }

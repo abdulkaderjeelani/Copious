@@ -31,7 +31,7 @@ namespace Copious.Persistance.EF
         public int GetVersion(Guid id)
            => DbSet.Where(i => i.Id == id).Select(v => v.Version).SingleOrDefault();
 
-        private bool Exists(Guid id)
+        bool Exists(Guid id)
             => DbSet.Any(i => i.Id == id);
 
         /// <summary>
@@ -61,49 +61,49 @@ namespace Copious.Persistance.EF
             await dbOpr?.Invoke(t, expectedVersion);
         }
 
-        private void Insert(TEntity t, int expectedVersion)
+        void Insert(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Add(t);
             _context.SaveChanges();
         }
 
-        private async Task InsertAsync(TEntity t, int expectedVersion)
+        async Task InsertAsync(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Add(t);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void Update(TEntity t, int expectedVersion)
+        void Update(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Update(t);
             _context.SaveChanges();
         }
 
-        private async Task UpdateAsync(TEntity t, int expectedVersion)
+        async Task UpdateAsync(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Update(t);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private void Delete(TEntity t, int expectedVersion)
+        void Delete(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Remove(t);
             _context.SaveChanges();
         }
 
-        private async Task DeleteAsync(TEntity t, int expectedVersion)
+        async Task DeleteAsync(TEntity t, int expectedVersion)
         {
             t.Version = CheckVersion(t, expectedVersion);
             DbSet.Remove(t);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        private Func<TEntity, int, Task> GetAsyncOperation(Event evt)
+        Func<TEntity, int, Task> GetAsyncOperation(Event evt)
         {
             switch (evt)
             {
@@ -121,7 +121,7 @@ namespace Copious.Persistance.EF
             }
         }
 
-        private Action<TEntity, int> GetOperation(Event evt)
+        Action<TEntity, int> GetOperation(Event evt)
         {
             switch (evt)
             {
@@ -139,7 +139,7 @@ namespace Copious.Persistance.EF
             }
         }
 
-        private int CheckVersion(TEntity t, int expectedVersion)
+        int CheckVersion(TEntity t, int expectedVersion)
         {
             var currentStateVersion = GetVersion(t.Id);
 

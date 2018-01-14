@@ -6,7 +6,7 @@ namespace Copious.Infrastructure.DependencyInjection
 {
     public class DependancyContainer : IDisposable
     {
-        private bool disposed = false;
+        bool disposed = false;
 
         protected IDisposable Container { get; set; }
 

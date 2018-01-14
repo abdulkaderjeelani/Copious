@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace Copious.SharedKernel
 {
     public abstract class StatedAggregate<TAggregate, TState> : Aggregate<TAggregate>
-     where TState : class, IEntity, new()
+     where TState : class,  IEntity<Guid>, new()
     {
-        private readonly List<Event<TState>> _changes;
+        readonly List<Event<TState>> _changes;
 
         /// <summary>
         /// Load with specifcation instances
         /// If a specification requires Reposiotry / External Access Abstract the spec
-        /// e.g IUniqueSpecification and supply via DI, then set the needed by calling SetState in interface
+        /// e.g Identifiable<Guid>Specification and supply via DI, then set the needed by calling SetState in interface
         /// </summary>
         /// <param name="event"></param>
         /// <returns></returns>
@@ -33,28 +33,23 @@ namespace Copious.SharedKernel
             State = state;
         }
 
-        private TState _state;
+        TState _state;
 
         public TState State
         {
-            get { return _state; }
+            get => _state;
             set
             {
                 _state = value;
-                if (_state != null)
-                {
-                    Id = _state.Id;
-                    Version = _state.Version;
-                }
+                if (_state == null) return;
+                Id = _state.Id;
+                Version = _state.Version;
             }
         }
 
         public override Guid Id
         {
-            get
-            {
-                return base.Id;
-            }
+            get => base.Id;
 
             set
             {
@@ -66,16 +61,12 @@ namespace Copious.SharedKernel
 
         public override int Version
         {
-            get
-            {
-                return base.Version;
-            }
+            get => base.Version;
 
             set
             {
-                base.Version = value;
-                if (State != null)
-                    State.Version = value;
+                base.Version = value;                
+                if(State != null) State.Version = value;
             }
         }
 
@@ -89,14 +80,14 @@ namespace Copious.SharedKernel
         protected void Produce<TEvent>(TEvent @event) where TEvent : Event<TState>
         {
             EnforceInvariants(GetInvariants(@event), @event);
-            Produce<TEvent>(@event, true);
+            Apply<TEvent>(@event, true);
         }
 
-        private void Produce<TEvent>(Event<TState> @event, bool raiseEvent) where TEvent : Event<TState>
+        void Apply<TEvent>(Event<TState> @event, bool isNewEvent) where TEvent : Event<TState>
         {
-            (this as IApplyEvent<TEvent>).Apply(@event as TEvent);
+            (this as IApplyDomainEvent<TEvent>)?.Apply(@event as TEvent);
 
-            if (raiseEvent)
+            if (isNewEvent)
                 _changes.Add(@event);
         }
 

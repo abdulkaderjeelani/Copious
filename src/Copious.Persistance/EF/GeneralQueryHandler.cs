@@ -1,4 +1,5 @@
-﻿using Copious.Persistance.Interface;
+﻿using System;
+using Copious.Persistance.Interface;
 using Copious.Foundation;
 using Copious.Foundation.ComponentModel;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace Copious.Persistance.EF
              IQueryHandlerAsync<FindByIdQuery, TState>,
              IQueryHandlerAsync<SearchQuery<TState>, List<TState>>
 
-        where TState : class, IUnique, new()
+        where TState : class, Identifiable<Guid>, new()
     {
         
         protected readonly IQueryGuard _guard;
@@ -63,6 +64,6 @@ namespace Copious.Persistance.EF
             => ProtectedResult(await DynamicLinqHelper.ApplyFeatures(query, DbSet.AsNoTracking().Where(query.Predicate), _guard).ToListAsync());
 
         //todo: protect the select columns if not done in DynamicLinqHelper
-        private static List<TState> ProtectedResult(List<TState> listToProtect) => listToProtect;
+        static List<TState> ProtectedResult(List<TState> listToProtect) => listToProtect;
     }
 }

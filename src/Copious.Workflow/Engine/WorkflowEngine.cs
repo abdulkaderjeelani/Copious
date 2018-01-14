@@ -16,11 +16,11 @@ namespace Copious.Workflow.Engine
 
     public class WorkflowEngine : Component, IWorkflowEngine
     {
-        private readonly IWorkflowLogger _wfLogger;
-        private readonly IWorkflowRepository _wfRepository;
-        private readonly ICommandBus _inProcBus;
-        private readonly ICommandBus _outProcBus;
-        private readonly IWorkflowSecurityProvider _wfSecurity;
+        readonly IWorkflowLogger _wfLogger;
+        readonly IWorkflowRepository _wfRepository;
+        readonly ICommandBus _inProcBus;
+        readonly ICommandBus _outProcBus;
+        readonly IWorkflowSecurityProvider _wfSecurity;
 
         public WorkflowEngine(IWorkflowLogger logger, IWorkflowRepository wfRepository,
                               ICommandBus inProcBus, ICommandBus outProcBus,
@@ -92,7 +92,7 @@ namespace Copious.Workflow.Engine
         /// </summary>
         /// <param name="workflow"></param>
         /// <param name="event"></param>
-        private void EnsureWorkflowEvent(Workflow workflow, Event @event)
+        void EnsureWorkflowEvent(Workflow workflow, Event @event)
         {
             if (!workflow.Stages.SelectMany(s => s.OutConnectors).Any(c => c.FromEvent.Equals(@event.ComponentName, StringComparison.OrdinalIgnoreCase)))
                 throw new WorkflowException($"Event is not a part of workflow. Id : {workflow.Id} , Name : {workflow.Name}.");
@@ -102,7 +102,7 @@ namespace Copious.Workflow.Engine
         /// Any failure in engine must be logged using <see cref="Logging.IWorkflowLogger"/>  and notified to users
         /// </summary>
         /// <param name="info">info to log</param>
-        private void LogAndNotify(string info)
+        void LogAndNotify(string info)
         {
             _wfLogger.LogInfo(info);
         }

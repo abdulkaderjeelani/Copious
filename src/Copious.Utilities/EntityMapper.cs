@@ -47,7 +47,7 @@ namespace Copious.Utilities
         /// <param name="targetType"></param>
         /// <param name="referenceValue"></param>
         /// <returns></returns>
-        private static object FillObject(object value, Type targetType, object referenceValue)
+        static object FillObject(object value, Type targetType, object referenceValue)
         {
             var sourceProperties = value.GetType().GetTypeInfo().GetProperties().Where(pi => pi.CanWrite);
             var targetProperties = targetType.GetTypeInfo().GetProperties().Where(pi => pi.CanWrite);
@@ -72,7 +72,7 @@ namespace Copious.Utilities
             return target;
         }
 
-        private static void MapNonGenericType(object value, Type targetType, object referenceValue, object target, PropertyInfo targetProperty, PropertyInfo sourceProperty)
+        static void MapNonGenericType(object value, Type targetType, object referenceValue, object target, PropertyInfo targetProperty, PropertyInfo sourceProperty)
         {
             if (targetProperty.PropertyType.GetTypeInfo().IsClass && targetProperty.PropertyType.FullName != "System.String")
             {
@@ -107,7 +107,7 @@ namespace Copious.Utilities
             }
         }
 
-        private static void MapGenericType(object value, object target, PropertyInfo targetProperty, PropertyInfo sourceProperty)
+        static void MapGenericType(object value, object target, PropertyInfo targetProperty, PropertyInfo sourceProperty)
         {
             var genericType = targetProperty.PropertyType.GetGenericTypeDefinition();
             var genericTypeParameter1 = targetProperty.PropertyType.GetTypeInfo().GetGenericArguments()[0];
@@ -168,7 +168,7 @@ namespace Copious.Utilities
             return e.Compile()();
         }
 
-        private static TTarget FillObject<TTarget, TSource>(TSource value)
+        static TTarget FillObject<TTarget, TSource>(TSource value)
         where TTarget : class, new()
         where TSource : class, new() => (TTarget)FillObject(value, typeof(TTarget), null);
     }

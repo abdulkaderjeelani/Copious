@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Copious.Foundation
 {
-    public class Context
+    public class RequestContext
     {
         public IDictionary<object, object> Items { get; set; }
 
-        public Action Abort { get; set; }
+        public Action AbortRequest { get; set; }
 
         public Actor Actor { get; set; }
         

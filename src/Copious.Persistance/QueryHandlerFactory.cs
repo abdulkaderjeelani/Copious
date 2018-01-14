@@ -9,7 +9,7 @@ namespace Copious.Persistance
 {
     public class QueryHandlerFactory : IQueryHandlerFactory
     {
-        private readonly IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public QueryHandlerFactory(IServiceProvider serviceProvider)
         {
@@ -24,7 +24,7 @@ namespace Copious.Persistance
         => QueryHandlerResolver.GetQueryHandlerType<TQuery, TQueryResult>(typeof(IQueryHandler<,>))
               .Select(h => (IQueryHandler<TQuery, TQueryResult>)GetQueryHandlerInstance(h));
 
-        private object GetQueryHandlerInstance(Type h)
+        object GetQueryHandlerInstance(Type h)
             => ActivatorUtilities.CreateInstance(_serviceProvider, h);
     }
 }

@@ -12,7 +12,7 @@ namespace Copious.Persistance.Interface
     /// Query handlers will only inject this interface to its constructor, so it cannot get access to methods that changes state
     /// </summary>
     /// <typeparam name="TState">DTO for query, DataModel for commands</typeparam>
-    public interface IReadonlyRepository<TState> : IRepository where TState : class, IUnique, new()
+    public interface IReadonlyRepository<TState> : IRepository where TState : class, Identifiable<Guid>, new()
     {
         List<TState> GetAll();
 
@@ -23,7 +23,7 @@ namespace Copious.Persistance.Interface
         TState Get(Guid id);
     }
 
-    public interface IRepository<TEntity> : IReadonlyRepository<TEntity> where TEntity : class, IEntity, new()
+    public interface IRepository<TEntity> : IReadonlyRepository<TEntity> where TEntity : class,  IEntity<Guid>, new()
     {        
 
         void Save(Guid aggId, int expectedVersion, TEntity t, IEnumerable<Event> events);

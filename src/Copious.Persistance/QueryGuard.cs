@@ -9,7 +9,7 @@ namespace Copious.Persistance
 {
     public class QueryGuard : IQueryGuard
     {
-        private readonly ISecurityProvider _securityProvider;
+        readonly ISecurityProvider _securityProvider;
 
         public QueryGuard(ISecurityProvider securityProvider)
         {

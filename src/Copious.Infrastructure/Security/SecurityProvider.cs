@@ -8,7 +8,7 @@ namespace Copious.Infrastructure.Security
 {
     public class SecurityProvider : ISecurityProvider
     {
-        private readonly IContextProvider _contextProvider;
+        readonly IContextProvider _contextProvider;
 
         public SecurityProvider(IContextProvider contextProvider)
         {

@@ -14,19 +14,19 @@ namespace Copious.Infrastructure
 {
     internal sealed class QueryProcessor : IQueryProcessor
     {
-        private readonly IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
         public QueryProcessor(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
-        private static readonly ConcurrentDictionary<Type, MethodInfo> SyncMethodsCache = new ConcurrentDictionary<Type, MethodInfo>();
+        static readonly ConcurrentDictionary<Type, MethodInfo> SyncMethodsCache = new ConcurrentDictionary<Type, MethodInfo>();
 
         public TQueryResult Process<TQuery, TQueryResult>(TQuery query) where TQuery : Query
         => Process<TQuery, TQueryResult>(query, default(string));
 
-        private static readonly Func<object, string, bool> handlerIdentityPredicate = (h, handlerIdentity) => !string.IsNullOrEmpty(handlerIdentity) && (h is Identifiable<string> i) && i.Match(handlerIdentity);
+        static readonly Func<object, string, bool> handlerIdentityPredicate = (h, handlerIdentity) => !string.IsNullOrEmpty(handlerIdentity) && (h is Identifiable<string> i) && i.Match(handlerIdentity);
 
         [DebuggerStepThrough]
         public TQueryResult Process<TQuery, TQueryResult>(TQuery query, string handlerIdentity) where TQuery : Query
@@ -57,7 +57,7 @@ namespace Copious.Infrastructure
             return (TQueryResult)fetch.Invoke(syncHandler, new object[] { query });
         }
 
-        private static readonly ConcurrentDictionary<Type, MethodInfo> AsyncMethodsCache = new ConcurrentDictionary<Type, MethodInfo>();
+        static readonly ConcurrentDictionary<Type, MethodInfo> AsyncMethodsCache = new ConcurrentDictionary<Type, MethodInfo>();
 
         public async Task<TQueryResult> ProcessAsync<TQuery, TQueryResult>(TQuery query) where TQuery : Query
             => await ProcessAsync<TQuery, TQueryResult>(query, default(string));

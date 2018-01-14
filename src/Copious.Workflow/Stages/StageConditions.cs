@@ -7,7 +7,7 @@ namespace Copious.Workflow.Stages
             IsEmpty = false;
         }
 
-        private StageConditions(bool isEmpty)
+        StageConditions(bool isEmpty)
         {
             IsEmpty = isEmpty;
         }

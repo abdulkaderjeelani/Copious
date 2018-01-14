@@ -71,7 +71,7 @@ namespace Copious.Foundation
             return true;
         }
 
-        private IEnumerable<FieldInfo> GetFields()
+        IEnumerable<FieldInfo> GetFields()
         {
             var t = GetType();
 
@@ -85,6 +85,6 @@ namespace Copious.Foundation
 
             return fields;
         }
-        
+
     }
 }

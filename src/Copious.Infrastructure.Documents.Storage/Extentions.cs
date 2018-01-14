@@ -36,7 +36,7 @@ namespace Copious.Infrastructure.Documents.Storage
         public static List<T1> WhereToListOrEmpty<T1>(this IEnumerable<T1> e, Func<T1, bool> f)
             => e == null ? new List<T1>() : e.Where(f).ToList();
 
-        private static readonly Dictionary<StorageErrorCode, string> Errors = new Dictionary<StorageErrorCode, string>
+        static readonly Dictionary<StorageErrorCode, string> Errors = new Dictionary<StorageErrorCode, string>
         {
             {
                 StorageErrorCode.InvalidCredentials,

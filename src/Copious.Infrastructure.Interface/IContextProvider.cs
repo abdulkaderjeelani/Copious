@@ -7,6 +7,12 @@ namespace Copious.Infrastructure.Interface
 {
     public interface IContextProvider
     {
-        Context Context { get; }
+        RequestContext Context { get; }
+    }
+
+    public static class ContextProviderExtensions
+    {
+        public static Func<RequestContext> Fn(this IContextProvider contextProvider) => () => contextProvider.Context;
+
     }
 }

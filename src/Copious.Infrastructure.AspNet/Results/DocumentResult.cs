@@ -12,7 +12,7 @@ namespace Copious.Infrastructure.AspNet.Results
 {
     public class DocumentResult : ObjectResult
     {
-        enum DocumentResultType { None, Index, Indices, Document, Documents }
+        private enum DocumentResultType { None, Index, Indices, Document, Documents }
 
         private readonly DocumentResultType _documentResultType;
 
@@ -108,15 +108,13 @@ namespace Copious.Infrastructure.AspNet.Results
             if (documentResultType != _documentResultType)
                 throw new InvalidOperationException($"Invalid {nameof(DocumentResultType)}");
         }
-        
+
     }
 
     public static class DocumentApiErrorCodes
     {
         public static readonly ErrorCode UploadFileMissing = new ErrorCode(100, "File not found in the request.");
-
-
-        const int DocumentExceptionErrorCodeBase = 1000;
+        private const int DocumentExceptionErrorCodeBase = 1000;
         public static ErrorCode FromException(DocumentException ex) 
             => new ErrorCode(DocumentExceptionErrorCodeBase + (int)ex.ExceptionType, ex.Message);
     }

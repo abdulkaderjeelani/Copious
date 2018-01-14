@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Copious.Document.Interface.State
 {
-    public class File : Entity
+    public class File :  Entity<Guid>
     {
         public StorageProvider Provider { get; set; }
         public Dictionary<string,string> ProviderOptions { get;set; }

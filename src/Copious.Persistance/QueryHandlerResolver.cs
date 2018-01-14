@@ -10,7 +10,7 @@ namespace Copious.Persistance
 {
     public static class QueryHandlerResolver
     {
-        private static readonly ConcurrentDictionary<string, List<Type>> QueryHandlersCache = new ConcurrentDictionary<string, List<Type>>();        
+        static readonly ConcurrentDictionary<string, List<Type>> QueryHandlersCache = new ConcurrentDictionary<string, List<Type>>();
 
         public static List<Type> GetQueryHandlerType<TQuery,TQueryResult>(Type handlerType)
         {

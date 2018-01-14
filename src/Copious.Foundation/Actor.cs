@@ -8,7 +8,7 @@ namespace Copious.Foundation
     /// </summary>
     public class Actor
     {
-        private string _name;
+        string _name;
 
         public Guid Id { get; set; }
         public ActorKind Kind { get; set; }

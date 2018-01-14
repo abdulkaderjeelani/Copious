@@ -1,12 +1,18 @@
-﻿using Copious.Infrastructure.Interface;
+﻿using System;
+using System.Reflection;
+
 using Copious.Document.Interface;
+using Copious.Document.Interface.State;
+using Copious.Document.Persistance;
+using Copious.Infrastructure.Interface;
+using Copious.Persistance;
+
+using System;
+
+using Copious.Persistance.Interface;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Copious.Persistance;
-using Copious.Document.Persistance;
-using System.Reflection;
-using Copious.Document.Interface.State;
-using System;
 
 namespace Copious.Document
 {
@@ -23,18 +29,24 @@ namespace Copious.Document
 
             services.AddScoped<IDocumentGuard, DocumentGuard>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
-
         }
 
         public void RegisterDependancies(IConfigurationRoot configuration, IContainer container, IServiceProvider serviceProvider)
         {
-            Func<DocumentContext> contextProvider = () => serviceProvider.GetService<DocumentContext>();
+            DocumentContext ContextProvider() => serviceProvider.GetService<DocumentContext>();
 
-            RegistrationHelper.RegisterGeneralQueryHandlers<Index, DocumentContext>(container, contextProvider);
-            RegistrationHelper.RegisterGeneralQueryHandlers<VersionedDocument, DocumentContext>(container, contextProvider);
-            RegistrationHelper.RegisterGeneralQueryHandlers<Draft, DocumentContext>(container, contextProvider);
-            RegistrationHelper.RegisterGeneralQueryHandlers<DocumentAccess, DocumentContext>(container, contextProvider);
+            RegistrationHelper.RegisterGeneralQueryHandlers<Index, DocumentContext>(container, ContextProvider);
+            RegistrationHelper.RegisterGeneralQueryHandlers<VersionedDocument, DocumentContext>(container, ContextProvider);
+            RegistrationHelper.RegisterGeneralQueryHandlers<Draft, DocumentContext>(container, ContextProvider);
+            //RegistrationHelper.RegisterGeneralQueryHandlers<DocumentAccess, DocumentContext>(container, ContextProvider);
+        }
 
+        public class testhandler : Copious.Persistance.Interface.IQueryHandler<Copious.Persistance.Interface.GetAllQuery, System.Collections.Generic.List<DocumentAccess>>
+        {
+            System.Collections.Generic.List<DocumentAccess> IQueryHandler<GetAllQuery, System.Collections.Generic.List<DocumentAccess>>.Fetch(GetAllQuery query)
+            {
+                return null;
+            }
         }
     }
 }

@@ -11,9 +11,9 @@ namespace Copious.Infrastructure.Documents.Storage.Azure
 {
     public sealed class AzureStorageProvider : IStorageProvider
     {
-        private readonly CloudBlobClient _blobClient;
-        private readonly BlobRequestOptions _requestOptions;
-        private readonly OperationContext _context;
+        readonly CloudBlobClient _blobClient;
+        readonly BlobRequestOptions _requestOptions;
+        readonly OperationContext _context;
 
         public AzureStorageProvider(AzureProviderOptions options)
         {

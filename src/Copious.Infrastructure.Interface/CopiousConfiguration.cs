@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using Microsoft.Extensions.Configuration;
+
+using System;
 
 namespace Copious.Infrastructure.Interface
 {
@@ -27,6 +30,8 @@ namespace Copious.Infrastructure.Interface
         public Db DocumentDb { get; private set; }
 
         public string DocumentDbConnection { get; private set; }
+
+        public bool EnableAntiforgery { get; private set; }
 
         /// <summary>
         /// Tells wheter to enable cors
@@ -78,6 +83,7 @@ namespace Copious.Infrastructure.Interface
                 Scheduler = configuration.GetValue<Scheduler>(nameof(Scheduler)),
                 SchedulerPostgreSqlDb = configuration.GetConnectionString(nameof(SchedulerPostgreSqlDb)),
                 EnableCors = configuration.GetValue<bool>(nameof(EnableCors)),
+                EnableAntiforgery = configuration.GetValue<bool>(nameof(EnableAntiforgery)),
                 EnableDocument = configuration.GetValue<bool>(nameof(EnableDocument)),
                 DocumentDb = configuration.GetValue<Db>(nameof(DocumentDb)),
                 DocumentDbConnection = configuration.GetValue<string>(nameof(DocumentDbConnection)),
@@ -106,6 +112,5 @@ namespace Copious.Infrastructure.Interface
                 else break;
             }
         }
-
     }
 }

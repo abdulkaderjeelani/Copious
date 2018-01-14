@@ -16,7 +16,7 @@ namespace Copious.Persistance.EF
     public class ReadonlyRepository<TState> :
         EFBase<TState>,
         IReadonlyRepository<TState> // implmented because this class provides repo fns for read operations
-        where TState : class, IUnique, new()
+        where TState : class, Identifiable<Guid>, new()
     {
         public ReadonlyRepository(DbContext context) : base(context)
         {

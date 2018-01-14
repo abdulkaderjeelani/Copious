@@ -89,7 +89,7 @@ namespace Copious.Workflow.Core
             };
         }
 
-        private static IEnumerable<Stage> GetStages(Workflow workflow, IEnumerable<StageConnector> outConnector) =>
+        static IEnumerable<Stage> GetStages(Workflow workflow, IEnumerable<StageConnector> outConnector) =>
             workflow.Stages.Where(s => outConnector.Select(oc => oc.ToStageId).Contains(s.StageId));
     }
 }

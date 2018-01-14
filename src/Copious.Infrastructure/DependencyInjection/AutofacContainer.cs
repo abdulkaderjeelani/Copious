@@ -17,7 +17,7 @@ namespace Copious.Infrastructure
 
     public class AutofacContainer : DependancyContainer, Interface.IContainer
     {
-        private readonly ContainerBuilder _builder;
+        readonly ContainerBuilder _builder;
 
         public AutofacContainer(IServiceCollection services)
         {
@@ -27,12 +27,12 @@ namespace Copious.Infrastructure
         }
 
         public bool HasAssemblyScanningSupport => true;
-        private IContainer _AutofacContainer { get; set; }
+        IContainer AutofacIContainer { get; set; }
 
         public IServiceProvider GetServiceProvider()
         {
-            Container = _AutofacContainer = _builder.Build();
-            return new AutofacServiceProvider(_AutofacContainer);
+            Container = AutofacIContainer = _builder.Build();
+            return new AutofacServiceProvider(AutofacIContainer);
         }
 
         public void Register<TClass, TInterface>() where TClass : TInterface

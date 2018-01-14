@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Copious.Document.Interface.State
 {
-    public class Draft : Entity
+    public class Draft :  Entity<Guid>
     {
         public ActorKind ActorKind { get; set; }
         public Guid ActorId { get; set; }
@@ -16,7 +16,7 @@ namespace Copious.Document.Interface.State
         public string _File { get; set; }
 
         [NotMapped]
-        private File _file;
+        File _file;
 
         [NotMapped]
         public File File

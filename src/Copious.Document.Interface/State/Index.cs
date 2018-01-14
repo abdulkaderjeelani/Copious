@@ -9,7 +9,7 @@ namespace Copious.Document.Interface.State
     /// Serves as an index for document storage, For a given instance values correspond to recent version of document,
     /// Contains properties / fields that are only needed for document search /  retrieval.
     /// </summary>
-    public class Index : Entity
+    public class Index :  Entity<Guid>
     {
         /*Basic Index*/        
         public Guid SystemId { get; set; }
