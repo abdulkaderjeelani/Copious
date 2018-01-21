@@ -59,6 +59,8 @@ namespace Copious.Infrastructure.Interface
         /// </summary>
         public Scheduler Scheduler { get; private set; }
 
+        public Mapper Mapper { get; private set; }
+
         /// <summary>
         /// Database of scheduler in case of Hangfire
         /// </summary>
@@ -81,6 +83,7 @@ namespace Copious.Infrastructure.Interface
                 LoggingProvider = configuration.GetValue<LoggingProvider>(nameof(LoggingProvider)),
                 EnableScheduler = configuration.GetValue<bool>(nameof(EnableScheduler)),
                 Scheduler = configuration.GetValue<Scheduler>(nameof(Scheduler)),
+                Mapper = configuration.GetValue<Mapper>(nameof(Mapper)),
                 SchedulerPostgreSqlDb = configuration.GetConnectionString(nameof(SchedulerPostgreSqlDb)),
                 EnableCors = configuration.GetValue<bool>(nameof(EnableCors)),
                 EnableAntiforgery = configuration.GetValue<bool>(nameof(EnableAntiforgery)),

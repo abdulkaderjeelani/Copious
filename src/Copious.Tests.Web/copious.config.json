@@ -10,6 +10,7 @@
   "EnableDocument": true,
   "AuthenticationType": "None", /* None, Jwt */
   "DocumentDb": "Postgres",
+  "Mapper" :  "Mapster" , /* Mapster, Automapper*/
   "DocumentDbConnection": "PostgreSqlProvider", /* provide the connection string key here */
   "DefaultDocumentStorageProvider": "FileSystem",
   "DefaultDocumentStorageProviderOptions": [

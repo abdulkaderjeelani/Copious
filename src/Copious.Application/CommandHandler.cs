@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Copious.Application.Interface;
+﻿using Copious.Application.Interface;
 using Copious.Foundation;
 using Copious.Infrastructure.Interface;
 using Copious.Persistance.Interface;

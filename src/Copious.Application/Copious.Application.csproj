@@ -11,6 +11,10 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute><GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Copious.Application.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Copious.Application.Interface\Copious.Application.Interface.csproj" />
     <ProjectReference Include="..\Copious.Foundation\Copious.Foundation.csproj" />

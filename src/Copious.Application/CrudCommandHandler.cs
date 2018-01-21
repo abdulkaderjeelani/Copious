@@ -1,12 +1,10 @@
-﻿using AutoMapper;
-using Copious.Application.Interface;
+﻿using Copious.Application.Interface;
 using Copious.Foundation;
 using Copious.Infrastructure.Interface;
 using Copious.Persistance.Interface;
 using Copious.SharedKernel;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
 
 namespace Copious.Application
 {

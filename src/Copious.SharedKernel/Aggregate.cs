@@ -1,5 +1,4 @@
 ﻿using System;
-using AutoMapper;
 using Copious.Foundation;
 using Copious.Foundation.ComponentModel;
 using System.Collections.Concurrent;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Copious.Infrastructure.Interface;
 
 namespace Copious.SharedKernel
 {

@@ -16,9 +16,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Caching.Memory;
 
-using System;
 using Serilog;
 
 namespace Copious.Infrastructure
@@ -45,12 +43,24 @@ namespace Copious.Infrastructure
             services.Add(new ServiceDescriptor(typeof(IConfigurationRoot), provider => configuration, ServiceLifetime.Singleton));
             services.AddSingleton<IConfiguration>(configuration);
 
-            // https://stackoverflow.com/questions/40275195/how-to-setup-automapper-in-asp-net-core
-            // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
-            services.AddAutoMapper();
+            switch (CopiousConfiguration.Config.Mapper)
+            {
+                case Interface.Mapper.Mapster:
+                    services.AddScoped<Interface.IMapper, Mappers.Mapster>();
+                    break;
+                case Interface.Mapper.Automapper:
+                default:
+                    // https://stackoverflow.com/questions/40275195/how-to-setup-automapper-in-asp-net-core
+                    // https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/
+                    services.AddAutoMapper();
+                    services.AddScoped<Interface.IMapper, Mappers.AutoMapper>();
+                    break;
+            }
+
+
         }
-        
-        public static void AddCache( IServiceCollection services)
+
+        public static void AddCache(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
         }
