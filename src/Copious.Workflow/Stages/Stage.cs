@@ -1,9 +1,8 @@
-namespace Copious.Workflow.Stages
-{
-    using System;
+namespace Copious.Workflow.Stages {
     using System.Collections.Generic;
-    using Core;
+    using System;
     using Copious.Foundation.ComponentModel;
+    using Core;
 
     /// <summary>
     /// Workflow step is represented as a Stage,
@@ -13,8 +12,7 @@ namespace Copious.Workflow.Stages
     /// <item> 2. Any workflowstage  must have only one inConnector </item>
     /// </list>
     /// </summary>
-    public class Stage : Component
-    {
+    public class Stage : Component {
         public int StageId { get; set; }
 
         public StageType StageType { get; set; }

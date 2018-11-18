@@ -1,13 +1,10 @@
-namespace Copious.Workflow.Stages
-{
+namespace Copious.Workflow.Stages {
     using System.Threading.Tasks;
-    using Infrastructure.Interface;
     using Copious.Foundation;
+    using Infrastructure.Interface;
 
-    public class ComponentStage : Stage
-    {
-        public ComponentStage()
-        {
+    public class ComponentStage : Stage {
+        public ComponentStage () {
             StageType = StageType.ComponentStage;
         }
 
@@ -47,7 +44,6 @@ namespace Copious.Workflow.Stages
         /// </summary>
         public Command CommandInHold { get; set; }
 
-        public Task Execute(Command command, ICommandBus inProcBus, ICommandBus outProcBus)
-        => Task.Run(() => (ProcessMode == StageProcessMode.InProc ? inProcBus : outProcBus).Send(command));
+        public Task Execute (Command command, ICommandBus inProcBus, ICommandBus outProcBus) => Task.Run (() => (ProcessMode == StageProcessMode.InProc ? inProcBus : outProcBus).Send (command));
     }
 }

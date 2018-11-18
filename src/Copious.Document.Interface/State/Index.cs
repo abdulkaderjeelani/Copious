@@ -1,17 +1,15 @@
-﻿using Copious.Foundation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Copious.Foundation;
 
-namespace Copious.Document.Interface.State
-{
+namespace Copious.Document.Interface.State {
     /// <summary>
     /// Serves as an index for document storage, For a given instance values correspond to recent version of document,
     /// Contains properties / fields that are only needed for document search /  retrieval.
     /// </summary>
-    public class Index :  Entity<Guid>
-    {
-        /*Basic Index*/        
+    public class Index : Entity<Guid> {
+        /*Basic Index*/
         public Guid SystemId { get; set; }
         public Guid SubSystemId { get; set; }
         public DocumentKind DocumentKind { get; set; }
@@ -28,7 +26,6 @@ namespace Copious.Document.Interface.State
         public DateTimeOffset VersionedOn { get; set; }
         public Guid ActorId { get; set; }
         public ActorKind ActorKind { get; set; }
-
 
         /*Business Details Index*/
         public string ComponentName { get; set; }

@@ -1,44 +1,30 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Copious.Foundation
-{
+namespace Copious.Foundation {
     public class EntityEvent<TState> : Event<TState>
-        where TState : class, IEntity<Guid>, new()
-    {
-        public EntityEvent(TState state, bool isPublishable) : base(state, state.Id, state.Version, isPublishable)
-        {
+        where TState : class, IEntity<Guid>, new () {
+            public EntityEvent (TState state, bool isPublishable) : base (state, state.Id, state.Version, isPublishable) { }
         }
-    }
 
     public class Created<TState> : EntityEvent<TState>
-            where TState : class, IEntity<Guid>, new()
-    {
-        public Created(TState state, bool isPublishable) : base(state, isPublishable)
-        {
+        where TState : class, IEntity<Guid>, new () {
+            public Created (TState state, bool isPublishable) : base (state, isPublishable) { }
         }
-    }
 
     public class Updated<TState> : EntityEvent<TState>
-           where TState : class, IEntity<Guid>, new()
-    {
-        public Updated(TState state, bool isPublishable) : base(state, isPublishable)
-        {
-        }
+        where TState : class, IEntity<Guid>, new () {
+            public Updated (TState state, bool isPublishable) : base (state, isPublishable) { }
 
-        public Updated(TState state, IEnumerable<string> propertiesToBeUpdated, bool isPublishable) : this(state, isPublishable)
-        {
-            PropertiesToBeUpdated = propertiesToBeUpdated;
-        }
+            public Updated (TState state, IEnumerable<string> propertiesToBeUpdated, bool isPublishable) : this (state, isPublishable) {
+                PropertiesToBeUpdated = propertiesToBeUpdated;
+            }
 
-        public IEnumerable<string> PropertiesToBeUpdated { get; set; }
-    }
+            public IEnumerable<string> PropertiesToBeUpdated { get; set; }
+        }
 
     public class Deleted<TState> : EntityEvent<TState>
-         where TState : class, IEntity<Guid>, new()
-    {
-        public Deleted(TState state, bool isPublishable) : base(state, isPublishable)
-        {
+        where TState : class, IEntity<Guid>, new () {
+            public Deleted (TState state, bool isPublishable) : base (state, isPublishable) { }
         }
-    }
 }

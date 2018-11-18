@@ -1,16 +1,13 @@
-﻿using System;
+using System;
 
-namespace Copious.Infrastructure.Documents.Storage
-{
-    public enum BlobSecurity
-    {
+namespace Copious.Infrastructure.Documents.Storage {
+    public enum BlobSecurity {
         Private,
         Public
     }
 
     [Flags]
-    public enum BlobUrlAccess
-    {
+    public enum BlobUrlAccess {
         None = 0,
         Read = 1,
         Write = 2,
@@ -18,8 +15,7 @@ namespace Copious.Infrastructure.Documents.Storage
         All = Read | Write | Delete,
     }
 
-    public enum StorageErrorCode
-    {
+    public enum StorageErrorCode {
         None = 0,
         InvalidCredentials = 1000,
         GenericException = 1001,

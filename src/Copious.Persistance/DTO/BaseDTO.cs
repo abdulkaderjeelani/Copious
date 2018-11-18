@@ -1,6 +1,3 @@
-﻿namespace Copious.Persistance.DTO
-{
-    public class BaseDto
-    {
-    }
+namespace Copious.Persistance.DTO {
+    public class BaseDto { }
 }

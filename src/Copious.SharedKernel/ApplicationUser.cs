@@ -1,19 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 
-namespace Copious.SharedKernel
-{
-    public class ApplicationUser : IdentityUser
-    {
-        public ApplicationUser()
-        {
-        }
+namespace Copious.SharedKernel {
+    public class ApplicationUser : IdentityUser {
+        public ApplicationUser () { }
 
-        public ApplicationUser(string userName) : base(userName)
-        {
-        }
+        public ApplicationUser (string userName) : base (userName) { }
 
-        public ApplicationUser(string userName, int systemId) : this(userName)
-        {
+        public ApplicationUser (string userName, int systemId) : this (userName) {
             SystemId = systemId;
         }
 

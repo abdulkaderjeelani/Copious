@@ -1,18 +1,16 @@
-﻿using System;
+using System;
 using System.Reflection;
 
-namespace Copious.Infrastructure.Interface
-{
+namespace Copious.Infrastructure.Interface {
     /// <summary>
     /// Abstraction layer for Container registrations
     /// </summary>
-    public interface IContainer : IDisposable
-    {
-        IServiceProvider GetServiceProvider();
+    public interface IContainer : IDisposable {
+        IServiceProvider GetServiceProvider ();
 
         bool HasAssemblyScanningSupport { get; }
 
-        void Register<TClass, TInterface>() where TClass : TInterface;
+        void Register<TClass, TInterface> () where TClass : TInterface;
 
         /// <summary>
         /// The explicit parameter must be first parameter for the implementing class
@@ -22,7 +20,7 @@ namespace Copious.Infrastructure.Interface
         /// <typeparam name="TExcplicitParameterType"></typeparam>
         /// <param name="explicitParameterName"></param>
         /// <param name="explicitparameterValue"></param>
-        void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface;
+        void Register<TClass, TInterface, TExcplicitParameterType> (string explicitParameterName, TExcplicitParameterType explicitparameterValue) where TClass : TInterface;
 
         /// <summary>
         /// The explicit parameter must be first parameter for the implementing class,
@@ -33,11 +31,11 @@ namespace Copious.Infrastructure.Interface
         /// <typeparam name="TExcplicitParameterType"></typeparam>
         /// <param name="explicitParameterName"></param>
         /// <param name="explicitparameterValueRetriever"></param>
-        void Register<TClass, TInterface, TExcplicitParameterType>(string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface;
+        void Register<TClass, TInterface, TExcplicitParameterType> (string explicitParameterName, Func<TExcplicitParameterType> explicitparameterValueRetriever) where TClass : TInterface;
 
-        void Register<TClass>();
+        void Register<TClass> ();
 
-        void RegisterGeneric(Type implementationType, Type definitionType);
+        void RegisterGeneric (Type implementationType, Type definitionType);
 
         /// <summary>
         /// Any implementd types with <see cref="HasAssemblyScanningSupport"/>
@@ -47,8 +45,8 @@ namespace Copious.Infrastructure.Interface
         /// </summary>
         /// <param name="assembly"></param>
         /// <param name="typeFilter"></param>
-        void RegisterAssemblyTypes(Assembly assembly, Func<Type, bool> typeFilter = null);
+        void RegisterAssemblyTypes (Assembly assembly, Func<Type, bool> typeFilter = null);
 
-        void RegisterInstance<TInterface>(TInterface instance) where TInterface : class;
+        void RegisterInstance<TInterface> (TInterface instance) where TInterface : class;
     }
 }

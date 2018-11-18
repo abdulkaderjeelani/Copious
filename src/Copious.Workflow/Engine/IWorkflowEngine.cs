@@ -1,18 +1,16 @@
-namespace Copious.Workflow.Engine
-{
-    using System;
+namespace Copious.Workflow.Engine {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Core;
+    using System;
     using Copious.Foundation;
+    using Core;
     using Stages;
 
     /// <summary>
     /// The engine acts as a process manager, API controllers use the workflow engine to communitcate with workflow,
     /// Engine should be injected to the base controller so that its available to all controllers
     /// </summary>
-    public interface IWorkflowEngine
-    {
+    public interface IWorkflowEngine {
         WorkflowInstance RunningInstance { get; }
 
         /// <summary>
@@ -21,7 +19,7 @@ namespace Copious.Workflow.Engine
         /// </summary>
         /// <param name="startEvent"></param>
         /// <returns>Workflow ids in which the given command is the start command</returns>
-        IList<Guid> GetWorkflowIds(string startEvent);
+        IList<Guid> GetWorkflowIds (string startEvent);
 
         //TODO: Design WF instance persistance model, with stages, commands, and its data
 
@@ -55,9 +53,9 @@ namespace Copious.Workflow.Engine
         /// <param name="workflowId">If passed  the engine will not compute the workflow from command.
         /// Must be passed if the start command matches multiple workflows.</param>
         /// <returns></returns>
-        Task<WorkflowInstance> StartWorkflowAsync(Event startEvent, WorkflowInvoker wfInvoker, Guid invokerId, Guid? workflowId = null);
+        Task<WorkflowInstance> StartWorkflowAsync (Event startEvent, WorkflowInvoker wfInvoker, Guid invokerId, Guid? workflowId = null);
 
-        Task<WorkflowInstance> GetWorkflowAsync(Guid wfInstanceId);
+        Task<WorkflowInstance> GetWorkflowAsync (Guid wfInstanceId);
 
         /// <summary>
         /// <para>
@@ -98,7 +96,7 @@ namespace Copious.Workflow.Engine
         /// <param name="invokerId"></param>
         /// <returns></returns>
         /// <exception cref=""></exception>
-        void ProcessEventAsync(Guid workflowInstanceId, Event wfEvent, WorkflowInvoker wfInvoker, Guid invokerId);
+        void ProcessEventAsync (Guid workflowInstanceId, Event wfEvent, WorkflowInvoker wfInvoker, Guid invokerId);
 
         /// <summary>
         /// Based on type of stage Executes the stage by calling
@@ -114,8 +112,8 @@ namespace Copious.Workflow.Engine
         /// <param name="stage"></param>
         /// <param name="command"></param>
         /// <returns></returns>
-        Task ExecuteStageAsync(Stage stage, Command command);
-        
+        Task ExecuteStageAsync (Stage stage, Command command);
+
         /// <summary>
         /// Using mapping components creates the command.
         /// <para>
@@ -127,6 +125,6 @@ namespace Copious.Workflow.Engine
         /// <param name="stageConnector"></param>
         /// <param name="event"></param>
         /// <returns></returns>
-        Task<Command> CreateCommandFromEvent(StageConnector stageConnector, Event @event);
+        Task<Command> CreateCommandFromEvent (StageConnector stageConnector, Event @event);
     }
 }

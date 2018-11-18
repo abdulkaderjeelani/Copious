@@ -1,19 +1,17 @@
-﻿using Copious.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Copious.Foundation;
 
-namespace Copious.Document.Interface.State
-{
-    public class DocumentAccess : Entity<Guid>
-    {
-        public Guid DocumentId { get; set; }        
+namespace Copious.Document.Interface.State {
+    public class DocumentAccess : Entity<Guid> {
+        public Guid DocumentId { get; set; }
         public ActorKind ActorKind { get; set; }
         public Guid ActorId { get; set; }
         public DateTimeOffset AccessedOn { get; set; }
         public AccessType AccessType { get; set; }
         public string IpAddress { get; set; }
-        public string Location { get; set; }        
+        public string Location { get; set; }
         public string Reason { get; set; }
 
         /* If a user changes a document on request by other user, then we save other user as RequestedBy */

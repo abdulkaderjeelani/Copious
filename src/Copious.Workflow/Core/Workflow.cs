@@ -1,12 +1,10 @@
-﻿namespace Copious.Workflow.Core
-{
-    using System;
+namespace Copious.Workflow.Core {
     using System.Collections.Generic;
+    using System;
     using Mapping;
     using Stages;
 
-    public class Workflow
-    {
+    public class Workflow {
         public Guid Id { get; set; }
 
         public string Name { get; set; }

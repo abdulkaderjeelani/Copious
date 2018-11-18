@@ -1,17 +1,13 @@
-namespace Copious.Workflow.Mapping
-{
+namespace Copious.Workflow.Mapping {
     using System.Threading.Tasks;
-    using Core;
     using Copious.Foundation;
+    using Core;
 
-    public class EventToWorkflowCommandMapper : IEventToCommandMapper
-    {
-        public EventToCommandMap MappingDetail => new EventToCommandMap("*", "WorkflowCommand");
+    public class EventToWorkflowCommandMapper : IEventToCommandMapper {
+        public EventToCommandMap MappingDetail => new EventToCommandMap ("*", "WorkflowCommand");
 
-        public Task<Command> Map(Event workflowEvent)
-            => Task.FromResult((Command)new WorkflowCommand(workflowEvent.ComponentId, workflowEvent.ComponentVersion)
-            {
-                Event = workflowEvent,
-            });
+        public Task<Command> Map (Event workflowEvent) => Task.FromResult ((Command) new WorkflowCommand (workflowEvent.ComponentId, workflowEvent.ComponentVersion) {
+            Event = workflowEvent,
+        });
     }
 }

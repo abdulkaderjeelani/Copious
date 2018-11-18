@@ -1,21 +1,17 @@
-﻿using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Blob;
 using AzureStorageException = Microsoft.WindowsAzure.Storage.StorageException;
 using Copious.Infrastructure.Documents.Storage;
 
-namespace Copious.Infrastructure.Documents.Storage.Azure
-{
-    public static class Extensions
-    {
-        public static SharedAccessBlobPermissions ToPermissions(this BlobUrlAccess security)
-        {
-            switch (security)
-            {
+namespace Copious.Infrastructure.Documents.Storage.Azure {
+    public static class Extensions {
+        public static SharedAccessBlobPermissions ToPermissions (this BlobUrlAccess security) {
+            switch (security) {
                 case BlobUrlAccess.Read:
                     return SharedAccessBlobPermissions.Read;
 
@@ -33,16 +29,13 @@ namespace Copious.Infrastructure.Documents.Storage.Azure
             }
         }
 
-        public static Exception Convert(this Exception e)
-        {
+        public static Exception Convert (this Exception e) {
             var storageException = (e as AzureStorageException) ?? e.InnerException as AzureStorageException;
 
-            if (storageException != null)
-            {
+            if (storageException != null) {
                 StorageErrorCode errorCode;
 
-                switch ((HttpStatusCode)storageException.RequestInformation.HttpStatusCode)
-                {
+                switch ((HttpStatusCode) storageException.RequestInformation.HttpStatusCode) {
                     case HttpStatusCode.Forbidden:
                         errorCode = StorageErrorCode.InvalidCredentials;
                         break;
@@ -56,24 +49,20 @@ namespace Copious.Infrastructure.Documents.Storage.Azure
                         break;
                 }
 
-                return new StorageException(errorCode.ToStorageError(), storageException);
+                return new StorageException (errorCode.ToStorageError (), storageException);
             }
             return e;
         }
 
-        public static bool IsAzureStorageException(this Exception e)
-        {
+        public static bool IsAzureStorageException (this Exception e) {
             return e is AzureStorageException || e.InnerException is AzureStorageException;
         }
 
-        public static void SetMetadata(this IDictionary<string, string> azureMeta, IDictionary<string, string> meta)
-        {
-            azureMeta.Clear();
+        public static void SetMetadata (this IDictionary<string, string> azureMeta, IDictionary<string, string> meta) {
+            azureMeta.Clear ();
 
-            if (meta != null)
-            {
-                foreach (var kvp in meta)
-                {
+            if (meta != null) {
+                foreach (var kvp in meta) {
                     azureMeta[kvp.Key] = kvp.Value;
                 }
             }

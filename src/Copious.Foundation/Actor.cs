@@ -1,23 +1,19 @@
-﻿using System;
+using System;
 using System.Security.Principal;
 
-namespace Copious.Foundation
-{
+namespace Copious.Foundation {
     /// <summary>
-    /// Actor is on who performs a query / command. It can be a User / Systm.
+    /// Actor is on who performs a query / command. It can be a User / System.
     /// </summary>
-    public class Actor
-    {
+    public class Actor {
         string _name;
 
         public Guid Id { get; set; }
         public ActorKind Kind { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_name) && Principal != null)
+        public string Name {
+            get {
+                if (string.IsNullOrEmpty (_name) && Principal != null)
                     _name = Principal.Identity.Name;
                 return _name;
             }

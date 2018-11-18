@@ -1,21 +1,15 @@
-﻿using Copious.Foundation;
+using Copious.Foundation;
 
-namespace Copious.Infrastructure.AspNet.Results
-{
-    public class ServiceResult
-    {
-        public ServiceResult()
-        {
-        }
+namespace Copious.Infrastructure.AspNet.Results {
+    public class ServiceResult {
+        public ServiceResult () { }
 
-        public ServiceResult(int status, string description)
-        {
+        public ServiceResult (int status, string description) {
             Status = status;
             Description = description;
         }
 
-        public ServiceResult(ErrorCode errCode)
-        {
+        public ServiceResult (ErrorCode errCode) {
             Status = errCode.Code;
             Description = errCode.Description;
         }
@@ -28,19 +22,14 @@ namespace Copious.Infrastructure.AspNet.Results
         public string Description { get; set; }
     }
 
-    public class ServiceResult<TData> : ServiceResult
-    {
-        public ServiceResult()
-        {
-        }
+    public class ServiceResult<TData> : ServiceResult {
+        public ServiceResult () { }
 
-        public ServiceResult(TData data)
-        {
+        public ServiceResult (TData data) {
             Data = data;
         }
 
-        public ServiceResult(TData data, ErrorCode errCode) :base(errCode)
-        {
+        public ServiceResult (TData data, ErrorCode errCode) : base (errCode) {
             Data = data;
         }
 

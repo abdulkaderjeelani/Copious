@@ -1,10 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Copious.Infrastructure.Documents.Storage
-{
-    public class BlobDescriptor
-    {
+namespace Copious.Infrastructure.Documents.Storage {
+    public class BlobDescriptor {
         public string ContentType { get; set; }
 
         public string ContentMD5 { get; set; }
@@ -25,6 +23,6 @@ namespace Copious.Infrastructure.Documents.Storage
 
         public string Url { get; set; }
 
-        public IDictionary<string, string> Metadata { get; set; } = new Dictionary<string, string>();
+        public IDictionary<string, string> Metadata { get; set; } = new Dictionary<string, string> ();
     }
 }

@@ -1,16 +1,11 @@
-﻿using System;
+using System;
 
-namespace Copious.Foundation
-{
+namespace Copious.Foundation {
     [Serializable]
-    public class Event : Message
-    {
-        public Event(Guid componentId, int componentVersion) : base(componentId, componentVersion)
-        {
-        }
+    public class Event : Message {
+        public Event (Guid componentId, int componentVersion) : base (componentId, componentVersion) { }
 
-        public Event(Guid componentId, int componentVersion, bool isPublishableToExternal) : this(componentId, componentVersion)
-        {
+        public Event (Guid componentId, int componentVersion, bool isPublishableToExternal) : this (componentId, componentVersion) {
             IsPublishableToExternal = isPublishableToExternal;
         }
 
@@ -24,14 +19,10 @@ namespace Copious.Foundation
         public dynamic Payload { get; set; }
     }
 
-    public class Event<TPayload> : Event
-    {
-        public Event(Guid componentId, int componentVersion) : base(componentId, componentVersion)
-        {
-        }
+    public class Event<TPayload> : Event {
+        public Event (Guid componentId, int componentVersion) : base (componentId, componentVersion) { }
 
-        public Event(TPayload state, Guid componentId, int componentVersion, bool isPublishable) : base(componentId, componentVersion, isPublishable)
-        {
+        public Event (TPayload state, Guid componentId, int componentVersion, bool isPublishable) : base (componentId, componentVersion, isPublishable) {
             State = state;
         }
 

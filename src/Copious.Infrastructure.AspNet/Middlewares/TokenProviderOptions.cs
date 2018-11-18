@@ -1,15 +1,13 @@
-﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Copious.Infrastructure.AspNet.Middlewares
-{
+namespace Copious.Infrastructure.AspNet.Middlewares {
     /// <summary>
     /// Provides options for <see cref="TokenProviderMiddleware"/>.
     /// </summary>
-    public class TokenProviderOptions
-    {
+    public class TokenProviderOptions {
         /// <summary>
         /// The relative request path to listen on.
         /// </summary>
@@ -30,7 +28,7 @@ namespace Copious.Infrastructure.AspNet.Middlewares
         /// The expiration time for the generated tokens.
         /// </summary>
         /// <remarks>The default is five minutes (300 seconds).</remarks>
-        public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes(5);
+        public TimeSpan Expiration { get; set; } = TimeSpan.FromMinutes (5);
 
         /// <summary>
         /// The signing key to use when generating tokens.
@@ -46,7 +44,6 @@ namespace Copious.Infrastructure.AspNet.Middlewares
         /// Generates a random value (nonce) for each generated token.
         /// </summary>
         /// <remarks>The default nonce is a random GUID.</remarks>
-        public Func<Task<string>> NonceGenerator { get; set; }
-            = new Func<Task<string>>(() => Task.FromResult(Guid.NewGuid().ToString()));
+        public Func<Task<string>> NonceGenerator { get; set; } = new Func<Task<string>> (() => Task.FromResult (Guid.NewGuid ().ToString ()));
     }
 }

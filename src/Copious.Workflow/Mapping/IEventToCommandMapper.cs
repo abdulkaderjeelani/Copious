@@ -1,12 +1,10 @@
-namespace Copious.Workflow.Mapping
-{
+namespace Copious.Workflow.Mapping {
     using System.Threading.Tasks;
     using Copious.Foundation;
 
-    public interface IEventToCommandMapper
-    {
+    public interface IEventToCommandMapper {
         EventToCommandMap MappingDetail { get; }
 
-        Task<Command> Map(Event workflowEvent);
+        Task<Command> Map (Event workflowEvent);
     }
 }

@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Copious.Infrastructure.Documents.Storage
-{
-    public class BlobProperties
-    {
-        public static readonly BlobProperties Empty = new BlobProperties
-        {
+namespace Copious.Infrastructure.Documents.Storage {
+    public class BlobProperties {
+        public static readonly BlobProperties Empty = new BlobProperties {
             Security = BlobSecurity.Private,
         };
 
@@ -15,8 +12,7 @@ namespace Copious.Infrastructure.Documents.Storage
 
         public string ContentDisposition { get; set; }
 
-        public BlobProperties WithContentDispositionFilename(string filename)
-        {
+        public BlobProperties WithContentDispositionFilename (string filename) {
             ContentDisposition = $"attachment; filename=\"{filename}\"";
             return this;
         }

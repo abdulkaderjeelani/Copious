@@ -1,25 +1,19 @@
-﻿using Copious.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Copious.Foundation;
 
-namespace Copious.Document.Interface
-{
-    public class DocumentException : Exception
-    {
-        public DocumentException(RequestContext context, DocumentExceptionTypes exType, string usefulMessage) : base(usefulMessage)
-        {
-            DocumentExceptionInfo = new DocumentExceptionInfo
-            {
+namespace Copious.Document.Interface {
+    public class DocumentException : Exception {
+        public DocumentException (RequestContext context, DocumentExceptionTypes exType, string usefulMessage) : base (usefulMessage) {
+            DocumentExceptionInfo = new DocumentExceptionInfo {
                 ContextOfException = context
             };
             ExceptionType = exType;
         }
 
-        public DocumentException(RequestContext context, DocumentExceptionTypes exType, string usefulMessage, Exception innerException) : base(usefulMessage, innerException)
-        {
-            DocumentExceptionInfo = new DocumentExceptionInfo
-            {
+        public DocumentException (RequestContext context, DocumentExceptionTypes exType, string usefulMessage, Exception innerException) : base (usefulMessage, innerException) {
+            DocumentExceptionInfo = new DocumentExceptionInfo {
                 ContextOfException = context
             };
             ExceptionType = exType;
@@ -31,8 +25,7 @@ namespace Copious.Document.Interface
 
     }
 
-    public class DocumentExceptionInfo
-    {
+    public class DocumentExceptionInfo {
         public Guid DocumentId { get; set; }
 
         public int VersionNo { get; set; }
@@ -44,8 +37,7 @@ namespace Copious.Document.Interface
     /// Instead of creating unique exception for every case, we create a single aggregate exception
     /// <see cref="Copious.Document.Interface.DocumentException"/> and identify it over the kind
     /// </summary>
-    public enum DocumentExceptionTypes
-    {
+    public enum DocumentExceptionTypes {
         InvalidDocumentKind = 1,
         NotSupportedStorageProvider,
     }

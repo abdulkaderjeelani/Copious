@@ -1,17 +1,14 @@
-﻿using System;
+using System;
+using System;
 using System.Collections.Generic;
-
 using Microsoft.Extensions.Configuration;
 
-using System;
-
-namespace Copious.Infrastructure.Interface
-{
-    public class CopiousConfiguration
-    {
+namespace Copious.Infrastructure.Interface {
+    public class CopiousConfiguration {
         private static CopiousConfiguration _config;
 
-        public static CopiousConfiguration Config => _config ?? throw new InvalidOperationException($"Configuration is not initialized. Pleas call {nameof(Initialize)}");
+        public static CopiousConfiguration Config => _config ??
+            throw new InvalidOperationException ($"Configuration is not initialized. Pleas call {nameof(Initialize)}");
 
         /// <summary>
         /// Prefix of all application assemblies
@@ -66,53 +63,47 @@ namespace Copious.Infrastructure.Interface
         /// </summary>
         public string SchedulerPostgreSqlDb { get; private set; }
 
-        public static IConfigurationRoot Initialize(IConfigurationBuilder builder, params (string path, bool optional, bool reloadOnChange)[] configFiles)
-        {
+        public static IConfigurationRoot Initialize (IConfigurationBuilder builder, params (string path, bool optional, bool reloadOnChange) [] configFiles) {
             foreach (var configFile in configFiles)
-                builder = builder.AddJsonFile(path: configFile.path, optional: configFile.optional, reloadOnChange: configFile.reloadOnChange);
+                builder = builder.AddJsonFile (path: configFile.path, optional: configFile.optional, reloadOnChange: configFile.reloadOnChange);
 
-            builder.AddJsonFile("copious.config.json", optional: true, reloadOnChange: true);
+            builder.AddJsonFile ("copious.config.json", optional : true, reloadOnChange : true);
 
-            var configuration = builder.Build();
+            var configuration = builder.Build ();
 
-            _config = new CopiousConfiguration
-            {
-                IncludeAspNetIdentity = configuration.GetValue<bool>(nameof(IncludeAspNetIdentity)),
-                AppAssemblyPrefixes = configuration.GetValue<string>(nameof(AppAssemblyPrefixes)).Split(','),
-                DIContainer = configuration.GetValue<DIContainer>(nameof(DIContainer)),
-                LoggingProvider = configuration.GetValue<LoggingProvider>(nameof(LoggingProvider)),
-                EnableScheduler = configuration.GetValue<bool>(nameof(EnableScheduler)),
-                Scheduler = configuration.GetValue<Scheduler>(nameof(Scheduler)),
-                Mapper = configuration.GetValue<Mapper>(nameof(Mapper)),
-                SchedulerPostgreSqlDb = configuration.GetConnectionString(nameof(SchedulerPostgreSqlDb)),
-                EnableCors = configuration.GetValue<bool>(nameof(EnableCors)),
-                EnableAntiforgery = configuration.GetValue<bool>(nameof(EnableAntiforgery)),
-                EnableDocument = configuration.GetValue<bool>(nameof(EnableDocument)),
-                DocumentDb = configuration.GetValue<Db>(nameof(DocumentDb)),
-                DocumentDbConnection = configuration.GetValue<string>(nameof(DocumentDbConnection)),
-                DefaultDocumentStorageProvider = configuration.GetValue<StorageProvider>(nameof(DefaultDocumentStorageProvider)),
-                AuthenticationType = configuration.GetValue<AuthenticationType>(nameof(AuthenticationType)),
-                DefaultDocumentStorageProviderOptions = new Dictionary<string, string>()
+            _config = new CopiousConfiguration {
+                IncludeAspNetIdentity = configuration.GetValue<bool> (nameof (IncludeAspNetIdentity)),
+                AppAssemblyPrefixes = configuration.GetValue<string> (nameof (AppAssemblyPrefixes)).Split (','),
+                DIContainer = configuration.GetValue<DIContainer> (nameof (DIContainer)),
+                LoggingProvider = configuration.GetValue<LoggingProvider> (nameof (LoggingProvider)),
+                EnableScheduler = configuration.GetValue<bool> (nameof (EnableScheduler)),
+                Scheduler = configuration.GetValue<Scheduler> (nameof (Scheduler)),
+                Mapper = configuration.GetValue<Mapper> (nameof (Mapper)),
+                SchedulerPostgreSqlDb = configuration.GetConnectionString (nameof (SchedulerPostgreSqlDb)),
+                EnableCors = configuration.GetValue<bool> (nameof (EnableCors)),
+                EnableAntiforgery = configuration.GetValue<bool> (nameof (EnableAntiforgery)),
+                EnableDocument = configuration.GetValue<bool> (nameof (EnableDocument)),
+                DocumentDb = configuration.GetValue<Db> (nameof (DocumentDb)),
+                DocumentDbConnection = configuration.GetValue<string> (nameof (DocumentDbConnection)),
+                DefaultDocumentStorageProvider = configuration.GetValue<StorageProvider> (nameof (DefaultDocumentStorageProvider)),
+                AuthenticationType = configuration.GetValue<AuthenticationType> (nameof (AuthenticationType)),
+                DefaultDocumentStorageProviderOptions = new Dictionary<string, string> ()
             };
-            FillDictionaryFromConfig(configuration, nameof(DefaultDocumentStorageProviderOptions), _config.DefaultDocumentStorageProviderOptions);
+            FillDictionaryFromConfig (configuration, nameof (DefaultDocumentStorageProviderOptions), _config.DefaultDocumentStorageProviderOptions);
 
             return configuration;
         }
 
-        private static void FillDictionaryFromConfig(IConfigurationRoot configuration, string keyName, Dictionary<string, string> dictionary)
-        {
+        private static void FillDictionaryFromConfig (IConfigurationRoot configuration, string keyName, Dictionary<string, string> dictionary) {
             var index = 0;
-            while (true)
-            {
+            while (true) {
                 var key = configuration[$"{keyName}:{index}:Key"];
                 var value = configuration[$"{keyName}:{index}:Value"];
 
-                if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
-                {
-                    dictionary.Add(key, value);
+                if (!string.IsNullOrEmpty (key) && !string.IsNullOrEmpty (value)) {
+                    dictionary.Add (key, value);
                     index++;
-                }
-                else break;
+                } else break;
             }
         }
     }

@@ -1,11 +1,8 @@
-namespace Copious.Workflow.Stages
-{
+namespace Copious.Workflow.Stages {
     using Copious.Foundation.ComponentModel;
 
-    public struct ComponentDetail
-    {
-        public ComponentDetail(string name, string context, ComponentType type)
-        {
+    public struct ComponentDetail {
+        public ComponentDetail (string name, string context, ComponentType type) {
             ComponentName = name;
             BoundedContext = context;
             ComponentType = type;

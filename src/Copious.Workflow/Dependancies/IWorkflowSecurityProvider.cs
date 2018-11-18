@@ -1,10 +1,8 @@
-namespace Copious.Workflow.Dependancies
-{
+namespace Copious.Workflow.Dependancies {
     using System;
     using Core;
 
-    public interface IWorkflowSecurityProvider
-    {
+    public interface IWorkflowSecurityProvider {
         /// <summary>
         /// Verfies whether the invoker has the access rights for the workflow,
         /// </summary>
@@ -12,6 +10,6 @@ namespace Copious.Workflow.Dependancies
         /// <param name="invoker"></param>
         /// <param name="invokerId"></param>
         /// <returns></returns>
-        bool CheckAccess(Guid workflowId, WorkflowInvoker invoker, Guid invokerId);
+        bool CheckAccess (Guid workflowId, WorkflowInvoker invoker, Guid invokerId);
     }
 }

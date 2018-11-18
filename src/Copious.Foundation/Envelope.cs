@@ -1,33 +1,27 @@
-﻿using System;
+using System;
 
-namespace Copious.Foundation
-{
+namespace Copious.Foundation {
     /// <summary>
     /// Static factory class for <see cref="Envelope{T}"/>.
     /// </summary>
-    public abstract class Envelope
-    {
-        protected Envelope()
-        {
-        }
+    public abstract class Envelope {
+        protected Envelope () { }
 
         /// <summary>
         /// Creates an envelope for the given body.
         /// </summary>
         /// <param name="body"></param>
-        public static Envelope<T> Create<T>(T body) => new Envelope<T>(body);
+        public static Envelope<T> Create<T> (T body) => new Envelope<T> (body);
     }
 
     /// <summary>
     /// Provides the envelope for an object that will be sent to a bus.
     /// </summary>
-    public class Envelope<T> : Envelope
-    {
+    public class Envelope<T> : Envelope {
         /// <summary>
         /// Initializes a new instance of the <see cref="Envelope{T}"/> class.
         /// </summary>
-        public Envelope(T body)
-        {
+        public Envelope (T body) {
             Body = body;
         }
 
@@ -56,6 +50,6 @@ namespace Copious.Foundation
         /// </summary>
         public string MessageId { get; set; }
 
-        public static implicit operator Envelope<T>(T body) => Envelope.Create(body);
+        public static implicit operator Envelope<T> (T body) => Envelope.Create (body);
     }
 }

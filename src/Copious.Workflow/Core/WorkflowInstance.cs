@@ -1,13 +1,10 @@
-namespace Copious.Workflow.Core
-{
-    using System;
+namespace Copious.Workflow.Core {
     using System.Collections.Generic;
+    using System;
     using Stages;
 
-    public class WorkflowInstance
-    {
-        public WorkflowInstance(Guid workflowId, int workflowVersion, Guid startedBy)
-        {
+    public class WorkflowInstance {
+        public WorkflowInstance (Guid workflowId, int workflowVersion, Guid startedBy) {
             WorkflowId = workflowId;
             WorkflowVersion = workflowVersion;
             StartedBy = startedBy;

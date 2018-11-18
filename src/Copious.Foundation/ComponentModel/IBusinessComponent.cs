@@ -1,6 +1,3 @@
-namespace Copious.Foundation.ComponentModel
-{
-    public interface IBusinessComponent : IComponent
-    {
-    }
+namespace Copious.Foundation.ComponentModel {
+    public interface IBusinessComponent : IComponent { }
 }

@@ -1,7 +1,5 @@
-namespace Copious.Workflow.Stages
-{
-    public enum StageState
-    {
+namespace Copious.Workflow.Stages {
+    public enum StageState {
         NotStarted,
 
         Running,

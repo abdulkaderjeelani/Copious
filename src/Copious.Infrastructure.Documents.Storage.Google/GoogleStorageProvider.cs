@@ -1,27 +1,25 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Google;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
 using Google.Apis.Storage.v1;
 using Google.Apis.Upload;
-using Google.Apis.Services;
-using Google.Apis.Auth.OAuth2;
 using Blob = Google.Apis.Storage.v1.Data.Object;
 using PredefinedAcl = Google.Apis.Storage.v1.ObjectsResource.InsertMediaUpload.PredefinedAclEnum;
-using Google.Apis.Requests;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
-using System.Text;
 using System.Net;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Copious.Infrastructure.Documents.Storage;
+using Google.Apis.Requests;
 
-namespace Copious.Infrastructure.Documents.Storage.Google
-{
-    public sealed class GoogleStorageProvider : IStorageProvider
-    {
+namespace Copious.Infrastructure.Documents.Storage.Google {
+    public sealed class GoogleStorageProvider : IStorageProvider {
         const string BlobNameRegex = @"(?<Container>[^/]+)/(?<Blob>.+)";
         const string DefaultContentType = "application/octet-stream";
         readonly StorageService _storageService;
@@ -29,39 +27,30 @@ namespace Copious.Infrastructure.Documents.Storage.Google
         readonly string _serviceEmail;
         readonly X509Certificate2 _certificate;
 
-        public GoogleStorageProvider(GoogleProviderOptions options)
-        {
-            if (options.P12PrivateKey == null)
-            {
-                throw new StorageException(new StorageError
-                {
+        public GoogleStorageProvider (GoogleProviderOptions options) {
+            if (options.P12PrivateKey == null) {
+                throw new StorageException (new StorageError {
                     Code = 1007,
-                    Message = "P12 private key is required.",
-                    ProviderMessage = "P12 private key is required."
+                        Message = "P12 private key is required.",
+                        ProviderMessage = "P12 private key is required."
                 }, null);
             }
 
-            try
-            {
-                _certificate = new X509Certificate2(Convert.FromBase64String(options.P12PrivateKey), "notasecret", X509KeyStorageFlags.Exportable);
+            try {
+                _certificate = new X509Certificate2 (Convert.FromBase64String (options.P12PrivateKey), "notasecret", X509KeyStorageFlags.Exportable);
                 var credential =
-                    new ServiceAccountCredential(new ServiceAccountCredential.Initializer(options.Email)
-                    {
-                        Scopes = new[] { StorageService.Scope.DevstorageFullControl }
-                    }.FromCertificate(_certificate));
+                    new ServiceAccountCredential (new ServiceAccountCredential.Initializer (options.Email) {
+                        Scopes = new [] { StorageService.Scope.DevstorageFullControl }
+                    }.FromCertificate (_certificate));
 
-                _storageService = new StorageService(new BaseClientService.Initializer
-                {
+                _storageService = new StorageService (new BaseClientService.Initializer {
                     HttpClientInitializer = credential
                 });
-            }
-            catch (Exception ex)
-            {
-                throw new StorageException(new StorageError
-                {
+            } catch (Exception ex) {
+                throw new StorageException (new StorageError {
                     Code = 1000,
-                    Message = "Invalid P12 private key.",
-                    ProviderMessage = ex.Message
+                        Message = "Invalid P12 private key.",
+                        ProviderMessage = ex.Message
                 }, ex);
             }
 
@@ -69,146 +58,108 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             _bucket = options.Bucket;
         }
 
-        public async Task SaveBlobStreamAsync(string containerName, string blobName, Stream source, BlobProperties properties = null, bool closeStream = true)
-        {
-            try
-            {
-                var response = await SaveRequest(containerName, blobName, source, properties).UploadAsync();
+        public async Task SaveBlobStreamAsync (string containerName, string blobName, Stream source, BlobProperties properties = null, bool closeStream = true) {
+            try {
+                var response = await SaveRequest (containerName, blobName, source, properties).UploadAsync ();
 
-                if (response.Status == UploadStatus.Failed)
-                {
-                    throw Error(response.Exception as GoogleApiException, message: "There was an error uploading to Google Cloud Storage");
+                if (response.Status == UploadStatus.Failed) {
+                    throw Error (response.Exception as GoogleApiException, message: "There was an error uploading to Google Cloud Storage");
                 }
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        public async Task<Stream> GetBlobStreamAsync(string containerName, string blobName)
-        {
-            try
-            {
-                return await _storageService.HttpClient.GetStreamAsync(GetBlob(containerName, blobName).MediaLink);
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+        public async Task<Stream> GetBlobStreamAsync (string containerName, string blobName) {
+            try {
+                return await _storageService.HttpClient.GetStreamAsync (GetBlob (containerName, blobName).MediaLink);
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        public string GetBlobUrl(string containerName, string blobName)
-        {
-            try
-            {
-                return GetBlob(containerName, blobName).MediaLink;
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+        public string GetBlobUrl (string containerName, string blobName) {
+            try {
+                return GetBlob (containerName, blobName).MediaLink;
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
         // TODO: Currently google only support adding a content disposition when uploading
-        public string GetBlobSasUrl(string containerName, string blobName, DateTimeOffset expiry, bool isDownload = false,
-            string fileName = null, string contentType = null, BlobUrlAccess access = BlobUrlAccess.Read)
-        {
-            var expiration = expiry.ToUnixTimeSeconds();
+        public string GetBlobSasUrl (string containerName, string blobName, DateTimeOffset expiry, bool isDownload = false,
+            string fileName = null, string contentType = null, BlobUrlAccess access = BlobUrlAccess.Read) {
+            var expiration = expiry.ToUnixTimeSeconds ();
             //var disp = fileName != null ? "content-disposition:attachment;filename=\"" + fileName +"\"" : string.Empty;
             var verb = access == BlobUrlAccess.Read ? "GET" : "PUT";
-            var urlSignature = SignString($"{verb}\n\n{contentType}\n{expiration}\n/{_bucket}/{containerName}/{blobName}");
+            var urlSignature = SignString ($"{verb}\n\n{contentType}\n{expiration}\n/{_bucket}/{containerName}/{blobName}");
 
             return $"https://storage.googleapis.com/{_bucket}/{containerName}/{blobName}?GoogleAccessId={_serviceEmail}&Expires={expiration}&Signature={WebUtility.UrlEncode(urlSignature)}";
         }
 
-        public async Task<BlobDescriptor> GetBlobDescriptorAsync(string containerName, string blobName)
-        {
-            try
-            {
-                return GetBlobDescriptor(await GetBlobAsync(containerName, blobName));
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+        public async Task<BlobDescriptor> GetBlobDescriptorAsync (string containerName, string blobName) {
+            try {
+                return GetBlobDescriptor (await GetBlobAsync (containerName, blobName));
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        public async Task<IList<BlobDescriptor>> ListBlobsAsync(string containerName)
-        {
-            try
-            {
-                return (await GetListBlobsRequest(containerName).ExecuteAsync()).Items.SelectToListOrEmpty(GetBlobDescriptor);
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+        public async Task<IList<BlobDescriptor>> ListBlobsAsync (string containerName) {
+            try {
+                return (await GetListBlobsRequest (containerName).ExecuteAsync ()).Items.SelectToListOrEmpty (GetBlobDescriptor);
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        public async Task DeleteBlobAsync(string containerName, string blobName)
-        {
-            try
-            {
-                await _storageService.Objects.Delete(_bucket, $"{containerName}/{blobName}").ExecuteAsync();
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+        public async Task DeleteBlobAsync (string containerName, string blobName) {
+            try {
+                await _storageService.Objects.Delete (_bucket, $"{containerName}/{blobName}").ExecuteAsync ();
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        public async Task DeleteContainerAsync(string containerName)
-        {
-            try
-            {
-                var batch = new BatchRequest(_storageService);
+        public async Task DeleteContainerAsync (string containerName) {
+            try {
+                var batch = new BatchRequest (_storageService);
 
-                foreach (var blob in await ListBlobsAsync(containerName))
-                {
-                    batch.Queue<string>(_storageService.Objects.Delete(_bucket, $"{blob.Container}/{blob.Name}"),
+                foreach (var blob in await ListBlobsAsync (containerName)) {
+                    batch.Queue<string> (_storageService.Objects.Delete (_bucket, $"{blob.Container}/{blob.Name}"),
                         (content, error, i, message) => { });
                 }
 
-                await batch.ExecuteAsync();
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+                await batch.ExecuteAsync ();
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        public Task CopyBlobAsync(string sourceContainerName, string sourceBlobName, string destinationContainerName,
-            string destinationBlobName = null)
-        {
-            throw new NotImplementedException();
+        public Task CopyBlobAsync (string sourceContainerName, string sourceBlobName, string destinationContainerName,
+            string destinationBlobName = null) {
+            throw new NotImplementedException ();
         }
 
-        public Task MoveBlobAsync(string sourceContainerName, string sourceBlobName, string destinationContainerName,
-            string destinationBlobName = null)
-        {
-            throw new NotImplementedException();
+        public Task MoveBlobAsync (string sourceContainerName, string sourceBlobName, string destinationContainerName,
+            string destinationBlobName = null) {
+            throw new NotImplementedException ();
         }
 
-        public async Task UpdateBlobPropertiesAsync(string containerName, string blobName, BlobProperties properties)
-        {
-            try
-            {
-                await UpdateRequest(containerName, blobName, properties).ExecuteAsync();
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+        public async Task UpdateBlobPropertiesAsync (string containerName, string blobName, BlobProperties properties) {
+            try {
+                await UpdateRequest (containerName, blobName, properties).ExecuteAsync ();
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
         #region Helpers
 
-        ObjectsResource.InsertMediaUpload SaveRequest(string containerName, string blobName, Stream source, BlobProperties properties)
-        {
-            var blob = CreateBlob(containerName, blobName, properties);
+        ObjectsResource.InsertMediaUpload SaveRequest (string containerName, string blobName, Stream source, BlobProperties properties) {
+            var blob = CreateBlob (containerName, blobName, properties);
 
-            var req = _storageService.Objects.Insert(blob, _bucket, source,
+            var req = _storageService.Objects.Insert (blob, _bucket, source,
                 properties?.ContentType ?? DefaultContentType);
 
             req.PredefinedAcl = properties?.Security == BlobSecurity.Public ? PredefinedAcl.PublicRead : PredefinedAcl.Private__;
@@ -216,38 +167,30 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             return req;
         }
 
-        ObjectsResource.UpdateRequest UpdateRequest(string containerName, string blobName, BlobProperties properties)
-        {
-            var blob = CreateBlob(containerName, blobName, properties);
-            var req = _storageService.Objects.Update(blob, _bucket, $"{containerName}/{blobName}");
+        ObjectsResource.UpdateRequest UpdateRequest (string containerName, string blobName, BlobProperties properties) {
+            var blob = CreateBlob (containerName, blobName, properties);
+            var req = _storageService.Objects.Update (blob, _bucket, $"{containerName}/{blobName}");
             req.PredefinedAcl = properties?.Security == BlobSecurity.Public ?
                 ObjectsResource.UpdateRequest.PredefinedAclEnum.PublicRead :
                 ObjectsResource.UpdateRequest.PredefinedAclEnum.Private__;
             return req;
         }
 
-        static Blob CreateBlob(string containerName, string blobName, BlobProperties properties = null)
-        {
-            return new Blob
-            {
-                Name = $"{containerName}/{blobName}",
-                ContentType = properties?.ContentType ?? DefaultContentType
+        static Blob CreateBlob (string containerName, string blobName, BlobProperties properties = null) {
+            return new Blob {
+            Name = $"{containerName}/{blobName}",
+            ContentType = properties?.ContentType ?? DefaultContentType
             };
         }
 
-        Task<Blob> GetBlobAsync(string containerName, string blobName)
-        {
-            var req = _storageService.Objects.Get(_bucket, $"{containerName}/{blobName}");
+        Task<Blob> GetBlobAsync (string containerName, string blobName) {
+            var req = _storageService.Objects.Get (_bucket, $"{containerName}/{blobName}");
             req.Projection = ObjectsResource.GetRequest.ProjectionEnum.Full;
 
-            try
-            {
-                return req.ExecuteAsync();
-            }
-            catch (GoogleApiException e)
-            {
-                if (e.Message.Contains("404"))
-                {
+            try {
+                return req.ExecuteAsync ();
+            } catch (GoogleApiException e) {
+                if (e.Message.Contains ("404")) {
                     return null;
                 }
 
@@ -255,76 +198,64 @@ namespace Copious.Infrastructure.Documents.Storage.Google
             }
         }
 
-        Blob GetBlob(string containerName, string blobName)
-        {
-            var req = _storageService.Objects.Get(_bucket, $"{containerName}/{blobName}");
+        Blob GetBlob (string containerName, string blobName) {
+            var req = _storageService.Objects.Get (_bucket, $"{containerName}/{blobName}");
             req.Projection = ObjectsResource.GetRequest.ProjectionEnum.Full;
 
-            try
-            {
-                return req.Execute();
-            }
-            catch (GoogleApiException gae)
-            {
-                throw Error(gae);
+            try {
+                return req.Execute ();
+            } catch (GoogleApiException gae) {
+                throw Error (gae);
             }
         }
 
-        static BlobDescriptor GetBlobDescriptor(Blob blob)
-        {
-            var match = Regex.Match(blob.Name, BlobNameRegex);
-            if (!match.Success)
-            {
-                throw new InvalidOperationException("Unable to match blob name with regex; all blob names");
+        static BlobDescriptor GetBlobDescriptor (Blob blob) {
+            var match = Regex.Match (blob.Name, BlobNameRegex);
+            if (!match.Success) {
+                throw new InvalidOperationException ("Unable to match blob name with regex; all blob names");
             }
 
-            var blobDescriptor = new BlobDescriptor
-            {
+            var blobDescriptor = new BlobDescriptor {
                 Container = match.Groups["Container"].Value,
                 ContentMD5 = blob.Md5Hash,
                 ContentType = blob.ContentType,
                 ETag = blob.ETag,
-                LastModified = DateTimeOffset.Parse(blob.UpdatedRaw),
-                Length = Convert.ToInt64(blob.Size),
+                LastModified = DateTimeOffset.Parse (blob.UpdatedRaw),
+                Length = Convert.ToInt64 (blob.Size),
                 Name = match.Groups["Blob"].Value,
-                Security = blob.Acl != null
-                    && blob.Acl.Any(acl => acl.Entity.ToLowerInvariant() == "allusers") ? BlobSecurity.Public : BlobSecurity.Private,
+                Security = blob.Acl != null &&
+                blob.Acl.Any (acl => acl.Entity.ToLowerInvariant () == "allusers") ? BlobSecurity.Public : BlobSecurity.Private,
                 Url = blob.MediaLink
             };
 
             return blobDescriptor;
         }
 
-        ObjectsResource.ListRequest GetListBlobsRequest(string containerName)
-        {
-            var req = _storageService.Objects.List(_bucket);
+        ObjectsResource.ListRequest GetListBlobsRequest (string containerName) {
+            var req = _storageService.Objects.List (_bucket);
             req.Prefix = containerName;
             return req;
         }
 
-        static StorageException Error(GoogleApiException gae, int code = 1001, string message = null)
-        {
-            return new StorageException(new StorageError
-            {
+        static StorageException Error (GoogleApiException gae, int code = 1001, string message = null) {
+            return new StorageException (new StorageError {
                 Code = code,
-                Message =
+                    Message =
                     message ?? "Encountered an error when making a request to Google's Cloud API.",
-                ProviderMessage = gae?.Message
+                    ProviderMessage = gae?.Message
             }, gae);
         }
 
-        string SignString(string stringToSign)
-        {
+        string SignString (string stringToSign) {
             if (_certificate == null)
-                throw new ArgumentNullException(nameof(_certificate), "Certificate not initialized");
+                throw new ArgumentNullException (nameof (_certificate), "Certificate not initialized");
 
-            var cp = new CspParameters(24, "Microsoft Enhanced RSA and AES Cryptographic Provider",
-                    ((RSACryptoServiceProvider)_certificate.GetRSAPrivateKey()).CspKeyContainerInfo.KeyContainerName);
-            using (var provider = new RSACryptoServiceProvider(cp))
-            {
-                var buffer = Encoding.UTF8.GetBytes(stringToSign);
-                var signature = provider.SignData(buffer, "SHA256");
-                return Convert.ToBase64String(signature);
+            var cp = new CspParameters (24, "Microsoft Enhanced RSA and AES Cryptographic Provider",
+                ((RSACryptoServiceProvider) _certificate.GetRSAPrivateKey ()).CspKeyContainerInfo.KeyContainerName);
+            using (var provider = new RSACryptoServiceProvider (cp)) {
+                var buffer = Encoding.UTF8.GetBytes (stringToSign);
+                var signature = provider.SignData (buffer, "SHA256");
+                return Convert.ToBase64String (signature);
             }
         }
 

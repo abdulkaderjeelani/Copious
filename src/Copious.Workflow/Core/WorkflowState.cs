@@ -1,7 +1,5 @@
-namespace Copious.Workflow.Core
-{
-    public enum WorkflowState
-    {
+namespace Copious.Workflow.Core {
+    public enum WorkflowState {
         NotStarted,
 
         Running,

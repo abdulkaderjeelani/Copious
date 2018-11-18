@@ -1,35 +1,23 @@
-﻿using System;
+using System;
 
-namespace Copious.Infrastructure.Interface
-{
-    public static class Aspects
-    {
-        public static Action AddExceptionHandlingAspect(this Action action, IExceptionHandler exHandler)
-            => () =>
-        {
-            try
-            {
-                action?.Invoke();
-            }
-            catch (Exception ex)
-            {
-                exHandler.HandleException(ex);
+namespace Copious.Infrastructure.Interface {
+    public static class Aspects {
+        public static Action AddExceptionHandlingAspect (this Action action, IExceptionHandler exHandler) => () => {
+            try {
+                action?.Invoke ();
+            } catch (Exception ex) {
+                exHandler.HandleException (ex);
             }
         };
 
-        public static Action AddRetryAspect(this Action action, int tries) => () =>
-        {
+        public static Action AddRetryAspect (this Action action, int tries) => () => {
             var tried = 0;
-            do
-            {
-                try
-                {
+            do {
+                try {
                     tried++;
-                    action?.Invoke();
+                    action?.Invoke ();
                     break;
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     if (tried == tries)
                         throw;
                 }

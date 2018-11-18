@@ -1,7 +1,6 @@
 using Copious.Workflow.Core;
 
-namespace Copious.Workflow.Stages
-{
+namespace Copious.Workflow.Stages {
     /// <summary>
     /// <para>
     /// Workflow instances need some internal data,
@@ -16,8 +15,7 @@ namespace Copious.Workflow.Stages
     /// For now the workflow stages are executed in context, using stage data we can also run them out of process, How we maintain ???
     /// </para>
     /// </summary>
-    public abstract class WorkflowStageData
-    {
+    public abstract class WorkflowStageData {
         public WorkflowCommand WorkflowCommand { get; set; }
     }
 }

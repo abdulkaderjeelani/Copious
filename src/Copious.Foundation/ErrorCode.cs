@@ -1,14 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
-namespace Copious.Foundation
-{
-    public class ErrorCode
-    {
-        public ErrorCode(int code, string description)
-        {
+namespace Copious.Foundation {
+    public class ErrorCode {
+        public ErrorCode (int code, string description) {
             Code = code;
             Description = description;
         }
@@ -16,12 +13,11 @@ namespace Copious.Foundation
         public int Code { get; set; }
         public string Description { get; set; }
 
-        public ErrorCode AddInfo(string info)
-        {
+        public ErrorCode AddInfo (string info) {
             Description = $"{Description} {info}";
             return this;
         }
 
-        public EventId ToEventId() => new EventId(Code, Description);
+        public EventId ToEventId () => new EventId (Code, Description);
     }
 }

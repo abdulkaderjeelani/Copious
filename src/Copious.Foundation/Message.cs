@@ -1,14 +1,11 @@
-﻿using System;
-using Copious.Foundation.ComponentModel;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Copious.Foundation.ComponentModel;
 
-namespace Copious.Foundation
-{
-    public class Message : Operation
-    {
-        public Message(Guid componentId, int componentVersion)
-        {
-            Id = Guid.NewGuid();
+namespace Copious.Foundation {
+    public class Message : Operation {
+        public Message (Guid componentId, int componentVersion) {
+            Id = Guid.NewGuid ();
             ComponentId = componentId;
             ComponentVersion = componentVersion;
         }
@@ -33,6 +30,5 @@ namespace Copious.Foundation
 
         protected dynamic Self => this;
 
-     
     }
 }

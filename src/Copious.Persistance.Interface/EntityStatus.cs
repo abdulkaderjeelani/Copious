@@ -1,7 +1,5 @@
-﻿namespace Copious.Persistance.Interface
-{
-    public enum StateStatus
-    {
+namespace Copious.Persistance.Interface {
+    public enum StateStatus {
         Active,
         Deleted,
         Hold,

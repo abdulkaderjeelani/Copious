@@ -1,5 +1,4 @@
-namespace Copious.Workflow.DataModel
-{
+namespace Copious.Workflow.DataModel {
     using System;
 
     /// <summary>
@@ -15,8 +14,7 @@ namespace Copious.Workflow.DataModel
     /// If a workflow is secured (wf id present in this table) then we allow only the mentioned users
     /// to start the workflow, can be controlled in the application level
     /// </summary>
-    public class SecuredWorkflow
-    {
+    public class SecuredWorkflow {
         public Guid? UserId { get; set; }
         public Guid? UserGroupId { get; set; }
         public Guid? SystemId { get; set; }

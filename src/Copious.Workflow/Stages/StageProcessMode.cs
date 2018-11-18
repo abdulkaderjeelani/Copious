@@ -1,7 +1,5 @@
-namespace Copious.Workflow.Stages
-{
-    public enum StageProcessMode
-    {
+namespace Copious.Workflow.Stages {
+    public enum StageProcessMode {
         InProc,
         OutProc
     }

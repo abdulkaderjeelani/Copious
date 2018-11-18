@@ -1,6 +1,3 @@
-﻿namespace Copious.Application.Interface
-{
-    public interface ICommandGuard
-    {
-    }
+namespace Copious.Application.Interface {
+    public interface ICommandGuard { }
 }

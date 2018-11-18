@@ -1,12 +1,9 @@
-namespace Copious.Workflow.Mapping
-{
+namespace Copious.Workflow.Mapping {
     using System;
     using Foundation.ComponentModel;
 
-    public class EventToCommandMap : Component
-    {
-        public EventToCommandMap(string eventName, string commandName)
-        {
+    public class EventToCommandMap : Component {
+        public EventToCommandMap (string eventName, string commandName) {
             EventName = eventName;
             CommandName = commandName;
             Id = Guid.Empty;

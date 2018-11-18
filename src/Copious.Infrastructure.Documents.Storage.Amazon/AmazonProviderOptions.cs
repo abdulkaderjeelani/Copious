@@ -1,7 +1,5 @@
-﻿namespace Copious.Infrastructure.Documents.Storage.Amazon
-{
-    public class AmazonProviderOptions
-    {
+namespace Copious.Infrastructure.Documents.Storage.Amazon {
+    public class AmazonProviderOptions {
         public string PublicKey { get; set; }
 
         public string SecretKey { get; set; }

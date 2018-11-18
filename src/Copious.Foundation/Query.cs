@@ -1,16 +1,14 @@
-﻿using Copious.Foundation.ComponentModel;
 using System;
 using System.Collections.Generic;
+using Copious.Foundation.ComponentModel;
 
-namespace Copious.Foundation
-{
-    public class Query : Operation
-    {
-        public Query(RequestContext context) { SetContext(context); }
+namespace Copious.Foundation {
+    public class Query : Operation {
+        public Query (RequestContext context) { SetContext (context); }
 
-        public Query(Func<RequestContext> contextProvider) { SetContext(contextProvider); }
+        public Query (Func<RequestContext> contextProvider) { SetContext (contextProvider); }
 
-        public Guid SystemId { get; set; } = new Guid("1B421466-EE83-4C36-81B1-1338DBAD6D8F");
+        public Guid SystemId { get; set; } = new Guid ("1B421466-EE83-4C36-81B1-1338DBAD6D8F");
 
         public string UserId { get; set; }
 
@@ -24,10 +22,8 @@ namespace Copious.Foundation
         /// </summary>
         public virtual int TotalItems { get; set; }
     }
-    
 
-    public enum SortDirection
-    {
+    public enum SortDirection {
         ASC,
         DESC
     }
@@ -37,17 +33,11 @@ namespace Copious.Foundation
     /// <summary>
     /// By default all queries are filterable,
     /// </summary>
-    public interface IFilterable
-    {
-    }
+    public interface IFilterable { }
 
-    public interface ISortable
-    {
-    }
+    public interface ISortable { }
 
-    public interface IPageable
-    {
-    }
+    public interface IPageable { }
 
     #endregion Query Marker Interfaces
 }

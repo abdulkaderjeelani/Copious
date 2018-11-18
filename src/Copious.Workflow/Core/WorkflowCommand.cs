@@ -1,5 +1,4 @@
-namespace Copious.Workflow.Core
-{
+namespace Copious.Workflow.Core {
     using System;
     using Copious.Foundation;
 
@@ -8,11 +7,8 @@ namespace Copious.Workflow.Core
     /// This command is used by the workflow stages for their processing
     /// (e.g. decision stage takes the event data matches rules and process it)
     /// </summary>
-    public class WorkflowCommand : Command
-    {
-        public WorkflowCommand(Guid componentId, int componentVersion) : base(componentId, componentVersion)
-        {
-        }
+    public class WorkflowCommand : Command {
+        public WorkflowCommand (Guid componentId, int componentVersion) : base (componentId, componentVersion) { }
 
         /// <summary>
         /// Pay load of the event occured on Previous stage,
@@ -25,6 +21,6 @@ namespace Copious.Workflow.Core
         /// </summary>
         public string EventName { get; set; }
 
-        public override string CompName => nameof(WorkflowCommand);
+        public override string CompName => nameof (WorkflowCommand);
     }
 }

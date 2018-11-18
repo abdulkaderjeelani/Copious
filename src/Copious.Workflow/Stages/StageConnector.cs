@@ -1,7 +1,5 @@
-namespace Copious.Workflow.Stages
-{
-    public class StageConnector
-    {
+namespace Copious.Workflow.Stages {
+    public class StageConnector {
         public int FromStageId { get; set; }
         public int ToStageId { get; set; }
 

@@ -1,14 +1,12 @@
-﻿using Copious.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Copious.Foundation;
 
-namespace Copious.Document.Interface.State
-{
-    public class DocumentMetadata : ValueObject<DocumentMetadata>
-    {        
+namespace Copious.Document.Interface.State {
+    public class DocumentMetadata : ValueObject<DocumentMetadata> {
         public Guid SystemId { get; set; }
-        public Guid SubSystemId { get; set; }        
+        public Guid SubSystemId { get; set; }
         public string Name { get; set; }
         public string Alias { get; set; }
         public string Description { get; set; }
